@@ -1,0 +1,117 @@
+@import "./variables.css";
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%; /* 1rem = 10px */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-body);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-heading);
+  line-height: var(--lh-heading);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* Only links are blue and underlined, so anything that looks like a link is one */
+a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+p {
+  max-width: var(--measure);
+}
+
+/* ---------- Focus ---------- */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  box-shadow: var(--shadow-glow);
+  /* Transparent outline still shows up in Windows high-contrast mode */
+  outline: var(--border-width-thick) solid transparent;
+}
+
+/* ---------- Utilities ---------- */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow {
+  font-size: var(--text-eyebrow);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-body);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--color-text-secondary);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Safety net: no motion at all when the user asks for less */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
