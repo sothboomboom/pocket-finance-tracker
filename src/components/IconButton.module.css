@@ -1,0 +1,37 @@
+.button {
+	display: grid;
+	place-items: center;
+	flex-shrink: 0;
+	width: var(--touch-target);
+	height: var(--touch-target);
+	border-radius: var(--radius-circle);
+	background-color: var(--color-surface);
+	color: var(--color-heading);
+	transition:
+		background-color var(--dur-fast) var(--ease-standard),
+		box-shadow var(--dur-fast) var(--ease-standard),
+		transform var(--dur-fast) var(--ease-standard);
+}
+
+.button svg {
+	width: var(--icon-md);
+	height: var(--icon-md);
+}
+
+.button:hover:not(:disabled) {
+	box-shadow: var(--shadow-sm);
+}
+
+.button:active:not(:disabled) {
+	transform: scale(var(--scale-press));
+}
+
+.button:focus-visible {
+	box-shadow: var(--shadow-glow);
+}
+
+.button:disabled {
+	background-color: transparent;
+	color: var(--color-disabled-text);
+	cursor: not-allowed;
+}

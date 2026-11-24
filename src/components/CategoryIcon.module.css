@@ -1,0 +1,29 @@
+.circle {
+	flex-shrink: 0;
+	display: grid;
+	place-items: center;
+	border-radius: var(--radius-circle);
+	/* Fall back to grey if the color family is unknown */
+	background-color: var(--circle-bg, var(--cat-gray-bg));
+	color: var(--circle-fg, var(--cat-gray-icon));
+}
+
+.sm {
+	width: var(--icon-circle-sm);
+	height: var(--icon-circle-sm);
+}
+
+.sm svg {
+	width: var(--icon-md);
+	height: var(--icon-md);
+}
+
+.md {
+	width: var(--icon-circle-md);
+	height: var(--icon-circle-md);
+}
+
+.md svg {
+	width: var(--icon-lg);
+	height: var(--icon-lg);
+}
