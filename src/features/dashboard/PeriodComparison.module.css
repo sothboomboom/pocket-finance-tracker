@@ -1,0 +1,26 @@
+.comparison {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  font-size: var(--text-secondary);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-secondary);
+}
+
+.icon {
+  flex-shrink: 0;
+  width: var(--icon-sm);
+  height: var(--icon-sm);
+}
+
+.neutral {
+  color: var(--color-text-secondary);
+}
+
+.down {
+  color: var(--color-success);
+}
+
+.up {
+  color: var(--color-error);
+}
