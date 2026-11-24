@@ -1,0 +1,40 @@
+.navigator {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-16);
+	margin-bottom: var(--space-group);
+}
+
+.range {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sp-8);
+}
+
+.title {
+	flex: 1;
+	text-align: center;
+	font-size: var(--text-section-title);
+	font-weight: var(--fw-bold);
+}
+
+@media (min-width: 640px) {
+	.navigator {
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.periods {
+		flex: 0 1 calc(var(--content-narrow) / 2);
+	}
+
+	.range {
+		gap: var(--sp-16);
+	}
+
+	.title {
+		min-width: calc(var(--sp-96) * 2);
+	}
+}
