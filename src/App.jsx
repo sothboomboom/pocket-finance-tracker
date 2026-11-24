@@ -7,7 +7,6 @@ import CategoriesPage from "./pages/CategoriesPage.jsx";
 import SettingsPage from "./pages/SettingsPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 
-// Every route exists from day one, so owners only replace their page files.
 export default function App() {
 	return (
 		<Routes>
