@@ -1,0 +1,27 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  min-width: 0;
+  padding: var(--sp-16) var(--sp-24) var(--sp-24);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+.label {
+  font-size: var(--text-secondary);
+  font-weight: var(--fw-bold);
+  color: var(--color-text-secondary);
+}
+
+.value {
+  overflow-wrap: anywhere;
+  font-size: var(--text-stat);
+  font-weight: var(--fw-extrabold);
+  line-height: var(--lh-stat);
+  color: var(--color-heading);
+}
+
+.detail {
+  margin-top: var(--sp-8);
+}
