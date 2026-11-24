@@ -1,0 +1,13 @@
+.skeleton {
+	display: block;
+	background-color: var(--color-skeleton);
+	border-radius: var(--radius-sm);
+	animation: pulse calc(var(--dur-slow) * 3) var(--ease-standard) infinite
+		alternate;
+}
+
+@keyframes pulse {
+	to {
+		opacity: var(--opacity-pulse);
+	}
+}
