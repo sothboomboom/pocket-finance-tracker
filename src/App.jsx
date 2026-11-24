@@ -5,7 +5,6 @@ import ExpenseDetailPage from "./pages/ExpenseDetailPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import CategoriesPage from "./pages/CategoriesPage.jsx";
 import SettingsPage from "./pages/SettingsPage.jsx";
-import NotFoundPage from "./pages/NotFoundPage.jsx";
 
 export default function App() {
 	return (
@@ -17,7 +16,6 @@ export default function App() {
 			<Route path="/dashboard" element={<DashboardPage />} />
 			<Route path="/categories" element={<CategoriesPage />} />
 			<Route path="/settings" element={<SettingsPage />} />
-			<Route path="*" element={<NotFoundPage />} />
 		</Routes>
 	);
 }
