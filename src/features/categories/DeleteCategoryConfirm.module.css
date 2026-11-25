@@ -1,0 +1,25 @@
+.body {
+	gap: var(--sp-16);
+}
+
+.category {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-12);
+}
+
+.name {
+	font-size: var(--fs-18);
+	font-weight: var(--fw-bold);
+	color: var(--color-heading);
+}
+
+.message {
+	font-size: var(--text-body);
+	color: var(--color-text);
+}
+
+.actions {
+	justify-content: flex-end;
+	flex-wrap: wrap;
+}
