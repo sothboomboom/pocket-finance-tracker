@@ -1,0 +1,57 @@
+/* Single centered column up to tablet size */
+.page {
+  max-width: var(--content-narrow);
+  margin-inline: auto;
+}
+
+@media (min-width: 1025px) {
+  .page {
+    max-width: var(--content-medium);
+  }
+}
+
+/* Header button on tablet/desktop; the FAB replaces it on mobile */
+.headerAction {
+  display: none;
+}
+
+.periodControl {
+  max-width: var(--content-narrow);
+}
+
+.listSection {
+  margin-top: var(--sp-16);
+  transition: opacity var(--dur-fast) var(--ease-standard);
+}
+
+/* The previous period stays visible, faded, while the next one loads */
+.refreshing {
+  opacity: var(--opacity-refreshing);
+}
+
+@media (min-width: 640px) {
+  .headerAction {
+    display: block;
+  }
+
+  .periodControl {
+    max-width: calc(var(--content-narrow) / 2);
+  }
+}
+
+/* "See all expenses": centered under the list, with a full 44px tap area */
+.historyLink {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--sp-16);
+}
+
+.historyLink a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target);
+  padding-inline: var(--sp-16);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-secondary);
+  font-weight: var(--fw-bold);
+}
