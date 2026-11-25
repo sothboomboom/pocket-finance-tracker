@@ -1,0 +1,149 @@
+/* ---------- Mobile: bottom sheet ---------- */
+.sheet {
+  /* Reset the browser's default dialog box */
+  border: none;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+
+  width: 100%;
+  max-width: 100%;
+  max-height: var(--dialog-max-height);
+  margin: auto 0 0; /* stick to the bottom */
+  overflow: visible;
+}
+
+.sheet[open] {
+  animation: sheet-in var(--dur-base) var(--ease-overshoot);
+}
+
+.sheet.closing {
+  animation: sheet-out var(--dur-fast) var(--ease-standard) forwards;
+}
+
+.sheet::backdrop {
+  background-color: var(--color-backdrop);
+  animation: fade-in var(--dur-base) var(--ease-standard);
+}
+
+.sheet.closing::backdrop {
+  animation: fade-out var(--dur-fast) var(--ease-standard) forwards;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  max-height: var(--dialog-max-height);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: var(--shadow-lg);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-16);
+  padding: var(--sp-16) var(--sp-16) var(--sp-8) var(--sp-24);
+}
+
+.title {
+  font-size: var(--text-section-title);
+  font-weight: var(--fw-bold);
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border-radius: var(--radius-circle);
+  color: var(--color-text-secondary);
+  transition:
+    background-color var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard),
+    transform var(--dur-fast) var(--ease-standard);
+}
+
+.close svg {
+  width: var(--icon-lg);
+  height: var(--icon-lg);
+}
+
+.close:hover {
+  background-color: var(--color-hover-bg);
+  color: var(--color-heading);
+}
+
+.close:active {
+  transform: scale(var(--scale-press));
+}
+
+/* Lock page scrolling behind an open dialog */
+:global(html:has(dialog[open])) {
+  overflow: hidden;
+}
+
+@keyframes sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes sheet-out {
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+/* ---------- Tablet & desktop: centered modal ---------- */
+@media (min-width: 640px) {
+  .sheet {
+    width: calc(100% - var(--sp-48));
+    max-width: var(--dialog-width);
+    margin: auto;
+  }
+
+  .panel {
+    border-radius: var(--radius-lg);
+  }
+
+  .header {
+    padding: var(--sp-24) var(--sp-24) var(--sp-8) var(--sp-32);
+  }
+
+  .sheet[open] {
+    animation: modal-in var(--dur-base) var(--ease-standard);
+  }
+
+  .sheet.closing {
+    animation: modal-out var(--dur-fast) var(--ease-standard) forwards;
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: scale(var(--scale-modal-start));
+  }
+}
+
+@keyframes modal-out {
+  to {
+    opacity: 0;
+    transform: scale(var(--scale-modal-start));
+  }
+}
