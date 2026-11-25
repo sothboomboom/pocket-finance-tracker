@@ -1,0 +1,13 @@
+.body {
+  gap: var(--sp-16);
+}
+
+.message {
+  font-size: var(--text-body);
+  color: var(--color-text);
+}
+
+.actions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
