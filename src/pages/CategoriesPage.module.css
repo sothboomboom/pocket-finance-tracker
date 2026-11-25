@@ -1,0 +1,4 @@
+.page {
+	max-width: var(--content-narrow);
+	margin-inline: auto;
+}
