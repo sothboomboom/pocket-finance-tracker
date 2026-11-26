@@ -1,0 +1,138 @@
+import { Pencil, Trash2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
+import { Button } from '../components/Button.jsx';
+import { formatMoney } from '../utils/money.js';
+import { BASE_CURRENCY } from '../constants/currencies.js';
+import { Card, Tag, CategoryIcon } from '../components/UI.jsx';
+import { formatISO } from '../utils/dates.js';
+import { ConfirmSheet } from '../components/Sheet.jsx';
+import { Skeleton } from '../components/Feedback.jsx';
+import styles from './ExpenseDetail.module.css';
+
+// The pieces of one expense's page.
+
+//////////////////////////////
+// ExpenseHero
+//////////////////////////////
+
+export function ExpenseHero({ expense, onEdit, onDelete }) {
+  const { amountUsd, amount, currency, category, paymentMethod } = expense;
+  const isForeign = currency !== BASE_CURRENCY;
+
+  return (
+    <section className={styles.hero} aria-label="Amount">
+      <div className={styles.top}>
+        <CategoryIcon icon={category.icon} color={category.color} size="md" />
+        <Tag>{paymentMethod === 'cash' ? 'Cash' : 'Bank'}</Tag>
+      </div>
+
+      <div className={styles.amounts}>
+        <p className={`${styles.amount} tabular-nums`}>{formatMoney(amountUsd)}</p>
+        {isForeign && (
+          <p className={`${styles.original} tabular-nums`}>Paid {formatMoney(amount, currency)}</p>
+        )}
+      </div>
+
+      <div className={styles.actions}>
+        <Button icon={Pencil} onClick={onEdit}>
+          Edit
+        </Button>
+        <Button variant="danger" icon={Trash2} onClick={onDelete}>
+          Delete
+        </Button>
+      </div>
+    </section>
+  );
+}
+
+//////////////////////////////
+// ExpenseFacts
+//////////////////////////////
+
+const formatTimestamp = (iso) => format(new Date(iso), "MMM d, yyyy 'at' h:mm a");
+
+export function ExpenseFacts({ expense }) {
+  const { category, spentAt, paymentMethod, note, currency, rateToUsd, createdAt, updatedAt } = expense;
+  const wasEdited = updatedAt !== createdAt;
+
+  const facts = [
+    {
+      label: 'Category',
+      // Opens All expenses filtered to this category.
+      value: <Link to={`/expenses?category=${category.id}`}>{category.name}</Link>,
+    },
+    { label: 'Date', value: formatISO(spentAt, 'EEEE, MMMM d, yyyy') },
+    { label: 'Paid with', value: paymentMethod === 'cash' ? 'Cash' : 'Bank' },
+    { label: 'Note', value: note ?? <span className={styles.empty}>No note</span> },
+  ];
+  if (currency !== BASE_CURRENCY) {
+    facts.push({
+      label: 'Exchange rate',
+      value: `$1 = ${formatMoney(1 / rateToUsd, currency)} (saved with this expense)`,
+    });
+  }
+  facts.push({ label: 'Recorded', value: formatTimestamp(createdAt) });
+  if (wasEdited) facts.push({ label: 'Last edited', value: formatTimestamp(updatedAt) });
+
+  return (
+    <Card title="Details">
+      <dl className={styles.list}>
+        {facts.map(({ label, value }) => (
+          <div key={label} className={styles.row}>
+            <dt className="text-meta">{label}</dt>
+            <dd className={styles.value}>{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </Card>
+  );
+}
+
+//////////////////////////////
+// DeleteExpenseSheet
+//////////////////////////////
+
+export function DeleteExpenseSheet({ open, session, expense, onClose, onConfirm }) {
+  return (
+    <ConfirmSheet
+      open={open}
+      session={session}
+      title="Delete expense?"
+      onClose={onClose}
+      onConfirm={onConfirm}
+      confirmLabel="Delete expense"
+      confirmIcon={Trash2}
+      loadingText="Deleting…"
+    >
+      <p>
+        <strong className={styles.what}>
+          {expense.note || expense.category.name} · {formatMoney(expense.amountUsd)}
+        </strong>{' '}
+        will be removed. You can undo this for a few seconds.
+      </p>
+    </ConfirmSheet>
+  );
+}
+
+//////////////////////////////
+// ExpenseDetailSkeleton
+//////////////////////////////
+
+// Same shape as the real page, so nothing jumps when it loads.
+export function ExpenseDetailSkeleton() {
+  return (
+    <div className={styles.wrapper} aria-busy="true" aria-label="Loading expense">
+      <div className={styles.card}>
+        <Skeleton className={styles.circle} />
+        <Skeleton className={styles.expenseDetailSkeletonAmount} />
+        <Skeleton className={styles.button} />
+      </div>
+      <div className={styles.card}>
+        {Array.from({ length: 4 }, (_, i) => (
+          <Skeleton key={i} className={styles.line} />
+        ))}
+      </div>
+    </div>
+  );
+}

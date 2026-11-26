@@ -3,6 +3,8 @@ import { SearchX } from 'lucide-react';
 import { PageHeader } from '../components/Layout.jsx';
 import { BackButton } from '../components/Button.jsx';
 import { ErrorState, Placeholder } from '../components/Feedback.jsx';
+import { ExpenseSheet } from '../features/ExpenseForm.jsx';
+import { ExpenseHero, ExpenseFacts, DeleteExpenseSheet, ExpenseDetailSkeleton } from '../features/ExpenseDetail.jsx';
 import ExpenseSheet from '../features/expenses/ExpenseSheet.jsx';
 import ExpenseHero from '../features/expense-detail/ExpenseHero.jsx';
 import ExpenseFacts from '../features/expense-detail/ExpenseFacts.jsx';

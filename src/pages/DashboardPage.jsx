@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { PageHeader } from '../components/Layout.jsx';
 import { ErrorState, DashboardSkeleton } from '../components/Feedback.jsx';
+import { PeriodNavigator, StatsRow, SpendingBarChart, CategoryDonut, TopCategories } from '../features/Dashboard.jsx';
 import PeriodNavigator from '../features/dashboard/PeriodNavigator.jsx';
 import StatsRow from '../features/dashboard/StatsRow.jsx';
 import CategoryDonut from '../features/dashboard/CategoryDonut.jsx';

@@ -4,6 +4,7 @@ import { PageHeader, Fab } from '../components/Layout.jsx';
 import { Button } from '../components/Button.jsx';
 import { EmptyState, ErrorState } from '../components/Feedback.jsx';
 import { ExpenseList, ExpenseListSkeleton, ExpenseFilters, MonthNavigator } from '../features/ExpenseList.jsx';
+import { AddExpenseSheet } from '../features/ExpenseForm.jsx';
 import AddExpenseSheet from '../features/expenses/AddExpenseSheet.jsx';
 import { useExpenseFilters } from '../hooks/useExpenseFilters.js';
 import { useCategories, useExpenses } from '../hooks/useData.js';
