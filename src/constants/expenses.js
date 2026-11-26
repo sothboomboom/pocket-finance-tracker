@@ -1,6 +1,5 @@
 export const NOTE_MAX_LENGTH = 200;
 
-// Must match --toast-duration in variables.css
 export const UNDO_WINDOW_MS = 5000;
 
 export const PAYMENT_METHOD_OPTIONS = [

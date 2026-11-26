@@ -1,9 +1,8 @@
 import { Plus, ChevronRight } from "lucide-react";
 import Card from "../../components/Card.jsx";
-import Button from "../../components/Button.jsx";
+import { Button } from '../../components/Button.jsx';
 import CategoryIcon from "../../components/CategoryIcon.jsx";
-import Skeleton from "../../components/Skeleton.jsx";
-import ErrorState from "../../components/ErrorState.jsx";
+import { ErrorState, Skeleton } from '../../components/Feedback.jsx';
 import styles from "./CategoryList.module.css";
 
 export default function CategoryList({

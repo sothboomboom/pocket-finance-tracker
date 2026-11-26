@@ -1,7 +1,7 @@
 import { Pencil, Trash2 } from 'lucide-react';
 import CategoryIcon from '../../components/CategoryIcon.jsx';
 import Tag from '../../components/Tag.jsx';
-import Button from '../../components/Button.jsx';
+import { Button } from '../../components/Button.jsx';
 import { formatMoney } from '../../utils/money.js';
 import { BASE_CURRENCY } from '../../constants/currencies.js';
 import styles from './ExpenseHero.module.css';

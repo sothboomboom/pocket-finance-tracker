@@ -1,8 +1,7 @@
 import { forwardRef, useId } from 'react';
 import CategoryIcon from '../../components/CategoryIcon.jsx';
-import FieldError from '../../components/FieldError.jsx';
-import Skeleton from '../../components/Skeleton.jsx';
-import Button from '../../components/Button.jsx';
+import { Skeleton, FieldError } from '../../components/Feedback.jsx';
+import { Button } from '../../components/Button.jsx';
 import styles from './CategoryPicker.module.css';
 
 // Native radio inputs, so arrow keys work.

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from './useReducedMotion.js';
-import { MOTION } from '../constants/motion.js';
+import { MOTION } from '../constants/ui.js';
 
 const easeOutCubic = (t) => 1 - (1 - t) ** 3;
 

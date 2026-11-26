@@ -1,7 +1,7 @@
 import {
 	CATEGORY_ICONS,
 	FALLBACK_CATEGORY_ICON,
-} from "../constants/categoryIcons.js";
+} from "../constants/categories.js";
 import styles from "./CategoryIcon.module.css";
 
 export default function CategoryIcon({ icon, color, size = "sm" }) {

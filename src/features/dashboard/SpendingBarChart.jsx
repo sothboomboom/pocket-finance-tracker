@@ -5,7 +5,7 @@ import ChartEmpty from './ChartEmpty.jsx';
 import { formatCompactUsd, formatMoney } from '../../utils/money.js';
 import { formatHourShort, formatHourRange, formatISO, todayISO, formatDayLabel } from '../../utils/dates.js';
 import { useReducedMotion } from '../../hooks/useReducedMotion.js';
-import { CHART } from '../../constants/chart.js';
+import { CHART } from '../../constants/ui.js';
 import styles from './SpendingBarChart.module.css';
 
 const TITLES = { day: 'Spending by hour', week: 'Spending by day', month: 'Spending by day' };

@@ -1,12 +1,11 @@
 import { useMemo, useState } from 'react';
 import PageHeader from '../components/PageHeader.jsx';
-import ErrorState from '../components/ErrorState.jsx';
+import { ErrorState, DashboardSkeleton } from '../components/Feedback.jsx';
 import PeriodNavigator from '../features/dashboard/PeriodNavigator.jsx';
 import StatsRow from '../features/dashboard/StatsRow.jsx';
 import CategoryDonut from '../features/dashboard/CategoryDonut.jsx';
 import SpendingBarChart from '../features/dashboard/SpendingBarChart.jsx';
 import TopCategories from '../features/dashboard/TopCategories.jsx';
-import DashboardSkeleton from '../features/dashboard/DashboardSkeleton.jsx';
 import { useSummary } from '../hooks/useSummary.js';
 import { getPeriodRange, formatRangeLabel, shiftPeriod, todayISO } from '../utils/dates.js';
 import { parseISO } from 'date-fns';

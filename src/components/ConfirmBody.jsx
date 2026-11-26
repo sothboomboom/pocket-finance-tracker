@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import Button from './Button.jsx';
-import FieldError from './FieldError.jsx';
+import { Button } from './Button.jsx';
+import { FieldError } from './Feedback.jsx';
 import formStyles from './SheetForm.module.css';
 import styles from './ConfirmBody.module.css';
 
-/** If onConfirm() rejects, the error shows here and the sheet stays open. */
 export default function ConfirmBody({ children, confirmLabel, confirmIcon, loadingText, cancelRef, onCancel, onConfirm }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(null);

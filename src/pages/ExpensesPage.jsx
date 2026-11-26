@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
 import { Plus, Receipt, SearchX } from 'lucide-react';
 import PageHeader from '../components/PageHeader.jsx';
-import Button from '../components/Button.jsx';
+import { Button } from '../components/Button.jsx';
 import Fab from '../components/Fab.jsx';
-import EmptyState from '../components/EmptyState.jsx';
-import ErrorState from '../components/ErrorState.jsx';
+import { EmptyState, ErrorState } from '../components/Feedback.jsx';
 import ExpenseList from '../features/expenses/ExpenseList.jsx';
 import ExpenseListSkeleton from '../features/expenses/ExpenseListSkeleton.jsx';
 import AddExpenseSheet from '../features/expenses/AddExpenseSheet.jsx';

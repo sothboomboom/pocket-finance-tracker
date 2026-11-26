@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { ToastContext } from "./ToastContext.js";
-import Toast from "../components/Toast.jsx";
+import { Toast } from '../components/Feedback.jsx';
 import { UNDO_WINDOW_MS } from "../constants/expenses.js";
 
 export default function ToastProvider({ children }) {
