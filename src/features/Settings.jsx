@@ -2,7 +2,7 @@ import { CircleAlert, RotateCcw } from 'lucide-react';
 import { format, differenceInHours } from 'date-fns';
 import { Card, Tag } from '../components/UI.jsx';
 import { Button } from '../components/Button.jsx';
-import { ErrorState, Skeleton } from '../components/Feedback.jsx';
+import { Skeleton } from '../components/Feedback.jsx';
 import { ConfirmSheet } from '../components/Sheet.jsx';
 import { CURRENCIES } from '../constants/currencies.js';
 import { useAppData } from '../context/DataContext.js';
@@ -10,6 +10,8 @@ import { useToast } from '../context/ToastContext.js';
 import { useSheet } from '../hooks/useSheet.js';
 import { formatMoney } from '../utils/money.js';
 import styles from './Settings.module.css';
+
+// The cards on the Settings page.
 
 //////////////////////////////
 // RatesCard
@@ -22,6 +24,7 @@ const ROWS = [
   { code: 'KHR', name: 'Cambodian riel', fixed: true },
 ];
 
+// Warns when the built-in rates are used because the rate service was unreachable.
 function RatesStatus({ updatedAt, source }) {
   if (source === 'fallback') {
     return (
@@ -41,14 +44,13 @@ function RatesStatus({ updatedAt, source }) {
   );
 }
 
-export function RatesCard({ rates, updatedAt, source, status, error, onRetry }) {
+export function RatesCard({ rates, updatedAt, source, status }) {
   return (
     <Card
       title="Exchange rates"
       subtitle={status === 'success' ? <RatesStatus updatedAt={updatedAt} source={source} /> : 'Loading rates…'}
     >
       {status === 'loading' && <Skeleton className={styles.skeleton} />}
-      {status === 'error' && <ErrorState message={error?.message} onRetry={onRetry} />}
       {status === 'success' && (
         <>
           <ul className={styles.list}>
@@ -81,6 +83,7 @@ export function RatesCard({ rates, updatedAt, source, status, error, onRetry }) 
 // SampleDataCard
 //////////////////////////////
 
+// Reset everything to the sample data
 export function SampleDataCard() {
   const { resetSampleData } = useAppData();
   const sheet = useSheet();

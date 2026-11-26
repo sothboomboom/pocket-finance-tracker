@@ -21,7 +21,7 @@ export function formatMoney(amount, currency = BASE_CURRENCY) {
   return `${symbol}${getNumberFormatter(decimals).format(amount)}`;
 }
 
-/** Must round exactly like mock/expenses.js, so the preview matches the saved amount. */
+/** Rounds to whole cents. The store uses it too, so the preview matches the saved amount. */
 export function convertToUsd(amount, rateToUsd) {
   return Math.round(Number(amount) * rateToUsd * 100) / 100;
 }

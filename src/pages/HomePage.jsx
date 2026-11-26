@@ -4,10 +4,9 @@ import { Plus, Receipt } from 'lucide-react';
 import { PageHeader, Fab } from '../components/Layout.jsx';
 import { SegmentedControl } from '../components/UI.jsx';
 import { Button } from '../components/Button.jsx';
-import { EmptyState, ErrorState } from '../components/Feedback.jsx';
-import { ExpenseList, ExpenseListSkeleton, HeroTotal } from '../features/ExpenseList.jsx';
+import { EmptyState } from '../components/Feedback.jsx';
+import { ExpenseList, HeroTotal } from '../features/ExpenseList.jsx';
 import { AddExpenseSheet } from '../features/ExpenseForm.jsx';
-import AddExpenseSheet from '../features/expenses/AddExpenseSheet.jsx';
 import { useExpenses } from '../hooks/useData.js';
 import { useSheet } from '../hooks/useSheet.js';
 import { useToast } from '../context/ToastContext.js';
@@ -25,7 +24,7 @@ const EMPTY_MESSAGES = {
 export default function HomePage() {
   const [period, setPeriod] = useState('week');
   const range = useMemo(() => getPeriodRange(period), [period]);
-  const { expenses, status, error, reload, isRefreshing, createExpense } = useExpenses(range);
+  const { expenses, createExpense } = useExpenses(range);
   const sheet = useSheet();
   const { showToast } = useToast();
 
@@ -41,7 +40,7 @@ export default function HomePage() {
     </Button>
   );
   // When empty, the empty state's button is the main action, so the header one turns secondary.
-  const isEmpty = status === 'success' && expenses.length === 0;
+  const isEmpty = expenses.length === 0;
 
   return (
     <div className={styles.page}>
@@ -65,26 +64,18 @@ export default function HomePage() {
           total={sumUsd(expenses)}
           count={expenses.length}
           rangeLabel={formatRangeLabel(period, range)}
-          loading={status === 'loading'}
         />
       </section>
 
-      <section
-        aria-label="Expenses"
-        aria-busy={isRefreshing}
-        className={`${styles.listSection} ${isRefreshing ? styles.refreshing : ''}`}
-      >
-        {status === 'loading' && <ExpenseListSkeleton />}
-        {status === 'error' && <ErrorState message={error?.message} onRetry={reload} />}
-        {status === 'success' && expenses.length === 0 && (
+      <section aria-label="Expenses" className={styles.listSection}>
+        {isEmpty ? (
           <EmptyState icon={Receipt} message={EMPTY_MESSAGES[period]} action={addButton} />
+        ) : (
+          <ExpenseList expenses={expenses} />
         )}
-        {status === 'success' && expenses.length > 0 && <ExpenseList expenses={expenses} />}
-        {status === 'success' && (
-          <p className={styles.historyLink}>
-            <Link to="/expenses">See all expenses</Link>
-          </p>
-        )}
+        <p className={styles.historyLink}>
+          <Link to="/expenses">See all expenses</Link>
+        </p>
       </section>
 
       <Fab label="Add expense" onClick={sheet.openSheet} />

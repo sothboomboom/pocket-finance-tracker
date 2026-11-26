@@ -1,12 +1,13 @@
 import { ChevronLeft, ChevronRight, Search, ChevronDown } from 'lucide-react';
 import { useId } from 'react';
-import { Skeleton } from '../components/Feedback.jsx';
 import { formatDayLabel, groupByDay } from '../utils/dates.js';
 import { formatMoney } from '../utils/money.js';
 import { useCountUp } from '../hooks/useCountUp.js';
 import { IconButton } from '../components/Button.jsx';
 import { SegmentedControl, ExpenseRow } from '../components/UI.jsx';
 import styles from './ExpenseList.module.css';
+
+// Lists of expenses: the day-grouped list, the big total, and the month / filter controls of All expenses.
 
 //////////////////////////////
 // ExpenseList
@@ -34,51 +35,23 @@ export function ExpenseList({ expenses }) {
 }
 
 //////////////////////////////
-// ExpenseListSkeleton
-//////////////////////////////
-
-// Grey shapes in the same layout as the list
-export function ExpenseListSkeleton({ rows = 3 }) {
-  return (
-    <div className={styles.skeleton} aria-busy="true" aria-label="Loading expenses">
-      <Skeleton className={styles.skeletonDay} />
-      {Array.from({ length: rows }, (_, i) => (
-        <div key={i} className={styles.skeletonRow}>
-          <Skeleton className={styles.circle} />
-          <div className={styles.lines}>
-            <Skeleton className={styles.line} />
-            <Skeleton className={styles.lineShort} />
-          </div>
-          <Skeleton className={styles.amount} />
-        </div>
-      ))}
-    </div>
-  );
-}
-
-//////////////////////////////
 // HeroTotal
 //////////////////////////////
 
 const LABELS = { day: 'Spent today', week: 'Spent this week', month: 'Spent this month' };
 
-export function HeroTotal({ period, total, count, rangeLabel, loading }) {
+export function HeroTotal({ period, total, count, rangeLabel }) {
   const animatedTotal = useCountUp(total);
   return (
     <div className={styles.hero}>
       <p className="eyebrow">{LABELS[period]}</p>
-      {loading ? (
-        <Skeleton className={styles.amountSkeleton} />
-      ) : (
-        <p className={`${styles.heroTotalAmount} tabular-nums`}>
-          {/* Screen readers hear the final number once, not every animation frame */}
-          <span aria-hidden="true">{formatMoney(animatedTotal)}</span>
-          <span className="visually-hidden">{formatMoney(total)}</span>
-        </p>
-      )}
+      <p className={`${styles.heroTotalAmount} tabular-nums`}>
+        {/* Screen readers hear the final number once, not every animation frame */}
+        <span aria-hidden="true">{formatMoney(animatedTotal)}</span>
+        <span className="visually-hidden">{formatMoney(total)}</span>
+      </p>
       <p className="text-meta">
-        {rangeLabel}
-        {!loading && ` · ${count} ${count === 1 ? 'expense' : 'expenses'}`}
+        {rangeLabel} · {count} {count === 1 ? 'expense' : 'expenses'}
       </p>
     </div>
   );

@@ -1,327 +1,297 @@
-/* https://yeun.github.io/open-color/ */
+/*
+   Design tokens: the only place raw values are allowed. Need a new value?
+   Add it to the scale here instead of writing it in a component.
+   Breakpoints can't use var() in @media, so they are written out:
+   mobile < 640px · tablet 640–1024px · desktop > 1024px
+*/
 
 :root {
-	/* //////////////////////////////
+  /* //////////////////////////////
      Open Color palette (only the shades the app uses)
      ////////////////////////////// */
 
-	/* Main color: blue */
-	--oc-blue-0: #e7f5ff;
-	--oc-blue-3: #74c0fc;
-	--oc-blue-8: #1971c2;
-	--oc-blue-9: #1864ab;
+  /* Main color: blue */
+  --oc-blue-0: #e7f5ff;
+  --oc-blue-3: #74c0fc;
+  --oc-blue-8: #1971c2;
+  --oc-blue-9: #1864ab;
 
-	/* Greys */
-	--oc-gray-0: #f8f9fa;
-	--oc-gray-1: #f1f3f5;
-	--oc-gray-2: #e9ecef;
-	--oc-gray-4: #ced4da;
-	--oc-gray-6: #868e96;
-	--oc-gray-7: #495057;
-	--oc-gray-8: #343a40;
-	--oc-gray-9: #212529;
-	--oc-white: #ffffff;
+  /* Greys */
+  --oc-gray-0: #f8f9fa;
+  --oc-gray-1: #f1f3f5;
+  --oc-gray-2: #e9ecef;
+  --oc-gray-4: #ced4da;
+  --oc-gray-6: #868e96;
+  --oc-gray-7: #495057;
+  --oc-gray-8: #343a40;
+  --oc-gray-9: #212529;
+  --oc-white: #ffffff;
 
-	/* Category colors: shade 0 = circle background, shade 8/9 = icon (cyan-7 for its chart) */
-	--oc-red-0: #fff5f5;
-	--oc-red-8: #e03131;
-	--oc-red-9: #c92a2a;
-	--oc-pink-0: #fff0f6;
-	--oc-pink-8: #c2255c;
-	--oc-grape-0: #f8f0fc;
-	--oc-grape-8: #9c36b5;
-	--oc-violet-0: #f3f0ff;
-	--oc-violet-8: #6741d9;
-	--oc-indigo-0: #edf2ff;
-	--oc-indigo-8: #3b5bdb;
-	--oc-cyan-0: #e3fafc;
-	--oc-cyan-7: #1098ad;
-	--oc-cyan-8: #0c8599;
-	--oc-teal-0: #e6fcf5;
-	--oc-teal-8: #099268;
-	--oc-green-0: #ebfbee;
-	--oc-green-8: #2f9e44;
-	--oc-green-9: #2b8a3e;
-	--oc-lime-0: #f4fce3;
-	--oc-lime-9: #5c940d;
-	--oc-yellow-0: #fff9db;
-	--oc-yellow-9: #e67700;
-	--oc-orange-0: #fff4e6;
-	--oc-orange-8: #e8590c;
-	--oc-orange-9: #d9480f;
+  /* Category colors: shade 0 = circle background, shade 8/9 = icon (cyan-7 for its chart) */
+  --oc-red-0: #fff5f5;    --oc-red-8: #e03131;    --oc-red-9: #c92a2a;
+  --oc-pink-0: #fff0f6;   --oc-pink-8: #c2255c;
+  --oc-grape-0: #f8f0fc;  --oc-grape-8: #9c36b5;
+  --oc-violet-0: #f3f0ff; --oc-violet-8: #6741d9;
+  --oc-indigo-0: #edf2ff; --oc-indigo-8: #3b5bdb;
+  --oc-cyan-0: #e3fafc;   --oc-cyan-7: #1098ad;   --oc-cyan-8: #0c8599;
+  --oc-teal-0: #e6fcf5;   --oc-teal-8: #099268;
+  --oc-green-0: #ebfbee;  --oc-green-8: #2f9e44;  --oc-green-9: #2b8a3e;
+  --oc-lime-0: #f4fce3;   --oc-lime-9: #5c940d;
+  --oc-yellow-0: #fff9db; --oc-yellow-9: #e67700;
+  --oc-orange-0: #fff4e6; --oc-orange-8: #e8590c; --oc-orange-9: #d9480f;
 
-	/* Light tints for the icons on the dark toast */
-	--oc-red-3: #ffa8a8;
-	--oc-green-3: #8ce99a;
+  /* Light tints for the icons on the dark toast */
+  --oc-red-3: #ffa8a8;    --oc-green-3: #8ce99a;
 
-	/* Category pairs: circle background + icon color */
-	--cat-gray-bg: var(--oc-gray-1);
-	--cat-gray-icon: var(--oc-gray-8);
-	--cat-red-bg: var(--oc-red-0);
-	--cat-red-icon: var(--oc-red-8);
-	--cat-pink-bg: var(--oc-pink-0);
-	--cat-pink-icon: var(--oc-pink-8);
-	--cat-grape-bg: var(--oc-grape-0);
-	--cat-grape-icon: var(--oc-grape-8);
-	--cat-violet-bg: var(--oc-violet-0);
-	--cat-violet-icon: var(--oc-violet-8);
-	--cat-indigo-bg: var(--oc-indigo-0);
-	--cat-indigo-icon: var(--oc-indigo-8);
-	--cat-cyan-bg: var(--oc-cyan-0);
-	--cat-cyan-icon: var(--oc-cyan-8);
-	--cat-teal-bg: var(--oc-teal-0);
-	--cat-teal-icon: var(--oc-teal-8);
-	--cat-green-bg: var(--oc-green-0);
-	--cat-green-icon: var(--oc-green-8);
-	--cat-lime-bg: var(--oc-lime-0);
-	--cat-lime-icon: var(--oc-lime-9);
-	--cat-orange-bg: var(--oc-orange-0);
-	--cat-orange-icon: var(--oc-orange-8);
-	/* Yellow icons use orange-9: no yellow shade is dark enough */
-	--cat-yellow-bg: var(--oc-yellow-0);
-	--cat-yellow-icon: var(--oc-orange-9);
+  /* Category pairs: circle background + icon color */
+  --cat-gray-bg: var(--oc-gray-1);     --cat-gray-icon: var(--oc-gray-8);
+  --cat-red-bg: var(--oc-red-0);       --cat-red-icon: var(--oc-red-8);
+  --cat-pink-bg: var(--oc-pink-0);     --cat-pink-icon: var(--oc-pink-8);
+  --cat-grape-bg: var(--oc-grape-0);   --cat-grape-icon: var(--oc-grape-8);
+  --cat-violet-bg: var(--oc-violet-0); --cat-violet-icon: var(--oc-violet-8);
+  --cat-indigo-bg: var(--oc-indigo-0); --cat-indigo-icon: var(--oc-indigo-8);
+  --cat-cyan-bg: var(--oc-cyan-0);     --cat-cyan-icon: var(--oc-cyan-8);
+  --cat-teal-bg: var(--oc-teal-0);     --cat-teal-icon: var(--oc-teal-8);
+  --cat-green-bg: var(--oc-green-0);   --cat-green-icon: var(--oc-green-8);
+  --cat-lime-bg: var(--oc-lime-0);     --cat-lime-icon: var(--oc-lime-9);
+  --cat-orange-bg: var(--oc-orange-0); --cat-orange-icon: var(--oc-orange-8);
+  /* Yellow icons use orange-9: no yellow shade is dark enough */
+  --cat-yellow-bg: var(--oc-yellow-0); --cat-yellow-icon: var(--oc-orange-9);
 
-	/* Chart colors */
-	--cat-gray-chart: var(--oc-gray-6);
-	--cat-red-chart: var(--oc-red-8);
-	--cat-pink-chart: var(--oc-pink-8);
-	--cat-grape-chart: var(--oc-grape-8);
-	--cat-violet-chart: var(--oc-violet-8);
-	--cat-indigo-chart: var(--oc-indigo-8);
-	--cat-cyan-chart: var(--oc-cyan-7);
-	--cat-teal-chart: var(--oc-teal-8);
-	--cat-green-chart: var(--oc-green-8);
-	--cat-lime-chart: var(--oc-lime-9);
-	--cat-yellow-chart: var(--oc-yellow-9);
-	--cat-orange-chart: var(--oc-orange-8);
+  /* Chart colors */
+  --cat-gray-chart: var(--oc-gray-6);
+  --cat-red-chart: var(--oc-red-8);
+  --cat-pink-chart: var(--oc-pink-8);
+  --cat-grape-chart: var(--oc-grape-8);
+  --cat-violet-chart: var(--oc-violet-8);
+  --cat-indigo-chart: var(--oc-indigo-8);
+  --cat-cyan-chart: var(--oc-cyan-7);
+  --cat-teal-chart: var(--oc-teal-8);
+  --cat-green-chart: var(--oc-green-8);
+  --cat-lime-chart: var(--oc-lime-9);
+  --cat-yellow-chart: var(--oc-yellow-9);
+  --cat-orange-chart: var(--oc-orange-8);
 
-	/* //////////////////////////////
+  /* //////////////////////////////
      Semantic colors
      ////////////////////////////// */
 
-	--color-bg: var(--oc-gray-0);
-	--color-surface: var(--oc-white);
-	--color-heading: var(--oc-gray-9);
-	--color-text: var(--oc-gray-8);
-	--color-text-secondary: var(--oc-gray-7);
-	--color-border: var(--oc-gray-2); /* inputs only; lists use whitespace */
+  --color-bg: var(--oc-gray-0);
+  --color-surface: var(--oc-white);
+  --color-heading: var(--oc-gray-9);
+  --color-text: var(--oc-gray-8);
+  --color-text-secondary: var(--oc-gray-7);
+  --color-border: var(--oc-gray-2);          /* inputs only; lists use whitespace */
 
-	/* Blue is reserved: primary actions, active states, focus rings, links */
-	--color-primary: var(--oc-blue-8);
-	--color-primary-hover: var(--oc-blue-9);
-	--color-primary-tint: var(--oc-blue-0); /* active nav background */
-	--color-on-primary: var(--oc-white);
-	--color-link: var(--oc-blue-8);
+  /* Blue is reserved: primary actions, active states, focus rings, links */
+  --color-primary: var(--oc-blue-8);
+  --color-primary-hover: var(--oc-blue-9);
+  --color-primary-tint: var(--oc-blue-0);    /* active nav background */
+  --color-on-primary: var(--oc-white);
+  --color-link: var(--oc-blue-8);
 
-	/* Status colors: always paired with an icon AND text */
-	--color-error: var(--oc-red-9);
-	--color-error-bg: var(--oc-red-0);
-	--color-danger-solid: var(--oc-red-8);
-	--color-danger-solid-hover: var(--oc-red-9);
-	--color-success: var(--oc-green-9); /* icons only */
+  /* Status colors: always paired with an icon AND text */
+  --color-error: var(--oc-red-9);
+  --color-error-bg: var(--oc-red-0);
+  --color-danger-solid: var(--oc-red-8);
+  --color-danger-solid-hover: var(--oc-red-9);
+  --color-success: var(--oc-green-9);        /* icons only */
 
-	--color-hover-bg: var(--oc-gray-1); /* neutral hover on surfaces */
-	--color-track: var(--oc-gray-2); /* segmented control track */
-	--color-secondary-hover: var(--oc-gray-2);
-	--color-selected-border: var(--oc-blue-8); /* selected chip outline */
-	--color-skeleton: var(--oc-gray-2);
-	--color-placeholder: var(--oc-gray-6); /* hints only, never the label */
-	--color-backdrop: rgb(33 37 41 / 0.4); /* gray-9 at 40% behind dialogs */
-	--color-toast-bg: var(--oc-gray-9);
-	--color-toast-text: var(--oc-gray-0);
-	--color-toast-action: var(--oc-blue-3);
-	--color-toast-action-hover: rgb(248 249 250 / 0.1); /* gray-0 at 10% */
-	--color-toast-success-icon: var(--oc-green-3);
-	--color-toast-error-icon: var(--oc-red-3);
+  --color-hover-bg: var(--oc-gray-1);       /* neutral hover on surfaces */
+  --color-track: var(--oc-gray-2);          /* segmented control track */
+  --color-secondary-hover: var(--oc-gray-2);
+  --color-selected-border: var(--oc-blue-8); /* selected chip outline */
+  --color-skeleton: var(--oc-gray-2);
+  --color-placeholder: var(--oc-gray-6);     /* hints only, never the label */
+  --color-backdrop: rgb(33 37 41 / 0.4);     /* gray-9 at 40% behind dialogs */
+  --color-toast-bg: var(--oc-gray-9);
+  --color-toast-text: var(--oc-gray-0);
+  --color-toast-action: var(--oc-blue-3);
+  --color-toast-action-hover: rgb(248 249 250 / 0.1); /* gray-0 at 10% */
+  --color-toast-success-icon: var(--oc-green-3);
+  --color-toast-error-icon: var(--oc-red-3);
 
-	/* Charts */
-	--chart-bar: var(--oc-gray-6);
-	--chart-bar-hover: var(--oc-gray-7);
-	--chart-bar-active: var(
-		--color-primary
-	); /* today / current hour = active state */
-	--chart-grid: var(--oc-gray-2); /* hairline, solid, recessive */
-	--chart-track: var(--oc-gray-1); /* empty part of progress bars */
-	--split-cash: var(--oc-gray-8); /* cash vs bank bar: two lightness steps */
-	--split-bank: var(--oc-gray-4);
-	--color-disabled-bg: var(--oc-gray-2);
-	--color-disabled-text: var(--oc-gray-6);
+  /* Charts */
+  --chart-bar: var(--oc-gray-6);
+  --chart-bar-hover: var(--oc-gray-7);
+  --chart-bar-active: var(--color-primary); /* today / current hour = active state */
+  --chart-grid: var(--oc-gray-2);           /* hairline, solid, recessive */
+  --chart-track: var(--oc-gray-1);          /* empty part of progress bars */
+  --split-cash: var(--oc-gray-8);           /* cash vs bank bar: two lightness steps */
+  --split-bank: var(--oc-gray-4);
+  --color-disabled-bg: var(--oc-gray-2);
+  --color-disabled-text: var(--oc-gray-6);
 
-	/* //////////////////////////////
+  /* //////////////////////////////
      Typography
      ////////////////////////////// */
 
-	--font-sans: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
 
-	/* Type scale (1rem = 10px): 12 14 16 18 20 24 30 36 44 52 62 */
-	--fs-12: 1.2rem;
-	--fs-14: 1.4rem;
-	--fs-16: 1.6rem;
-	--fs-18: 1.8rem;
-	--fs-20: 2rem;
-	--fs-24: 2.4rem;
-	--fs-30: 3rem;
-	--fs-36: 3.6rem;
-	--fs-52: 5.2rem;
-	--fs-62: 6.2rem;
+  /* Type scale (1rem = 10px): 12 14 16 18 20 24 30 36 44 52 62 */
+  --fs-12: 1.2rem;
+  --fs-14: 1.4rem;
+  --fs-16: 1.6rem;
+  --fs-18: 1.8rem;
+  --fs-20: 2rem;
+  --fs-24: 2.4rem;
+  --fs-30: 3rem;
+  --fs-36: 3.6rem;
+  --fs-52: 5.2rem;
+  --fs-62: 6.2rem;
 
-	/* Weights: never below 400 */
-	--fw-regular: 400;
-	--fw-semibold: 600;
-	--fw-bold: 700;
-	--fw-extrabold: 800;
+  /* Weights: never below 400 */
+  --fw-regular: 400;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
 
-	/* Line heights */
-	--lh-hero: 1.05;
-	--lh-stat: 1.1;
-	--lh-heading: 1.2;
-	--lh-body: 1.5;
-	--ls-eyebrow: 0.075rem; /* 0.75px tracking for small uppercase labels */
-	--measure: 65ch; /* max line length for explanatory text */
+  /* Line heights */
+  --lh-hero: 1.05;
+  --lh-stat: 1.1;
+  --lh-heading: 1.2;
+  --lh-body: 1.5;
+  --ls-eyebrow: 0.075rem;  /* 0.75px tracking for small uppercase labels */
+  --measure: 65ch;         /* max line length for explanatory text */
 
-	/* Role-based sizes (mobile values; stepped up for tablet/desktop below) */
-	--text-hero: var(--fs-52);
-	--text-page-title: var(--fs-30);
-	--text-section-title: var(--fs-20);
-	--text-stat: var(--fs-30);
-	--text-body: var(--fs-16);
-	--text-secondary: var(--fs-14); /* de-emphasized info only */
-	--text-eyebrow: var(--fs-12);
-	--text-nav-label: var(--fs-12); /* tab bar labels under icons */
+  /* Role-based sizes (mobile values; stepped up for tablet/desktop below) */
+  --text-hero: var(--fs-52);
+  --text-page-title: var(--fs-30);
+  --text-section-title: var(--fs-20);
+  --text-stat: var(--fs-30);
+  --text-body: var(--fs-16);
+  --text-secondary: var(--fs-14);   /* de-emphasized info only */
+  --text-eyebrow: var(--fs-12);
+  --text-nav-label: var(--fs-12);   /* tab bar labels under icons */
 
-	/* //////////////////////////////
+  /* //////////////////////////////
      Spacing: 4 8 12 16 24 32 48 64 80 96
      ////////////////////////////// */
 
-	--sp-4: 0.4rem;
-	--sp-8: 0.8rem;
-	--sp-12: 1.2rem;
-	--sp-16: 1.6rem;
-	--sp-24: 2.4rem;
-	--sp-32: 3.2rem;
-	--sp-48: 4.8rem;
-	--sp-64: 6.4rem;
-	--sp-96: 9.6rem;
+  --sp-4: 0.4rem;
+  --sp-8: 0.8rem;
+  --sp-12: 1.2rem;
+  --sp-16: 1.6rem;
+  --sp-24: 2.4rem;
+  --sp-32: 3.2rem;
+  --sp-48: 4.8rem;
+  --sp-64: 6.4rem;
+  --sp-96: 9.6rem;
 
-	/* Proximity roles */
-	--space-label-field: var(--sp-8);
-	--space-field: var(--sp-24);
-	--space-group: var(--sp-32);
-	--space-section: var(--sp-48);
-	--space-page-x: var(--sp-16); /* horizontal page padding */
+  /* Proximity roles */
+  --space-label-field: var(--sp-8);
+  --space-field: var(--sp-24);
+  --space-group: var(--sp-32);
+  --space-section: var(--sp-48);
+  --space-page-x: var(--sp-16);     /* horizontal page padding */
 
-	/* //////////////////////////////
+  /* //////////////////////////////
      Border-radius
      ////////////////////////////// */
 
-	--radius-sm: 1.2rem; /* inputs, small chips */
-	--radius-md: 1.6rem; /* list rows, tags */
-	--radius-lg: 2.4rem; /* cards, sheets, modals */
-	--radius-pill: 999px; /* buttons, segmented controls, nav bar */
-	--radius-circle: 50%; /* icon circles, FAB */
-	--border-width: 0.1rem; /* 1px */
-	--border-width-thick: 0.2rem; /* 2px, focus outline fallback */
+  --radius-sm: 1.2rem;    /* inputs, small chips */
+  --radius-md: 1.6rem;    /* list rows, tags */
+  --radius-lg: 2.4rem;    /* cards, sheets, modals */
+  --radius-pill: 999px;   /* buttons, segmented controls, nav bar */
+  --radius-circle: 50%;   /* icon circles, FAB */
+  --border-width: 0.1rem;      /* 1px */
+  --border-width-thick: 0.2rem; /* 2px, focus outline fallback */
 
-	/* //////////////////////////////
+  /* //////////////////////////////
      Shadows: light and sparse
      ////////////////////////////// */
 
-	/* rgb(33 37 41) = gray-9; rgb(25 113 194) = blue-8 */
-	--shadow-sm: 0 0.1rem 0.3rem rgb(33 37 41 / 0.08);
-	--shadow-md: 0 0.8rem 2.4rem rgb(33 37 41 / 0.08);
-	--shadow-lg: 0 2.4rem 4.8rem rgb(33 37 41 / 0.14);
-	--shadow-glow: 0 0 0 0.4rem rgb(25 113 194 / 0.35); /* focus ring */
+  /* rgb(33 37 41) = gray-9; rgb(25 113 194) = blue-8 */
+  --shadow-sm: 0 0.1rem 0.3rem rgb(33 37 41 / 0.08);
+  --shadow-md: 0 0.8rem 2.4rem rgb(33 37 41 / 0.08);
+  --shadow-lg: 0 2.4rem 4.8rem rgb(33 37 41 / 0.14);
+  --shadow-glow: 0 0 0 0.4rem rgb(25 113 194 / 0.35);  /* focus ring */
 
-	/* //////////////////////////////
+  /* //////////////////////////////
      Icons & sizing
      ////////////////////////////// */
 
-	--icon-sm: 1.6rem;
-	--icon-md: 2rem;
-	--icon-lg: 2.4rem; /* never scale a lucide icon past this */
-	--icon-circle-sm: 4rem;
-	--icon-circle-md: 4.8rem;
-	--icon-circle-lg: 9.6rem; /* empty-state circle */
-	--touch-target: 4.4rem; /* 44px minimum */
-	--fab-size: 5.6rem;
-	--control-height: 4.8rem; /* buttons, segmented controls, inputs */
-	--row-min-height: 6.4rem; /* expense rows */
+  --icon-sm: 1.6rem;
+  --icon-md: 2rem;
+  --icon-lg: 2.4rem;          /* never scale a lucide icon past this */
+  --icon-circle-sm: 4rem;
+  --icon-circle-md: 4.8rem;
+  --icon-circle-lg: 9.6rem;   /* empty-state circle */
+  --touch-target: 4.4rem;     /* 44px minimum */
+  --fab-size: 5.6rem;
+  --control-height: 4.8rem;   /* buttons, segmented controls, inputs */
+  --row-min-height: 6.4rem;   /* expense rows */
 
-	/* //////////////////////////////
+  /* //////////////////////////////
      Layout
      ////////////////////////////// */
 
-	--chart-height: 24rem; /* plot + x-axis band */
-	--donut-size: 20rem;
-	--bar-thin: 0.8rem; /* progress & split bars */
-	--content-narrow: 64rem; /* single column, Home on tablet */
-	--content-medium: 80rem; /* Home list on desktop: amounts stay near their labels */
-	--content-max: 120rem; /* desktop container */
-	--sidebar-width: 24rem;
-	--tabbar-height: 6.4rem;
-	--tabbar-offset: var(
-		--sp-16
-	); /* gap between floating tab bar and screen edge */
-	/* Distance from the screen bottom to the top of the tab bar (mobile/tablet) */
-	--tabbar-clearance: calc(
-		var(--tabbar-height) + var(--tabbar-offset) +
-			env(safe-area-inset-bottom)
-	);
-	--dialog-width: 56rem; /* centered modal on tablet/desktop */
-	--dialog-max-height: 90vh;
-	--toast-width: 48rem;
+  --chart-height: 24rem;      /* plot + x-axis band */
+  --donut-size: 20rem;
+  --bar-thin: 0.8rem;         /* progress & split bars */
+  --content-narrow: 64rem;    /* single column, Home on tablet */
+  --content-medium: 80rem;    /* Home list on desktop: amounts stay near their labels */
+  --content-max: 120rem;      /* desktop container */
+  --sidebar-width: 24rem;
+  --tabbar-height: 6.4rem;
+  --tabbar-offset: var(--sp-16);  /* gap between floating tab bar and screen edge */
+  /* Distance from the screen bottom to the top of the tab bar (mobile/tablet) */
+  --tabbar-clearance: calc(var(--tabbar-height) + var(--tabbar-offset) + env(safe-area-inset-bottom));
+  --dialog-width: 56rem;      /* centered modal on tablet/desktop */
+  --dialog-max-height: 90vh;
+  --toast-width: 48rem;
 
-	/* Stacking order (dialogs use the browser's top layer, above all of these) */
-	--z-raised: 1; /* local: keep an element above its siblings */
-	--z-fab: 20;
-	--z-toast: 30;
+  /* Stacking order (dialogs use the browser's top layer, above all of these) */
+  --z-raised: 1;       /* local: keep an element above its siblings */
+  --z-fab: 20;
+  --z-toast: 30;
 
-	/* //////////////////////////////
+  /* //////////////////////////////
      Motion
      ////////////////////////////// */
 
-	--dur-fast: 200ms;
-	--dur-base: 300ms;
-	--dur-slow: 500ms;
-	--dur-spin: 800ms; /* one rotation of a loading spinner */
-	--ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-	--ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1); /* bottom sheet */
-	--scale-press: 0.97; /* buttons on :active */
-	--scale-hover: 1.06; /* small swatches grow slightly on hover */
-	--scale-modal-start: 0.96; /* modal enter */
-	--opacity-refreshing: 0.6; /* old data shown while new data loads */
-	--opacity-pulse: 0.5; /* skeleton pulse low point */
-	--slide-distance: var(--sp-16); /* list items / toasts slide in this far */
+  --dur-fast: 200ms;
+  --dur-base: 300ms;
+  --dur-slow: 500ms;
+  --dur-spin: 800ms;           /* one rotation of a loading spinner */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);  /* bottom sheet */
+  --scale-press: 0.97;         /* buttons on :active */
+  --scale-hover: 1.06;         /* small swatches grow slightly on hover */
+  --scale-modal-start: 0.96;   /* modal enter */
+  --opacity-pulse: 0.5;        /* skeleton pulse low point */
+  --slide-distance: var(--sp-16); /* list items / toasts slide in this far */
+
 }
 
 /* Tablet and up: step sizes and spacing up the scale */
 @media (min-width: 640px) {
-	:root {
-		--text-page-title: var(--fs-36);
-		--text-section-title: var(--fs-24);
-		--text-body: var(--fs-18);
-		--space-section: var(--sp-64);
-		--space-page-x: var(--sp-32);
-	}
+  :root {
+    --text-page-title: var(--fs-36);
+    --text-section-title: var(--fs-24);
+    --text-body: var(--fs-18);
+    --space-section: var(--sp-64);
+    --space-page-x: var(--sp-32);
+  }
 }
 
 /* Desktop */
 @media (min-width: 1025px) {
-	:root {
-		--text-hero: var(--fs-62);
-		--space-section: var(--sp-96);
-		--space-page-x: var(--sp-48);
-	}
+  :root {
+    --text-hero: var(--fs-62);
+    --space-section: var(--sp-96);
+    --space-page-x: var(--sp-48);
+  }
 }
 
 /* Reduced motion: animations become instant */
 @media (prefers-reduced-motion: reduce) {
-	:root {
-		--dur-fast: 0ms;
-		--dur-base: 0ms;
-		--dur-slow: 0ms;
-		--scale-press: 1;
-		--scale-hover: 1;
-		--scale-modal-start: 1;
-	}
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --dur-slow: 0ms;
+    --scale-press: 1;
+    --scale-hover: 1;
+    --scale-modal-start: 1;
+  }
 }

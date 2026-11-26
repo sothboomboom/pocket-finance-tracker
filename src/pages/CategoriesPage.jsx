@@ -7,7 +7,7 @@ import { useToast } from '../context/ToastContext.js';
 import styles from './CategoriesPage.module.css';
 
 export default function CategoriesPage() {
-  const { categories, status, error, reload, createCategory, updateCategory, deleteCategory } = useCategories();
+  const { categories, createCategory, updateCategory, deleteCategory } = useCategories();
   const sheet = useSheet();
   const { showToast } = useToast();
   const [editing, setEditing] = useState(null); // null means adding
@@ -42,14 +42,7 @@ export default function CategoriesPage() {
   return (
     <div className={styles.page}>
       <PageHeader title="Categories" />
-      <CategoryList
-        categories={categories}
-        status={status}
-        error={error}
-        onRetry={reload}
-        onAdd={() => openSheet()}
-        onSelect={openSheet}
-      />
+      <CategoryList categories={categories} onAdd={() => openSheet()} onSelect={openSheet} />
 
       <CategorySheet
         open={sheet.open}
