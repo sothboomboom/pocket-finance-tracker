@@ -1,0 +1,59 @@
+/* Single centered column; a bit wider on desktop so the filters fit in one row */
+.page {
+  max-width: var(--content-narrow);
+  margin-inline: auto;
+}
+
+@media (min-width: 1025px) {
+  .page {
+    max-width: var(--content-medium);
+  }
+}
+
+/* Header button on tablet/desktop; the FAB replaces it on mobile */
+.headerAction {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .headerAction {
+    display: block;
+  }
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-16);
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-16);
+  margin-top: var(--space-group);
+  transition: opacity var(--dur-fast) var(--ease-standard);
+}
+
+/* Old results stay visible, faded, while new ones load */
+.refreshing {
+  opacity: var(--opacity-refreshing);
+}
+
+/* The total is the headline number; the count is secondary */
+.summary {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--sp-8);
+  font-size: var(--text-secondary);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-secondary);
+}
+
+.total {
+  font-size: var(--text-stat);
+  font-weight: var(--fw-extrabold);
+  line-height: var(--lh-stat);
+  color: var(--color-heading);
+}
