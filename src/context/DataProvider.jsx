@@ -1,7 +1,7 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { DataContext } from './DataContext.js';
 import * as store from '../store/categories.js';
-import { resetSampleData as resetStore } from '../store/db.js';
+import { resetSampleData as resetStore, clearAllData as clearStore } from '../store/db.js';
 
 /**
  * Shares data across pages:
@@ -11,47 +11,42 @@ import { resetSampleData as resetStore } from '../store/db.js';
  */
 export default function DataProvider({ children }) {
   const [version, setVersion] = useState(0);
-  const notifyChange = useCallback(() => setVersion((v) => v + 1), []);
+  function notifyChange() {
+    setVersion((v) => v + 1);
+  }
 
   // Depends on `version` because the expense count of each category changes too.
   const categories = useMemo(() => store.listCategories(), [version]);
 
-  const createCategory = useCallback(
-    (values) => {
-      const category = store.createCategory(values);
-      notifyChange();
-      return category;
-    },
-    [notifyChange],
-  );
+  function createCategory(values) {
+    const category = store.createCategory(values);
+    notifyChange();
+    return category;
+  }
 
-  const updateCategory = useCallback(
-    (id, values) => {
-      const category = store.updateCategory(id, values);
-      notifyChange();
-      return category;
-    },
-    [notifyChange],
-  );
+  function updateCategory(id, values) {
+    const category = store.updateCategory(id, values);
+    notifyChange();
+    return category;
+  }
 
-  const deleteCategory = useCallback(
-    (id) => {
-      const result = store.deleteCategory(id);
-      notifyChange();
-      return result;
-    },
-    [notifyChange],
-  );
+  function deleteCategory(id) {
+    const result = store.deleteCategory(id);
+    notifyChange();
+    return result;
+  }
 
-  const resetSampleData = useCallback(() => {
+  function resetSampleData() {
     resetStore();
     notifyChange();
-  }, [notifyChange]);
+  }
 
-  const value = useMemo(
-    () => ({ version, notifyChange, categories, createCategory, updateCategory, deleteCategory, resetSampleData }),
-    [version, notifyChange, categories, createCategory, updateCategory, deleteCategory, resetSampleData],
-  );
+  function clearAllData() {
+    clearStore();
+    notifyChange();
+  }
+
+  const value = { version, notifyChange, categories, createCategory, updateCategory, deleteCategory, resetSampleData, clearAllData };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }

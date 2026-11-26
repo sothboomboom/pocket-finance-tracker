@@ -1,5 +1,5 @@
 // The data the app saves: categories and expenses, kept in localStorage.
-// The first visit (or Settings → Reset) starts from the sample data below.
+// The first visit starts with the categories and no expenses. Settings can load the sample data below.
 import { format, setHours, startOfToday, subDays } from 'date-fns';
 import { convertToUsd } from '../utils/money.js';
 import { RATES_TO_USD } from './rates.js';
@@ -63,6 +63,12 @@ const SAMPLE_EXPENSES = [
   [58, 16, 'Other', 10, 'USD', 'cash', 'Birthday gift'],
 ];
 
+// The categories only, no expenses: the first visit and "Delete all data".
+function emptyData() {
+  const categories = SAMPLE_CATEGORIES.map((c, i) => ({ id: i + 1, ...c }));
+  return { categories, expenses: [], nextCategoryId: categories.length + 1, nextExpenseId: 1 };
+}
+
 function sampleData() {
   const categories = SAMPLE_CATEGORIES.map((c, i) => ({ id: i + 1, ...c }));
   const expenses = SAMPLE_EXPENSES.map(([daysAgo, hour, categoryName, amount, currency, paymentMethod, note], i) => {
@@ -96,9 +102,9 @@ function load() {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (Array.isArray(saved?.categories) && Array.isArray(saved?.expenses)) return saved;
   } catch {
-    // Blocked storage or broken JSON: start from the sample data.
+    // Blocked storage or broken JSON: start empty.
   }
-  return sampleData();
+  return emptyData();
 }
 
 /** { categories, expenses, nextCategoryId, nextExpenseId }. Change it, then call save(). */
@@ -114,6 +120,11 @@ export function save() {
 
 export function resetSampleData() {
   Object.assign(db, sampleData());
+  save();
+}
+
+export function clearAllData() {
+  Object.assign(db, emptyData());
   save();
 }
 

@@ -4,13 +4,13 @@ A personal expense tracker built with React and Vite. Your data is saved in the 
 
 ## Features
 
-- **Add, edit and delete expenses**, with an Undo button after deleting
-- **Five currencies**: USD, KRW, JPY, CNY and KHR, converted to US dollars with the day's exchange rate
+- **Add, edit and delete expenses** (deleting asks you first)
+- **Five currencies**: USD, KRW, JPY, CNY and KHR, converted to US dollars with fixed exchange rates
 - **Home**: what you spent today, this week or this month, with the latest expenses
-- **All expenses**: month by month, with search and category / cash or bank filters
-- **Dashboard**: totals, a spending chart, a category breakdown and your top categories, by day, week or month
-- **Categories**: add, rename, recolor and choose an icon; deleting one moves its expenses to "Other"
-- **Settings**: today's exchange rates, and a button to reset to the sample data
+- **All expenses**: month by month, filtered by category or by cash / bank
+- **Dashboard**: weekly or monthly totals, a spending chart and spending by category
+- **Categories**: add, rename and choose an icon; deleting one moves its expenses to "Other"
+- **Settings**: the exchange rates, and buttons to load the sample data or delete all data
 - Works on phones, tablets and desktop
 
 ## Getting started
@@ -24,7 +24,7 @@ npm install
 npm run dev
 ```
 
-Then open http://localhost:5173 in your browser. The first time, the app loads sample data so you have something to look at.
+Then open http://localhost:5173 in your browser. The app starts empty: add your first expense, or load the sample data in Settings to try it out.
 
 ## Scripts
 

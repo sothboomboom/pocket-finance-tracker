@@ -34,3 +34,13 @@
   display: flex;
   flex-direction: column;
 }
+
+/* //////////////////////////////
+   SampleDataCard
+   ////////////////////////////// */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-12);
+}

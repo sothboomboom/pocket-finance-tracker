@@ -1,4 +1,4 @@
-import { RotateCcw } from 'lucide-react';
+import { RotateCcw, Trash2 } from 'lucide-react';
 import { Card } from '../components/UI.jsx';
 import { Button } from '../components/Button.jsx';
 import { ConfirmSheet } from '../components/Sheet.jsx';
@@ -10,7 +10,7 @@ import { useSheet } from '../hooks/useSheet.js';
 import { formatMoney } from '../utils/money.js';
 import styles from './Settings.module.css';
 
-// The cards on the Settings page
+// The cards on the Settings page.
 
 //////////////////////////////
 // RatesCard
@@ -50,40 +50,62 @@ export function RatesCard() {
 // SampleDataCard
 //////////////////////////////
 
-// Reset everything to the sample data
+// Load the sample data, or delete everything and start empty
 export function SampleDataCard() {
-  const { resetSampleData } = useAppData();
-  const sheet = useSheet();
+  const { resetSampleData, clearAllData } = useAppData();
+  const sampleSheet = useSheet();
+  const deleteSheet = useSheet();
   const { showToast } = useToast();
 
-  function handleReset() {
+  function handleLoadSample() {
     resetSampleData();
-    sheet.closeSheet();
-    showToast({ message: 'Sample data restored' });
+    sampleSheet.closeSheet();
+    showToast({ message: 'Sample data loaded' });
+  }
+
+  function handleDeleteAll() {
+    clearAllData();
+    deleteSheet.closeSheet();
+    showToast({ message: 'All data deleted' });
   }
 
   return (
     <Card title="Your data">
       <p className="text-body">
-        Expenses and categories are saved in this browser, so they're still here after you close it. Resetting
-        replaces everything with the sample data.
+        Expenses and categories are saved in this browser, so they're still here after you close it. Want to try the
+        app first? Load the sample data: about two months of made-up expenses.
       </p>
-      <div>
-        <Button variant="danger" icon={RotateCcw} onClick={sheet.openSheet}>
-          Reset sample data
+      <div className={styles.actions}>
+        <Button variant="secondary" icon={RotateCcw} onClick={sampleSheet.openSheet}>
+          Load sample data
+        </Button>
+        <Button variant="danger" icon={Trash2} onClick={deleteSheet.openSheet}>
+          Delete all data
         </Button>
       </div>
 
       <ConfirmSheet
-        open={sheet.open}
-        session={sheet.session}
-        title="Reset to sample data?"
-        onClose={sheet.closeSheet}
-        onConfirm={handleReset}
-        confirmLabel="Reset data"
+        open={sampleSheet.open}
+        session={sampleSheet.session}
+        title="Load the sample data?"
+        onClose={sampleSheet.closeSheet}
+        onConfirm={handleLoadSample}
+        confirmLabel="Load sample data"
         confirmIcon={RotateCcw}
       >
         <p>All your expenses and categories will be replaced with the sample data. This can't be undone.</p>
+      </ConfirmSheet>
+
+      <ConfirmSheet
+        open={deleteSheet.open}
+        session={deleteSheet.session}
+        title="Delete all data?"
+        onClose={deleteSheet.closeSheet}
+        onConfirm={handleDeleteAll}
+        confirmLabel="Delete all data"
+        confirmIcon={Trash2}
+      >
+        <p>All your expenses will be deleted and the categories go back to the default ones. This can't be undone.</p>
       </ConfirmSheet>
     </Card>
   );
