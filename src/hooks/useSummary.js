@@ -1,6 +1,6 @@
 import { getSummary } from '../api/summary.js';
 import { useApiData } from './useApiData.js';
-import { useAppData } from './useAppData.js';
+import { useAppData } from '../context/DataContext.js';
 
 export function useSummary({ period, date }) {
   const { version } = useAppData();

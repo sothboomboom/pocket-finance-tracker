@@ -1,3 +1,7 @@
+/* //////////////////////////////
+   ExpenseList
+   ////////////////////////////// */
+
 .list {
   display: flex;
   flex-direction: column;
@@ -26,7 +30,7 @@
   list-style: none;
 }
 
-/* Only new rows animate (existing rows keep their key). Instant under reduced motion. */
+/* New rows slide in */
 .rows > li {
   animation: row-in var(--dur-base) var(--ease-standard) both;
 }
@@ -36,4 +40,205 @@
     opacity: 0;
     transform: translateY(calc(var(--slide-distance) / 2));
   }
+}
+
+/* //////////////////////////////
+   Loading skeleton
+   ////////////////////////////// */
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+}
+
+.skeletonDay {
+  width: var(--sp-96);
+  height: var(--fs-14);
+  margin-bottom: var(--sp-4);
+}
+
+.skeletonRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  min-height: var(--row-min-height);
+  padding: var(--sp-12) var(--sp-16);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+}
+
+.circle {
+  width: var(--icon-circle-sm);
+  height: var(--icon-circle-sm);
+  border-radius: var(--radius-circle);
+}
+
+.lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+}
+
+.line {
+  width: 60%;
+  height: var(--fs-16);
+}
+
+.lineShort {
+  width: 30%;
+  height: var(--fs-12);
+}
+
+.amount {
+  width: var(--sp-64);
+  height: var(--fs-16);
+}
+
+/* //////////////////////////////
+   HeroTotal
+   ////////////////////////////// */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  padding-block: var(--sp-32); /* big text needs more room around it */
+}
+
+.heroTotalAmount {
+  font-size: var(--text-hero);
+  font-weight: var(--fw-extrabold);
+  line-height: var(--lh-hero);
+  color: var(--color-heading);
+}
+
+.amountSkeleton {
+  width: 50%;
+  height: calc(var(--text-hero) * var(--lh-hero));
+}
+
+/* //////////////////////////////
+   MonthNavigator
+   ////////////////////////////// */
+
+.navigator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-8);
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  font-size: var(--text-section-title);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-heading);
+}
+
+/* //////////////////////////////
+   ExpenseFilters
+   ////////////////////////////// */
+
+/* Filters: stacked on mobile, one row on wider screens */
+.filters {
+  display: grid;
+  gap: var(--sp-16);
+  padding: var(--sp-24);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+@media (min-width: 640px) {
+  .filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* Paid with spans the full row under search + category */
+  .field:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1025px) {
+  .filters {
+    grid-template-columns: 3fr 2fr 2fr;
+  }
+
+  .field:last-child {
+    grid-column: auto;
+  }
+}
+
+/* Same label/input spacing as the expense form */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-label-field);
+  min-width: 0;
+}
+
+.control {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  min-height: var(--control-height);
+  padding: var(--sp-12) var(--sp-16);
+  background-color: var(--color-bg);
+  border: var(--border-width-thick) solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-16); /* 16px+ stops iOS from zooming on focus */
+  font-weight: var(--fw-semibold);
+  color: var(--color-heading);
+  transition:
+    border-color var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) var(--ease-standard);
+}
+
+.input::placeholder {
+  color: var(--color-placeholder);
+}
+
+.input:hover {
+  border-color: var(--color-border);
+}
+
+.input:focus-visible {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-glow);
+}
+
+/* Room for the search icon on the left */
+.withIcon {
+  padding-left: calc(var(--sp-16) + var(--icon-md) + var(--sp-8));
+}
+
+/* Native select with our own chevron, so it matches the other inputs */
+.select {
+  appearance: none;
+  padding-right: calc(var(--sp-16) + var(--icon-md) + var(--sp-8));
+  cursor: pointer;
+}
+
+.icon,
+.chevron {
+  position: absolute;
+  top: 50%;
+  width: var(--icon-md);
+  height: var(--icon-md);
+  transform: translateY(-50%);
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.icon {
+  left: var(--sp-16);
+}
+
+.chevron {
+  right: var(--sp-16);
 }

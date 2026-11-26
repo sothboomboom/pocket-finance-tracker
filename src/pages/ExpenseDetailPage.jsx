@@ -8,10 +8,9 @@ import ExpenseHero from '../features/expense-detail/ExpenseHero.jsx';
 import ExpenseFacts from '../features/expense-detail/ExpenseFacts.jsx';
 import ExpenseDetailSkeleton from '../features/expense-detail/ExpenseDetailSkeleton.jsx';
 import DeleteExpenseSheet from '../features/expense-detail/DeleteExpenseSheet.jsx';
-import { useExpense } from '../hooks/useExpense.js';
-import { useCategories } from '../hooks/useCategories.js';
+import { useCategories, useExpense } from '../hooks/useData.js';
 import { useSheet } from '../hooks/useSheet.js';
-import { useToast } from '../hooks/useToast.js';
+import { useToast } from '../context/ToastContext.js';
 import { formatDayLabel } from '../utils/dates.js';
 import styles from './ExpenseDetailPage.module.css';
 

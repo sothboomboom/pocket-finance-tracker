@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Sheet } from '../../components/Sheet.jsx';
 import ExpenseForm from './ExpenseForm.jsx';
-import { useRates } from '../../hooks/useRates.js';
+import { useRates } from '../../hooks/useData.js';
 
 /** `session` changes on every open, which remounts the form so it starts fresh. */
 export default function ExpenseSheet({ open, session, expense, onClose, ...formProps }) {
