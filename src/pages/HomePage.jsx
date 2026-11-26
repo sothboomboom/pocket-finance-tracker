@@ -6,6 +6,7 @@ import { SegmentedControl } from '../components/UI.jsx';
 import { Button } from '../components/Button.jsx';
 import { EmptyState, ErrorState } from '../components/Feedback.jsx';
 import { ExpenseList, ExpenseListSkeleton, HeroTotal } from '../features/ExpenseList.jsx';
+import { AddExpenseSheet } from '../features/ExpenseForm.jsx';
 import AddExpenseSheet from '../features/expenses/AddExpenseSheet.jsx';
 import { useExpenses } from '../hooks/useData.js';
 import { useSheet } from '../hooks/useSheet.js';

@@ -1,9 +1,0 @@
-.empty {
-  display: grid;
-  place-items: center;
-  min-height: calc(var(--chart-height) / 2);
-  font-size: var(--text-body);
-  font-weight: var(--fw-semibold);
-  color: var(--color-text-secondary);
-  text-align: center;
-}
