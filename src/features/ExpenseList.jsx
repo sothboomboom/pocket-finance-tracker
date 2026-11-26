@@ -8,8 +8,6 @@ import { IconButton } from '../components/Button.jsx';
 import { SegmentedControl, ExpenseRow } from '../components/UI.jsx';
 import styles from './ExpenseList.module.css';
 
-// Lists of expenses: the day-grouped list, the big total, and the month / filter controls of All expenses.
-
 //////////////////////////////
 // ExpenseList
 //////////////////////////////
