@@ -1,0 +1,36 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-group);
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-24);
+  padding: var(--sp-24);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+.circle {
+  width: var(--icon-circle-md);
+  height: var(--icon-circle-md);
+  border-radius: var(--radius-circle);
+}
+
+.amount {
+  width: 50%;
+  height: calc(var(--text-hero) * var(--lh-hero));
+}
+
+.button {
+  width: calc(var(--sp-96) + var(--sp-24));
+  height: var(--control-height);
+  border-radius: var(--radius-pill);
+}
+
+.line {
+  width: 70%;
+  height: var(--fs-16);
+}
