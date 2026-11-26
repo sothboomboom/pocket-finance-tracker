@@ -8,34 +8,31 @@ import styles from './Sheet.module.css';
 // Sheet
 //////////////////////////////
 
+/**
+ * Bottom sheet on phones, centered dialog on wider screens.
+ * The native <dialog> gives focus trapping, an inert background and Escape for free.
+ */
 export function Sheet({ open, onClose, title, initialFocusRef, children }) {
   const dialogRef = useRef(null);
-  const [closing, setClosing] = useState(false);
   const titleId = useId();
 
   useEffect(() => {
     const dialog = dialogRef.current;
     if (open && !dialog.open) {
-      setClosing(false);
       dialog.showModal();
       initialFocusRef?.current?.focus();
     } else if (!open && dialog.open) {
-      setClosing(true);
+      dialog.close();
     }
   }, [open, initialFocusRef]);
 
-  function handleAnimationEnd(event) {
-    if (closing && event.target === dialogRef.current) {
-      dialogRef.current.close();
-      setClosing(false);
-    }
-  }
-
+  // Escape: let React state close it, so `open` stays the single source of truth.
   function handleCancel(event) {
     event.preventDefault();
     onClose();
   }
 
+  // Clicks on the dialog itself, outside its content, are backdrop clicks.
   function handleClick(event) {
     if (event.target === dialogRef.current) onClose();
   }
@@ -43,11 +40,10 @@ export function Sheet({ open, onClose, title, initialFocusRef, children }) {
   return (
     <dialog
       ref={dialogRef}
-      className={`${styles.sheet} ${closing ? styles.closing : ''}`}
+      className={styles.sheet}
       aria-labelledby={titleId}
       onCancel={handleCancel}
       onClick={handleClick}
-      onAnimationEnd={handleAnimationEnd}
     >
       <div className={styles.panel}>
         <header className={styles.header}>
@@ -68,6 +64,10 @@ export function Sheet({ open, onClose, title, initialFocusRef, children }) {
 // ConfirmSheet
 //////////////////////////////
 
+/**
+ * For destructive actions. Focus starts on Cancel, the safe choice.
+ * `session` remounts the body, so an old error never reappears.
+ */
 export function ConfirmSheet({ open, session, title, onClose, children, ...bodyProps }) {
   const cancelRef = useRef(null);
   return (
@@ -79,18 +79,16 @@ export function ConfirmSheet({ open, session, title, onClose, children, ...bodyP
   );
 }
 
-function ConfirmBody({ children, confirmLabel, confirmIcon, loadingText, cancelRef, onCancel, onConfirm }) {
-  const [busy, setBusy] = useState(false);
+/** If onConfirm() throws, the error shows here and the sheet stays open. */
+function ConfirmBody({ children, confirmLabel, confirmIcon, cancelRef, onCancel, onConfirm }) {
   const [error, setError] = useState(null);
 
-  async function handleConfirm() {
-    setBusy(true);
+  function handleConfirm() {
     setError(null);
     try {
-      await onConfirm();
+      onConfirm();
     } catch (err) {
       setError(err.message);
-      setBusy(false);
     }
   }
 
@@ -106,10 +104,10 @@ function ConfirmBody({ children, confirmLabel, confirmIcon, loadingText, cancelR
       </div>
       <div className={styles.footer}>
         <div className={`${styles.actions} ${styles.confirmActions}`}>
-          <Button ref={cancelRef} variant="secondary" onClick={onCancel} disabled={busy}>
+          <Button ref={cancelRef} variant="secondary" onClick={onCancel}>
             Cancel
           </Button>
-          <Button variant="dangerSolid" icon={confirmIcon} onClick={handleConfirm} loading={busy} loadingText={loadingText}>
+          <Button variant="dangerSolid" icon={confirmIcon} onClick={handleConfirm}>
             {confirmLabel}
           </Button>
         </div>

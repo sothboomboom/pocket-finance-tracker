@@ -22,7 +22,7 @@ export function ExpenseHero({ expense, onEdit, onDelete }) {
   return (
     <section className={styles.hero} aria-label="Amount">
       <div className={styles.top}>
-        <CategoryIcon icon={category.icon} color={category.color} size="md" />
+        <CategoryIcon icon={category.icon} size="md" />
         <Tag>{paymentMethod === 'cash' ? 'Cash' : 'Bank'}</Tag>
       </div>
 
@@ -102,13 +102,12 @@ export function DeleteExpenseSheet({ open, session, expense, onClose, onConfirm 
       onConfirm={onConfirm}
       confirmLabel="Delete expense"
       confirmIcon={Trash2}
-      loadingText="Deleting…"
     >
       <p>
         <strong className={styles.what}>
           {expense.note || expense.category.name} · {formatMoney(expense.amountUsd)}
         </strong>{' '}
-        will be removed. You can undo this for a few seconds.
+        will be removed. This can't be undone.
       </p>
     </ConfirmSheet>
   );

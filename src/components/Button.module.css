@@ -3,102 +3,74 @@
    ////////////////////////////// */
 
 .button {
-	display: inline-flex;
-	text-decoration: none;
-	align-items: center;
-	justify-content: center;
-	gap: var(--sp-8);
-	min-height: var(--control-height);
-	min-width: var(--touch-target);
-	padding: var(--sp-12) var(--sp-24);
-	border-radius: var(--radius-pill);
-	font-size: var(--fs-16);
-	font-weight: var(--fw-bold);
-	line-height: var(--lh-heading);
-	white-space: nowrap;
-	transition:
-		background-color var(--dur-fast) var(--ease-standard),
-		color var(--dur-fast) var(--ease-standard),
-		box-shadow var(--dur-fast) var(--ease-standard),
-		transform var(--dur-fast) var(--ease-standard);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-8);
+  min-height: var(--control-height);
+  min-width: var(--touch-target);
+  padding: var(--sp-12) var(--sp-24);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-heading);
+  white-space: nowrap;
 }
 
-.button:active:not(:disabled) {
-	transform: scale(var(--scale-press));
+.icon {
+  flex-shrink: 0;
+  width: var(--icon-md);
+  height: var(--icon-md);
 }
 
-.icon,
-.spinner {
-	flex-shrink: 0;
-	width: var(--icon-md);
-	height: var(--icon-md);
-}
-
+/* Primary: blue is reserved for the main action */
 .primary {
-	background-color: var(--color-primary);
-	color: var(--color-on-primary);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
 }
 
 .primary:hover:not(:disabled) {
-	background-color: var(--color-primary-hover);
-	box-shadow: var(--shadow-md); /* pulled closer on hover */
+  background-color: var(--color-primary-hover);
 }
 
-.primary:active:not(:disabled) {
-	box-shadow: var(--shadow-sm); /* pushed back on press */
-}
-
+/* Secondary: quiet grey, for everything that isn't the main action */
 .secondary {
-	background-color: var(--color-hover-bg);
-	color: var(--color-heading);
+  background-color: var(--color-hover-bg);
+  color: var(--color-heading);
 }
 
 .secondary:hover:not(:disabled) {
-	background-color: var(--color-secondary-hover);
+  background-color: var(--color-secondary-hover);
 }
 
 /* Danger: red text + icon + word, never color alone */
 .danger {
-	background-color: transparent;
-	color: var(--color-error);
+  background-color: transparent;
+  color: var(--color-error);
 }
 
 .danger:hover:not(:disabled) {
-	background-color: var(--color-error-bg);
+  background-color: var(--color-error-bg);
 }
 
+/* Solid danger: only for the final "yes, delete" in a confirmation */
 .dangerSolid {
-	background-color: var(--color-danger-solid);
-	color: var(--color-on-primary);
+  background-color: var(--color-danger-solid);
+  color: var(--color-on-primary);
 }
 
 .dangerSolid:hover:not(:disabled) {
-	background-color: var(--color-danger-solid-hover);
-	box-shadow: var(--shadow-md);
-}
-
-.button:active:not(:disabled).dangerSolid {
-	box-shadow: var(--shadow-sm);
+  background-color: var(--color-danger-solid-hover);
 }
 
 .button:disabled {
-	background-color: var(--color-disabled-bg);
-	color: var(--color-disabled-text);
-	box-shadow: none;
+  background-color: var(--color-disabled-bg);
+  color: var(--color-disabled-text);
+  box-shadow: none;
 }
 
 .button:focus-visible {
-	box-shadow: var(--shadow-glow);
-}
-
-.spinner {
-	animation: spin var(--dur-spin) linear infinite;
-}
-
-@keyframes spin {
-	to {
-		transform: rotate(360deg);
-	}
+  box-shadow: var(--shadow-glow);
 }
 
 /* //////////////////////////////
@@ -106,39 +78,27 @@
    ////////////////////////////// */
 
 .iconButton {
-	display: grid;
-	place-items: center;
-	flex-shrink: 0;
-	width: var(--touch-target);
-	height: var(--touch-target);
-	border-radius: var(--radius-circle);
-	background-color: var(--color-surface);
-	color: var(--color-heading);
-	transition:
-		background-color var(--dur-fast) var(--ease-standard),
-		box-shadow var(--dur-fast) var(--ease-standard),
-		transform var(--dur-fast) var(--ease-standard);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--touch-target);
+  height: var(--touch-target);
+  border-radius: var(--radius-circle);
+  background-color: var(--color-surface);
+  color: var(--color-heading);
 }
 
 .iconButton svg {
-	width: var(--icon-md);
-	height: var(--icon-md);
-}
-
-.iconButton:hover:not(:disabled) {
-	box-shadow: var(--shadow-sm);
-}
-
-.iconButton:active:not(:disabled) {
-	transform: scale(var(--scale-press));
+  width: var(--icon-md);
+  height: var(--icon-md);
 }
 
 .iconButton:focus-visible {
-	box-shadow: var(--shadow-glow);
+  box-shadow: var(--shadow-glow);
 }
 
 .iconButton:disabled {
-	background-color: transparent;
-	color: var(--color-disabled-text);
-	cursor: not-allowed;
+  background-color: transparent;
+  color: var(--color-disabled-text);
+  cursor: not-allowed;
 }

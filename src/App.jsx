@@ -22,7 +22,6 @@ export default function App() {
 								path="/expenses"
 								element={<ExpensesPage />}
 							/>
-							{/* /expenses/12 → useParams() gives { id: '12' } */}
 							<Route
 								path="expenses/:id"
 								element={<ExpenseDetailPage />}

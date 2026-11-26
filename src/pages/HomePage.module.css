@@ -4,7 +4,8 @@
   margin-inline: auto;
 }
 
-@media (min-width: 1025px) {.page {
+@media (min-width: 1025px) {
+  .page {
     max-width: var(--content-medium);
   }
 }
@@ -20,10 +21,10 @@
 
 .listSection {
   margin-top: var(--sp-16);
-  transition: opacity var(--dur-fast) var(--ease-standard);
 }
 
-@media (min-width: 640px) {.headerAction {
+@media (min-width: 640px) {
+  .headerAction {
     display: block;
   }
 

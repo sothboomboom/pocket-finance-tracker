@@ -16,14 +16,14 @@ export default function ExpenseDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { expense, updateExpense, deleteExpense, restoreExpense } = useExpense(id);
+  const { expense, updateExpense, deleteExpense } = useExpense(id);
   const { categories } = useCategories();
   const editSheet = useSheet();
   const deleteSheet = useSheet();
   const { showToast } = useToast();
 
-  async function handleSave(values) {
-    await updateExpense(values);
+  function handleSave(values) {
+    updateExpense(values);
     showToast({ message: 'Changes saved' });
     editSheet.closeSheet();
   }
@@ -35,22 +35,12 @@ export default function ExpenseDetailPage() {
   }
 
   function handleConfirmDelete() {
-    const deleted = expense; // kept for Undo
     deleteExpense(() => {
       // Back to where the user came from; /expenses if the page was opened directly.
       if (location.key !== 'default') navigate(-1);
       else navigate('/expenses', { replace: true });
     });
-    showToast({
-      message: 'Expense deleted',
-      action: {
-        label: 'Undo',
-        onClick: () => {
-          restoreExpense(deleted);
-          showToast({ message: 'Expense restored' });
-        },
-      },
-    });
+    showToast({ message: 'Expense deleted' });
   }
 
   const backButton = <BackButton fallback="/expenses" label="Back to expenses" />;

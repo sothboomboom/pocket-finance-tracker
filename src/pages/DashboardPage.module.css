@@ -2,55 +2,22 @@
   display: flex;
   flex-direction: column;
   gap: var(--sp-16);
-  transition: opacity var(--dur-fast) var(--ease-standard);
 }
 
-/* Mobile: one column — stats, donut, bars, top categories */
+/* Mobile and tablet: one column. Desktop: the chart on the left, categories on the right. */
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-areas:
-    'donut'
-    'bars'
-    'top';
   gap: var(--sp-16);
 }
 
-.bars {
-  grid-area: bars;
+.grid > * {
   min-width: 0;
 }
 
-.donut {
-  grid-area: donut;
-  min-width: 0;
-}
-
-.top {
-  grid-area: top;
-  min-width: 0;
-}
-
-.bars > *,
-.donut > *,
-.top > * {
-  height: 100%;
-}
-
-/* Tablet: 2-column card grid */
-@media (min-width: 640px) {.grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      'bars bars'
-      'donut top';
-  }
-}
-
-/* Desktop: bars + top categories on the left, the taller donut card on the right */
-@media (min-width: 1025px) {.grid {
+@media (min-width: 1025px) {
+  .grid {
     grid-template-columns: 3fr 2fr;
-    grid-template-areas:
-      'bars donut'
-      'top donut';
+    align-items: start;
   }
 }

@@ -4,6 +4,7 @@
 
 /* Mobile: bottom sheet */
 .sheet {
+  /* Reset the browser's default dialog box */
   border: none;
   padding: 0;
   color: inherit;
@@ -12,25 +13,12 @@
   width: 100%;
   max-width: 100%;
   max-height: var(--dialog-max-height);
-  margin: auto 0 0;
+  margin: auto 0 0; /* stick to the bottom */
   overflow: visible;
-}
-
-.sheet[open] {
-  animation: sheet-in var(--dur-base) var(--ease-overshoot);
-}
-
-.sheet.closing {
-  animation: sheet-out var(--dur-fast) var(--ease-standard) forwards;
 }
 
 .sheet::backdrop {
   background-color: var(--color-backdrop);
-  animation: fade-in var(--dur-base) var(--ease-standard);
-}
-
-.sheet.closing::backdrop {
-  animation: fade-out var(--dur-fast) var(--ease-standard) forwards;
 }
 
 .panel {
@@ -63,10 +51,6 @@
   height: var(--touch-target);
   border-radius: var(--radius-circle);
   color: var(--color-text-secondary);
-  transition:
-    background-color var(--dur-fast) var(--ease-standard),
-    color var(--dur-fast) var(--ease-standard),
-    transform var(--dur-fast) var(--ease-standard);
 }
 
 .close svg {
@@ -79,37 +63,9 @@
   color: var(--color-heading);
 }
 
-.close:active {
-  transform: scale(var(--scale-press));
-}
-
 /* Lock page scrolling behind an open dialog */
 :global(html:has(dialog[open])) {
   overflow: hidden;
-}
-
-@keyframes sheet-in {
-  from {
-    transform: translateY(100%);
-  }
-}
-
-@keyframes sheet-out {
-  to {
-    transform: translateY(100%);
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes fade-out {
-  to {
-    opacity: 0;
-  }
 }
 
 /* Tablet & desktop: centered modal */
@@ -127,28 +83,6 @@
   .header {
     padding: var(--sp-24) var(--sp-24) var(--sp-8) var(--sp-32);
   }
-
-  .sheet[open] {
-    animation: modal-in var(--dur-base) var(--ease-standard);
-  }
-
-  .sheet.closing {
-    animation: modal-out var(--dur-fast) var(--ease-standard) forwards;
-  }
-}
-
-@keyframes modal-in {
-  from {
-    opacity: 0;
-    transform: scale(var(--scale-modal-start));
-  }
-}
-
-@keyframes modal-out {
-  to {
-    opacity: 0;
-    transform: scale(var(--scale-modal-start));
-  }
 }
 
 /* //////////////////////////////
@@ -164,7 +98,7 @@
 .fields {
   display: flex;
   flex-direction: column;
-  gap: var(--space-field);
+  gap: var(--space-field); /* more space between fields than between a label and its input */
   padding: var(--sp-16) var(--sp-24) var(--sp-24);
   overflow-y: auto;
 }
@@ -172,7 +106,7 @@
 .field {
   display: flex;
   flex-direction: column;
-  gap: var(--space-label-field);
+  gap: var(--space-label-field); /* label stays close to its own input */
 }
 
 .input {
@@ -182,11 +116,8 @@
   background-color: var(--color-bg);
   border: var(--border-width-thick) solid transparent;
   border-radius: var(--radius-sm);
-  font-size: var(--fs-16);
+  font-size: var(--fs-16); /* 16px+ stops iOS from zooming on focus */
   font-weight: var(--fw-semibold);
-  transition:
-    border-color var(--dur-fast) var(--ease-standard),
-    box-shadow var(--dur-fast) var(--ease-standard);
 }
 
 .input::placeholder {
@@ -228,6 +159,7 @@
   gap: var(--sp-12);
 }
 
+/* Save fills the row on mobile; Delete stays next to it */
 .save {
   flex: 1;
 }

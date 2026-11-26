@@ -30,18 +30,6 @@
   list-style: none;
 }
 
-/* New rows slide in */
-.rows > li {
-  animation: row-in var(--dur-base) var(--ease-standard) both;
-}
-
-@keyframes row-in {
-  from {
-    opacity: 0;
-    transform: translateY(calc(var(--slide-distance) / 2));
-  }
-}
-
 /* //////////////////////////////
    HeroTotal
    ////////////////////////////// */
@@ -83,7 +71,7 @@
    ExpenseFilters
    ////////////////////////////// */
 
-/* Filters: stacked on mobile, one row on wider screens */
+/* Filters: stacked on mobile, side by side on wider screens */
 .filters {
   display: grid;
   gap: var(--sp-16);
@@ -92,22 +80,9 @@
   border-radius: var(--radius-lg);
 }
 
-@media (min-width: 640px) {.filters {
+@media (min-width: 640px) {
+  .filters {
     grid-template-columns: 1fr 1fr;
-  }
-
-  /* Paid with spans the full row under search + category */
-  .field:last-child {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (min-width: 1025px) {.filters {
-    grid-template-columns: 3fr 2fr 2fr;
-  }
-
-  .field:last-child {
-    grid-column: auto;
   }
 }
 
@@ -133,9 +108,6 @@
   font-size: var(--fs-16); /* 16px+ stops iOS from zooming on focus */
   font-weight: var(--fw-semibold);
   color: var(--color-heading);
-  transition:
-    border-color var(--dur-fast) var(--ease-standard),
-    box-shadow var(--dur-fast) var(--ease-standard);
 }
 
 .input::placeholder {
@@ -152,9 +124,6 @@
 }
 
 /* Room for the search icon on the left */
-.withIcon {
-  padding-left: calc(var(--sp-16) + var(--icon-md) + var(--sp-8));
-}
 
 /* Native select with our own chevron, so it matches the other inputs */
 .select {
@@ -163,7 +132,6 @@
   cursor: pointer;
 }
 
-.icon,
 .chevron {
   position: absolute;
   top: 50%;
@@ -172,10 +140,6 @@
   transform: translateY(-50%);
   color: var(--color-text-secondary);
   pointer-events: none;
-}
-
-.icon {
-  left: var(--sp-16);
 }
 
 .chevron {

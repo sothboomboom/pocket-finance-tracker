@@ -1,7 +1,7 @@
 import { CircleAlert, CircleCheck } from 'lucide-react';
 import styles from './Feedback.module.css';
 
-// What the user sees while waiting or when something happens: empty states, loading skeletons, field errors and the toast.
+// What the user sees when something happens: empty states, field errors and the toast.
 
 //////////////////////////////
 // EmptyState
@@ -37,15 +37,6 @@ export function Placeholder({ icon: Icon, children }) {
 }
 
 //////////////////////////////
-// Skeleton
-//////////////////////////////
-
-// Size it with className.
-export function Skeleton({ className = '' }) {
-  return <span className={`${styles.skeleton} ${className}`} aria-hidden="true" />;
-}
-
-//////////////////////////////
 // FieldError
 //////////////////////////////
 
@@ -66,23 +57,12 @@ export function FieldError({ id, children }) {
 //////////////////////////////
 
 // Rendered by ToastProvider; show one with useToast().
-export function Toast({ message, tone, action, onDismiss }) {
+export function Toast({ message, tone }) {
   const Icon = tone === 'error' ? CircleAlert : CircleCheck;
-
-  function handleAction() {
-    action.onClick();
-    onDismiss();
-  }
-
   return (
     <div className={`${styles.toast} ${styles[tone]}`}>
       <Icon className={styles.toastIcon} strokeWidth={2} aria-hidden="true" />
       <span className={styles.message}>{message}</span>
-      {action && (
-        <button type="button" className={styles.action} onClick={handleAction}>
-          {action.label}
-        </button>
-      )}
     </div>
   );
 }

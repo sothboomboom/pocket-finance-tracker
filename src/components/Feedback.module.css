@@ -63,23 +63,6 @@
 }
 
 /* //////////////////////////////
-   Skeleton
-   ////////////////////////////// */
-
-.skeleton {
-  display: block;
-  background-color: var(--color-skeleton);
-  border-radius: var(--radius-sm);
-  animation: pulse calc(var(--dur-slow) * 3) var(--ease-standard) infinite alternate;
-}
-
-@keyframes pulse {
-  to {
-    opacity: var(--opacity-pulse);
-  }
-}
-
-/* //////////////////////////////
    FieldError
    ////////////////////////////// */
 
@@ -125,7 +108,6 @@
   box-shadow: var(--shadow-lg);
   font-size: var(--fs-16);
   font-weight: var(--fw-semibold);
-  animation: toast-in var(--dur-base) var(--ease-overshoot);
 }
 
 .toastIcon {
@@ -148,27 +130,6 @@
   padding-block: var(--sp-4);
 }
 
-.action {
-  flex-shrink: 0;
-  min-height: var(--touch-target);
-  min-width: var(--touch-target);
-  padding: var(--sp-8) var(--sp-16);
-  border-radius: var(--radius-pill);
-  color: var(--color-toast-action);
-  font-weight: var(--fw-extrabold);
-  transition:
-    background-color var(--dur-fast) var(--ease-standard),
-    transform var(--dur-fast) var(--ease-standard);
-}
-
-.action:hover {
-  background-color: var(--color-toast-action-hover);
-}
-
-.action:active {
-  transform: scale(var(--scale-press));
-}
-
 @media (min-width: 640px) {
   .toast {
     bottom: calc(var(--tabbar-clearance) + var(--sp-16));
@@ -179,12 +140,5 @@
   .toast {
     left: var(--sidebar-width);
     bottom: var(--sp-32);
-  }
-}
-
-@keyframes toast-in {
-  from {
-    opacity: 0;
-    transform: translateY(var(--slide-distance));
   }
 }

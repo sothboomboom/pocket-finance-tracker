@@ -27,13 +27,12 @@ export default function ExpensesPage() {
     ...range,
     categoryId: filters.categoryId,
     paymentMethod: filters.paymentMethod,
-    q: filters.q,
   });
 
   const goToMonth = (direction) => setFilter('month', shiftPeriod('month', firstDay, direction).slice(0, 7));
 
-  async function handleCreate(values) {
-    await createExpense(values);
+  function handleCreate(values) {
+    createExpense(values);
     showToast({ message: 'Expense added' });
     sheet.closeSheet();
   }
@@ -63,8 +62,6 @@ export default function ExpensesPage() {
         <ExpenseFilters
           filters={filters}
           categories={categories}
-          // replace: Back shouldn't undo the search letter by letter
-          onSearchChange={(q) => setFilter('q', q, { replace: true })}
           onCategoryChange={(id) => setFilter('category', id)}
           onMethodChange={(method) => setFilter('method', method)}
         />

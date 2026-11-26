@@ -2,7 +2,7 @@
 // The first visit (or Settings → Reset) starts from the sample data below.
 import { format, setHours, startOfToday, subDays } from 'date-fns';
 import { convertToUsd } from '../utils/money.js';
-import { FALLBACK_RATES_TO_USD } from './rates.js';
+import { RATES_TO_USD } from './rates.js';
 
 export const FALLBACK_CATEGORY_NAME = 'Other';
 
@@ -14,15 +14,15 @@ const STORAGE_KEY = 'pocket:data:v1';
 //////////////////////////////
 
 const SAMPLE_CATEGORIES = [
-  { name: 'Food', color: 'orange', icon: 'UtensilsCrossed' },
-  { name: 'Entertainment', color: 'grape', icon: 'Clapperboard' },
-  { name: 'Travel', color: 'cyan', icon: 'Plane' },
-  { name: 'Gas', color: 'yellow', icon: 'Fuel' },
-  { name: 'Shopping', color: 'pink', icon: 'ShoppingBag' },
-  { name: 'Bills', color: 'indigo', icon: 'Receipt' },
-  { name: 'Health', color: 'red', icon: 'HeartPulse' },
-  { name: 'Subscriptions', color: 'violet', icon: 'Repeat' },
-  { name: 'Other', color: 'gray', icon: 'Sparkles' }, // required: deleted categories move their expenses here
+  { name: 'Food', icon: 'UtensilsCrossed' },
+  { name: 'Entertainment', icon: 'Clapperboard' },
+  { name: 'Travel', icon: 'Plane' },
+  { name: 'Gas', icon: 'Fuel' },
+  { name: 'Shopping', icon: 'ShoppingBag' },
+  { name: 'Bills', icon: 'Receipt' },
+  { name: 'Health', icon: 'HeartPulse' },
+  { name: 'Subscriptions', icon: 'Repeat' },
+  { name: 'Other', icon: 'Sparkles' }, // required: deleted categories move their expenses here
 ];
 
 // [days ago, hour recorded, category, amount, currency, paymentMethod, note]
@@ -68,7 +68,7 @@ function sampleData() {
   const expenses = SAMPLE_EXPENSES.map(([daysAgo, hour, categoryName, amount, currency, paymentMethod, note], i) => {
     const day = subDays(startOfToday(), daysAgo);
     const createdAt = setHours(day, hour).toISOString();
-    const rateToUsd = FALLBACK_RATES_TO_USD[currency];
+    const rateToUsd = RATES_TO_USD[currency];
     return {
       id: i + 1,
       amount,

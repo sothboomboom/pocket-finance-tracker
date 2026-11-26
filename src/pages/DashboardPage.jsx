@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { PageHeader } from '../components/Layout.jsx';
-import { PeriodNavigator, StatsRow, SpendingBarChart, CategoryDonut, TopCategories } from '../features/Dashboard.jsx';
+import { PeriodNavigator, StatsRow, SpendingBarChart, TopCategories } from '../features/Dashboard.jsx';
 import { useSummary } from '../hooks/useSummary.js';
 import { getPeriodRange, formatRangeLabel, shiftPeriod, todayISO } from '../utils/dates.js';
 import { parseISO } from 'date-fns';
@@ -13,7 +13,6 @@ export default function DashboardPage() {
 
   const range = useMemo(() => getPeriodRange(period, parseISO(date)), [period, date]);
   const today = todayISO();
-  const isCurrentPeriod = range.from <= today && today <= range.to;
 
   const summary = useSummary({ period, date });
 
@@ -31,22 +30,10 @@ export default function DashboardPage() {
       />
 
       <div className={styles.content}>
-        <StatsRow summary={summary} period={summary.period} isCurrentPeriod={isCurrentPeriod} />
+        <StatsRow summary={summary} />
         <div className={styles.grid}>
-          <div className={styles.bars}>
-            <SpendingBarChart
-              period={summary.period}
-              series={summary.series}
-              date={summary.range.from}
-              total={summary.total}
-            />
-          </div>
-          <div className={styles.donut}>
-            <CategoryDonut byCategory={summary.byCategory} total={summary.total} />
-          </div>
-          <div className={styles.top}>
-            <TopCategories byCategory={summary.byCategory} total={summary.total} />
-          </div>
+          <SpendingBarChart period={summary.period} series={summary.series} total={summary.total} />
+          <TopCategories byCategory={summary.byCategory} total={summary.total} />
         </div>
       </div>
     </>

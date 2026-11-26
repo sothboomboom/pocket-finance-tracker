@@ -79,18 +79,6 @@ export function shiftPeriod(period, isoDate, direction) {
   return toISODate(addMonths(date, direction));
 }
 
-/** 8 -> '8a', 12 -> '12p', 0 -> '12a' (compact axis labels) */
-export function formatHourShort(hour) {
-  const suffix = hour < 12 ? 'a' : 'p';
-  return `${hour % 12 === 0 ? 12 : hour % 12}${suffix}`;
-}
-
-/** 8 -> '8 – 9 AM', 11 -> '11 AM – 12 PM' (tooltips) */
-export function formatHourRange(hour) {
-  const label = (h) => `${h % 12 === 0 ? 12 : h % 12} ${h % 24 < 12 ? 'AM' : 'PM'}`;
-  return `${label(hour)} – ${label(hour + 1)}`;
-}
-
 export function formatISO(isoDate, pattern) {
   return format(parseISO(isoDate), pattern);
 }

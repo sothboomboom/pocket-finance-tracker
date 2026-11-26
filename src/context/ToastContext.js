@@ -1,11 +1,11 @@
 import { createContext, useContext } from 'react';
 
+// Filled by <ToastProvider>.
 export const ToastContext = createContext(null);
 
 /**
  * const { showToast } = useToast();
  * showToast({ message: 'Expense added' });
- * showToast({ message: 'Expense deleted', action: { label: 'Undo', onClick: undo } });
  * showToast({ message: "Couldn't delete", tone: 'error' });
  */
 export function useToast() {

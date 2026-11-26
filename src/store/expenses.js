@@ -2,8 +2,8 @@
 import { CURRENCIES } from '../constants/currencies.js';
 import { NOTE_MAX_LENGTH } from '../constants/expenses.js';
 import { convertToUsd } from '../utils/money.js';
-import { db, save, findCategory, formError, FALLBACK_CATEGORY_NAME } from './db.js';
-import { getRateToUsd } from './rates.js';
+import { db, save, findCategory, formError } from './db.js';
+import { RATES_TO_USD } from './rates.js';
 
 /** Returns clean values, or throws an error with a message per field. */
 function checkExpense(values) {
@@ -35,8 +35,8 @@ function checkExpense(values) {
 // Saved expenses keep only categoryId; what the app shows includes the whole category.
 function withCategory(expense) {
   const { categoryId, ...rest } = expense;
-  const { id, name, color, icon } = findCategory(categoryId);
-  return { ...rest, category: { id, name, color, icon } };
+  const { id, name, icon } = findCategory(categoryId);
+  return { ...rest, category: { id, name, icon } };
 }
 
 // Newest first; ties broken by time recorded, then id, so the order never jumps.
@@ -44,16 +44,14 @@ function newestFirst(a, b) {
   return b.spentAt.localeCompare(a.spentAt) || b.createdAt.localeCompare(a.createdAt) || b.id - a.id;
 }
 
-/** Every filter is optional. `q` searches the note and the category name. */
-export function listExpenses({ from = null, to = null, categoryId = null, paymentMethod = null, q = '' }) {
-  const search = q.trim().toLowerCase();
+/** Every filter is optional. */
+export function listExpenses({ from = null, to = null, categoryId = null, paymentMethod = null }) {
   return db.expenses
     .filter((e) => (!from || e.spentAt >= from) && (!to || e.spentAt <= to))
     .filter((e) => !categoryId || e.categoryId === categoryId)
     .filter((e) => !paymentMethod || e.paymentMethod === paymentMethod)
     .sort(newestFirst)
-    .map(withCategory)
-    .filter((e) => !search || `${e.note ?? ''} ${e.category.name}`.toLowerCase().includes(search));
+    .map(withCategory);
 }
 
 /** null when there is no expense with this id (a bad link, or deleted). */
@@ -62,9 +60,9 @@ export function getExpense(id) {
   return expense ? withCategory(expense) : null;
 }
 
-export async function createExpense(values) {
+export function createExpense(values) {
   const clean = checkExpense(values);
-  const rateToUsd = await getRateToUsd(clean.currency);
+  const rateToUsd = RATES_TO_USD[clean.currency];
   const now = new Date().toISOString();
   const expense = {
     id: db.nextExpenseId++,
@@ -79,11 +77,11 @@ export async function createExpense(values) {
   return withCategory(expense);
 }
 
-export async function updateExpense(id, values) {
+export function updateExpense(id, values) {
   const expense = db.expenses.find((e) => e.id === Number(id));
   const clean = checkExpense(values);
   // Keep the saved rate unless the currency changed, so editing a note never changes past totals.
-  const rateToUsd = expense.currency === clean.currency ? expense.rateToUsd : await getRateToUsd(clean.currency);
+  const rateToUsd = expense.currency === clean.currency ? expense.rateToUsd : RATES_TO_USD[clean.currency];
   Object.assign(expense, clean, {
     rateToUsd,
     amountUsd: convertToUsd(clean.amount, rateToUsd),
@@ -95,16 +93,5 @@ export async function updateExpense(id, values) {
 
 export function deleteExpense(id) {
   db.expenses = db.expenses.filter((e) => e.id !== Number(id));
-  save();
-}
-
-/** Undo for a delete: puts the expense back as it was. If its category is gone, it goes to "Other". */
-export function restoreExpense(expense) {
-  if (db.expenses.some((e) => e.id === expense.id)) return; // Undo clicked twice
-  const { category, ...rest } = expense;
-  const categoryId = findCategory(category.id)
-    ? category.id
-    : db.categories.find((c) => c.name === FALLBACK_CATEGORY_NAME).id;
-  db.expenses.push({ ...rest, categoryId });
   save();
 }

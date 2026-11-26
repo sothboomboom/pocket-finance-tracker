@@ -47,37 +47,24 @@
    StatsRow
    ////////////////////////////// */
 
-/* Mobile: Total and Cash vs bank full width, the other two side by side */
+/* Mobile: Total on its own row, the other two side by side. Tablet and up: three across. */
 .row {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--sp-12);
 }
 
-.row > :first-child,
-.row > :last-child {
+.row > :first-child {
   grid-column: 1 / -1;
 }
 
-/* Tablet: three across, Cash vs bank underneath */
 @media (min-width: 640px) {
   .row {
     grid-template-columns: repeat(3, 1fr);
-  }
-
-  .row > :first-child {
-    grid-column: auto;
-  }
-}
-
-/* Desktop: all four in one row */
-@media (min-width: 1025px) {
-  .row {
-    grid-template-columns: repeat(4, 1fr);
     gap: var(--sp-16);
   }
 
-  .row > :last-child {
+  .row > :first-child {
     grid-column: auto;
   }
 }
@@ -110,104 +97,6 @@
   color: var(--color-heading);
 }
 
-.detail {
-  margin-top: var(--sp-8);
-}
-
-/* //////////////////////////////
-   PeriodComparison
-   ////////////////////////////// */
-
-.comparison {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-4);
-  font-size: var(--text-secondary);
-  font-weight: var(--fw-bold);
-  color: var(--color-text-secondary);
-}
-
-.icon {
-  flex-shrink: 0;
-  width: var(--icon-sm);
-  height: var(--icon-sm);
-}
-
-.neutral {
-  color: var(--color-text-secondary);
-}
-
-.down {
-  color: var(--color-success);
-}
-
-.up {
-  color: var(--color-error);
-}
-
-/* //////////////////////////////
-   CashBankSplit
-   ////////////////////////////// */
-
-.split {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-12);
-}
-
-.bar {
-  display: flex;
-  gap: var(--border-width-thick); /* 2px surface gap between parts */
-  height: var(--bar-thin);
-  border-radius: var(--radius-pill);
-  background-color: var(--chart-track);
-  overflow: hidden;
-}
-
-.part {
-  flex-basis: 0;
-  border-radius: var(--radius-pill);
-}
-
-.cash {
-  background-color: var(--split-cash);
-}
-
-.bank {
-  background-color: var(--split-bank);
-}
-
-.legend {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-4);
-  list-style: none;
-}
-
-.cashBankSplitRow {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-8);
-  font-size: var(--text-secondary);
-  font-weight: var(--fw-semibold);
-}
-
-.swatch {
-  flex-shrink: 0;
-  width: var(--bar-thin);
-  height: var(--bar-thin);
-  border-radius: var(--radius-circle);
-}
-
-.name {
-  color: var(--color-text);
-}
-
-.amount {
-  margin-left: auto;
-  color: var(--color-text-secondary);
-}
-
 /* //////////////////////////////
    SpendingBarChart
    ////////////////////////////// */
@@ -219,7 +108,6 @@
 
 .spendingBarChartBar {
   fill: var(--chart-bar);
-  transition: fill var(--dur-fast) var(--ease-standard);
 }
 
 .spendingBarChartBar:hover {
@@ -247,59 +135,6 @@
 
 .chart :global(.recharts-tooltip-cursor) {
   fill: var(--chart-track);
-}
-
-/* //////////////////////////////
-   CategoryDonut
-   ////////////////////////////// */
-
-.layout {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--sp-24);
-}
-
-.categoryDonutChart {
-  width: var(--donut-size);
-  height: var(--donut-size);
-  max-width: 100%;
-}
-
-/* 2px gap between slices (Recharts puts className on every slice) */
-.pie {
-  stroke: var(--color-surface);
-  stroke-width: var(--border-width-thick);
-}
-
-.categoryDonutLegend {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-8);
-  width: 100%;
-  list-style: none;
-}
-
-.categoryDonutRow {
-  display: grid;
-  grid-template-columns: auto 1fr auto auto;
-  align-items: center;
-  gap: var(--sp-8);
-  min-height: var(--sp-32);
-}
-
-.categoryDonutSwatch {
-  width: var(--sp-12);
-  height: var(--sp-12);
-  border-radius: var(--radius-circle);
-}
-
-.share {
-  min-width: var(--sp-48);
-  text-align: right;
-  font-size: var(--text-secondary);
-  font-weight: var(--fw-semibold);
-  color: var(--color-text-secondary);
 }
 
 /* //////////////////////////////
@@ -345,7 +180,7 @@
   height: 100%;
   min-width: var(--bar-thin); /* tiny shares still show a dot */
   border-radius: var(--radius-pill);
-  transition: width var(--dur-base) var(--ease-standard);
+  background-color: var(--category-bar);
 }
 
 /* //////////////////////////////

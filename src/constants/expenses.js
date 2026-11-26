@@ -1,6 +1,7 @@
 export const NOTE_MAX_LENGTH = 200;
 
-export const UNDO_WINDOW_MS = 5000;
+// How long a toast message stays on screen.
+export const TOAST_DURATION_MS = 3000;
 
 export const PAYMENT_METHOD_OPTIONS = [
   { value: 'cash', label: 'Cash' },
@@ -14,7 +15,6 @@ export const PERIOD_OPTIONS = [
 ];
 
 export const DASHBOARD_PERIOD_OPTIONS = [
-  { value: 'day', label: 'Daily' },
   { value: 'week', label: 'Weekly' },
   { value: 'month', label: 'Monthly' },
 ];

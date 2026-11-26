@@ -1,5 +1,5 @@
-// Dashboard totals for a day, week or month: by category, by payment method and over time.
-import { addDays, differenceInCalendarDays, format, parseISO, subDays } from 'date-fns';
+// Dashboard totals for a week or month: by category and by day.
+import { addDays, differenceInCalendarDays, format, parseISO } from 'date-fns';
 import { getPeriodRange, todayISO } from '../utils/dates.js';
 import { sumUsd } from '../utils/money.js';
 import { db, findCategory } from './db.js';
@@ -12,21 +12,14 @@ function byCategory(rows) {
   return ids
     .map((id) => {
       const mine = rows.filter((e) => e.categoryId === id);
-      const { name, color, icon } = findCategory(id);
-      return { category: { id, name, color, icon }, total: sumUsd(mine), count: mine.length };
+      const { name, icon } = findCategory(id);
+      return { category: { id, name, icon }, total: sumUsd(mine), count: mine.length };
     })
     .sort((a, b) => b.total - a.total || a.category.name.localeCompare(b.category.name));
 }
 
-/** One bar per hour (day view) or per day (week, month), including empty ones, so charts have no gaps. */
-function series(period, range, rows) {
-  if (period === 'day') {
-    // Expenses only store a date, so hours come from when they were recorded.
-    return Array.from({ length: 24 }, (_, hour) => ({
-      key: hour,
-      total: sumUsd(rows.filter((e) => new Date(e.createdAt).getHours() === hour)),
-    }));
-  }
+/** One bar per day, including empty days, so the chart has no gaps. */
+function series(range, rows) {
   const days = differenceInCalendarDays(parseISO(range.to), parseISO(range.from)) + 1;
   return Array.from({ length: days }, (_, i) => {
     const day = format(addDays(parseISO(range.from), i), 'yyyy-MM-dd');
@@ -36,7 +29,6 @@ function series(period, range, rows) {
 
 export function getSummary({ period, date }) {
   const range = getPeriodRange(period, parseISO(date));
-  const previousRange = getPeriodRange(period, subDays(parseISO(range.from), 1));
   const rows = db.expenses.filter(inRange(range));
   const total = sumUsd(rows);
 
@@ -51,12 +43,7 @@ export function getSummary({ period, date }) {
     total,
     count: rows.length,
     averagePerDay: daysCounted > 0 ? Math.round((total / daysCounted) * 100) / 100 : null,
-    paymentSplit: {
-      cash: sumUsd(rows.filter((e) => e.paymentMethod === 'cash')),
-      bank: sumUsd(rows.filter((e) => e.paymentMethod === 'bank')),
-    },
-    previousTotal: sumUsd(db.expenses.filter(inRange(previousRange))),
     byCategory: byCategory(rows),
-    series: series(period, range, rows),
+    series: series(range, rows),
   };
 }

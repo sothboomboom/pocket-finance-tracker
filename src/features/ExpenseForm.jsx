@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState, forwardRef, useId } from 'react';
+import { useRef, useState, forwardRef, useId } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Sheet } from '../components/Sheet.jsx';
-import { useCategories, useRates } from '../hooks/useData.js';
+import { useCategories } from '../hooks/useData.js';
+import { RATES_TO_USD } from '../store/rates.js';
 import { SegmentedControl, CategoryIcon } from '../components/UI.jsx';
 import { Button } from '../components/Button.jsx';
 import { CURRENCIES, BASE_CURRENCY, CURRENCY_CODES } from '../constants/currencies.js';
@@ -23,21 +24,12 @@ import styles from './ExpenseForm.module.css';
 /** `session` changes on every open, which remounts the form so it starts fresh. */
 export function ExpenseSheet({ open, session, expense, onClose, ...formProps }) {
   const amountRef = useRef(null);
-  const { rates, status: ratesStatus, reload: reloadRates } = useRates();
-
-  // Refresh rates on every open; cached rates stay on screen meanwhile.
-  useEffect(() => {
-    if (session > 1) reloadRates();
-  }, [session, reloadRates]);
-
   return (
     <Sheet open={open} onClose={onClose} title={expense ? 'Edit expense' : 'Add expense'} initialFocusRef={amountRef}>
       <ExpenseForm
         key={session}
         expense={expense}
         amountRef={amountRef}
-        rates={rates}
-        ratesStatus={ratesStatus}
         {...formProps}
       />
     </Sheet>
@@ -100,20 +92,19 @@ function validateValues(values) {
 }
 
 /** If saving fails with field errors, each one shows under its field. */
-function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef, rates, ratesStatus }) {
+function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef }) {
   const isEdit = Boolean(expense);
   const { lastCurrency, setLastCurrency } = usePreferences();
   const [values, setValues] = useState(() => initialValues(expense, lastCurrency));
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState(null);
-  const [saving, setSaving] = useState(false);
   const formRef = useRef(null);
 
   const currency = CURRENCIES[values.currency];
 
   // Same rule as saving: an unchanged currency keeps its saved rate, so the preview matches.
   const previewRate =
-    isEdit && values.currency === expense.currency ? expense.rateToUsd : (rates?.[values.currency] ?? null);
+    isEdit && values.currency === expense.currency ? expense.rateToUsd : RATES_TO_USD[values.currency];
 
   function handleCurrencyChange(code) {
     setValues((prev) => ({
@@ -136,9 +127,8 @@ function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef, rates
     });
   }
 
-  async function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
-    if (saving) return;
 
     const clientErrors = validateValues(values);
     setErrors(clientErrors);
@@ -148,9 +138,8 @@ function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef, rates
       return;
     }
 
-    setSaving(true);
     try {
-      await onSubmit({
+      onSubmit({
         amount: values.amount,
         currency: values.currency,
         categoryId: values.categoryId,
@@ -165,7 +154,6 @@ function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef, rates
       // Errors without a field show above the buttons
       if (Object.keys(fieldErrors).length === 0) setFormError(err.message);
       else focusFirstError();
-      setSaving(false);
     }
   }
 
@@ -187,7 +175,6 @@ function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef, rates
             amount={values.amount}
             currency={values.currency}
             rate={previewRate}
-            ratesStatus={ratesStatus}
           />
         </AmountField>
 
@@ -261,11 +248,11 @@ function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef, rates
         )}
         <div className={sheetStyles.actions}>
           {isEdit && (
-            <Button variant="danger" icon={Trash2} onClick={() => onDelete(expense)} disabled={saving}>
+            <Button variant="danger" icon={Trash2} onClick={() => onDelete(expense)}>
               Delete
             </Button>
           )}
-          <Button type="submit" className={sheetStyles.save} loading={saving} loadingText="Saving…">
+          <Button type="submit" className={sheetStyles.save}>
             {isEdit ? 'Save changes' : 'Save expense'}
           </Button>
         </div>
@@ -319,21 +306,11 @@ const AmountField = forwardRef(function AmountField(
 //////////////////////////////
 
 /** Only a preview: the saved amount is converted when the expense is saved. Hidden for USD. */
-function UsdPreview({ id, amount, currency, rate, ratesStatus }) {
+function UsdPreview({ id, amount, currency, rate }) {
   if (currency === BASE_CURRENCY) return null;
-
-  let text;
-  if (rate) {
-    text = `≈ ${formatMoney(convertToUsd(amount || 0, rate))} USD`;
-  } else if (ratesStatus === 'loading') {
-    text = 'Loading exchange rate…';
-  } else {
-    text = "Couldn't load rates. We'll convert to USD when you save.";
-  }
-
   return (
     <p id={id} className={`${styles.preview} tabular-nums`}>
-      {text}
+      ≈ {formatMoney(convertToUsd(amount || 0, rate))} USD
     </p>
   );
 }
@@ -395,7 +372,7 @@ const CategoryPicker = forwardRef(function CategoryPicker(
                 aria-invalid={error ? 'true' : undefined}
               />
               <label htmlFor={id} className={styles.chip}>
-                <CategoryIcon icon={category.icon} color={category.color} />
+                <CategoryIcon icon={category.icon} />
                 <span className={styles.name}>{category.name}</span>
               </label>
             </span>

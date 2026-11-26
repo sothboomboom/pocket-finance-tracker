@@ -1,14 +1,12 @@
-import { Plus, ChevronRight, Trash2, Lock, Check } from 'lucide-react';
+import { Plus, ChevronRight, Trash2, Lock } from 'lucide-react';
 import { useEffect, useRef, useState, useId } from 'react';
 import { Card, CategoryIcon } from '../components/UI.jsx';
 import { Button } from '../components/Button.jsx';
 import { FieldError } from '../components/Feedback.jsx';
 import { Sheet } from '../components/Sheet.jsx';
-import { CATEGORY_NAME_MAX_LENGTH, CATEGORY_COLOR_OPTIONS, CATEGORY_ICON_OPTIONS } from '../constants/categories.js';
+import { CATEGORY_NAME_MAX_LENGTH, CATEGORY_ICON_OPTIONS } from '../constants/categories.js';
 import sheetStyles from '../components/Sheet.module.css';
 import styles from './Categories.module.css';
-
-// Everything on the Categories page: the list, the add/edit sheet with its form and pickers, and the delete confirmation.
 
 //////////////////////////////
 // CategoryList
@@ -18,7 +16,7 @@ export function CategoryList({ categories, onAdd, onSelect }) {
   return (
     <Card
       title="Your categories"
-      subtitle="Tap a category to rename it or change its color and icon."
+      subtitle="Tap a category to rename it or change its icon."
       action={
         <Button variant="secondary" icon={Plus} onClick={onAdd}>
           Add
@@ -29,7 +27,7 @@ export function CategoryList({ categories, onAdd, onSelect }) {
         {categories.map((category) => (
           <li key={category.id}>
             <button type="button" className={styles.row} onClick={() => onSelect(category)}>
-              <CategoryIcon icon={category.icon} color={category.color} />
+              <CategoryIcon icon={category.icon} />
               <span className={styles.main}>
                 <span className="text-name">{category.name}</span>
                 <span className="text-meta">
@@ -93,27 +91,25 @@ export function CategorySheet({ open, session, category, onClose, onSubmit, onDe
 // CategoryForm
 //////////////////////////////
 
-const NEW_CATEGORY = { name: '', color: 'teal', icon: 'Sparkles' };
+const NEW_CATEGORY = { name: '', icon: 'Sparkles' };
 
 /** Field errors from a rejected onSubmit show under their fields. */
 function CategoryForm({ category, onSubmit, onDelete, nameRef }) {
   const isEdit = Boolean(category);
   const isFallback = category?.isFallback ?? false;
   const [values, setValues] = useState(() =>
-    category ? { name: category.name, color: category.color, icon: category.icon } : NEW_CATEGORY,
+    category ? { name: category.name, icon: category.icon } : NEW_CATEGORY,
   );
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState(null);
-  const [saving, setSaving] = useState(false);
 
   function setField(field, value) {
     setValues((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
   }
 
-  async function handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
-    if (saving) return;
     const name = values.name.trim();
     if (!name) {
       setErrors({ name: 'Enter a name' });
@@ -121,16 +117,14 @@ function CategoryForm({ category, onSubmit, onDelete, nameRef }) {
       return;
     }
 
-    setSaving(true);
     setFormError(null);
     try {
-      await onSubmit({ ...values, name });
+      onSubmit({ ...values, name });
     } catch (err) {
       const fieldErrors = err.fieldErrors ?? {};
       setErrors(fieldErrors);
       if (Object.keys(fieldErrors).length === 0) setFormError(err.message);
       if (fieldErrors.name) nameRef.current?.focus();
-      setSaving(false);
     }
   }
 
@@ -138,7 +132,7 @@ function CategoryForm({ category, onSubmit, onDelete, nameRef }) {
     <form className={sheetStyles.form} onSubmit={handleSubmit} noValidate>
       <div className={sheetStyles.fields}>
         <div className={styles.preview} aria-hidden="true">
-          <CategoryIcon icon={values.icon} color={values.color} size="md" />
+          <CategoryIcon icon={values.icon} size="md" />
           <span className={styles.previewName}>{values.name.trim() || 'New category'}</span>
         </div>
 
@@ -170,19 +164,8 @@ function CategoryForm({ category, onSubmit, onDelete, nameRef }) {
         </div>
 
         <div className={sheetStyles.field}>
-          <ColorPicker
-            value={values.color}
-            onChange={(color) => setField('color', color)}
-            error={errors.color}
-            errorId="category-color-error"
-          />
-          <FieldError id="category-color-error">{errors.color}</FieldError>
-        </div>
-
-        <div className={sheetStyles.field}>
           <IconPicker
             value={values.icon}
-            color={values.color}
             onChange={(icon) => setField('icon', icon)}
             error={errors.icon}
             errorId="category-icon-error"
@@ -199,11 +182,11 @@ function CategoryForm({ category, onSubmit, onDelete, nameRef }) {
         )}
         <div className={sheetStyles.actions}>
           {isEdit && !isFallback && (
-            <Button variant="danger" icon={Trash2} onClick={onDelete} disabled={saving}>
+            <Button variant="danger" icon={Trash2} onClick={onDelete}>
               Delete
             </Button>
           )}
-          <Button type="submit" className={sheetStyles.save} loading={saving} loadingText="Saving…">
+          <Button type="submit" className={sheetStyles.save}>
             {isEdit ? 'Save changes' : 'Add category'}
           </Button>
         </div>
@@ -213,64 +196,15 @@ function CategoryForm({ category, onSubmit, onDelete, nameRef }) {
 }
 
 //////////////////////////////
-// ColorPicker
-//////////////////////////////
-
-// The selected swatch gets a check mark and its name is in the label, so it isn't color-only.
-function ColorPicker({ value, onChange, error, errorId }) {
-  const name = useId();
-  const selected = CATEGORY_COLOR_OPTIONS.find((option) => option.value === value);
-
-  return (
-    <fieldset className={styles.fieldset} aria-describedby={error ? errorId : undefined}>
-      <legend className="field-legend">
-        Color {selected && <span className="text-muted">· {selected.label}</span>}
-      </legend>
-      <div className={styles.grid}>
-        {CATEGORY_COLOR_OPTIONS.map((option) => {
-          const id = `${name}-${option.value}`;
-          return (
-            <span key={option.value} className={styles.option}>
-              <input
-                type="radio"
-                id={id}
-                name={name}
-                value={option.value}
-                checked={value === option.value}
-                onChange={() => onChange(option.value)}
-                className={styles.input}
-                aria-label={option.label}
-              />
-              <label
-                htmlFor={id}
-                className={styles.swatch}
-                style={{ '--swatch': `var(--cat-${option.value}-chart)` }}
-              >
-                <Check className={styles.check} strokeWidth={3} aria-hidden="true" />
-              </label>
-            </span>
-          );
-        })}
-      </div>
-    </fieldset>
-  );
-}
-
-//////////////////////////////
 // IconPicker
 //////////////////////////////
 
-// Icons are tinted with the chosen color, so you preview both together.
-function IconPicker({ value, color, onChange, error, errorId }) {
+function IconPicker({ value, onChange, error, errorId }) {
   const name = useId();
   const selected = CATEGORY_ICON_OPTIONS.find((option) => option.name === value);
 
   return (
-    <fieldset
-      className={styles.iconPickerFieldset}
-      aria-describedby={error ? errorId : undefined}
-      style={{ '--tint': `var(--cat-${color}-bg)`, '--ink': `var(--cat-${color}-icon)` }}
-    >
+    <fieldset className={styles.iconPickerFieldset} aria-describedby={error ? errorId : undefined}>
       <legend className="field-legend">
         Icon {selected && <span className="text-muted">· {selected.label}</span>}
       </legend>
@@ -305,18 +239,15 @@ function IconPicker({ value, color, onChange, error, errorId }) {
 //////////////////////////////
 
 function DeleteCategoryConfirm({ category, onCancel, onConfirm, cancelRef }) {
-  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState(null);
   const count = category.expenseCount;
 
-  async function handleConfirm() {
-    setDeleting(true);
+  function handleConfirm() {
     setError(null);
     try {
-      await onConfirm();
+      onConfirm();
     } catch (err) {
       setError(err.message);
-      setDeleting(false);
     }
   }
 
@@ -324,7 +255,7 @@ function DeleteCategoryConfirm({ category, onCancel, onConfirm, cancelRef }) {
     <div className={sheetStyles.form}>
       <div className={`${sheetStyles.fields} ${styles.body}`}>
         <div className={styles.category}>
-          <CategoryIcon icon={category.icon} color={category.color} size="md" />
+          <CategoryIcon icon={category.icon} size="md" />
           <span className={styles.deleteCategoryConfirmName}>{category.name}</span>
         </div>
         <p className="text-body">
@@ -341,10 +272,10 @@ function DeleteCategoryConfirm({ category, onCancel, onConfirm, cancelRef }) {
       </div>
       <div className={sheetStyles.footer}>
         <div className={`${sheetStyles.actions} ${styles.actions}`}>
-          <Button ref={cancelRef} variant="secondary" onClick={onCancel} disabled={deleting}>
+          <Button ref={cancelRef} variant="secondary" onClick={onCancel}>
             Cancel
           </Button>
-          <Button variant="dangerSolid" icon={Trash2} onClick={handleConfirm} loading={deleting} loadingText="Deleting…">
+          <Button variant="dangerSolid" icon={Trash2} onClick={handleConfirm}>
             Delete category
           </Button>
         </div>

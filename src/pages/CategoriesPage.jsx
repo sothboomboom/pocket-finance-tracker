@@ -17,19 +17,19 @@ export default function CategoriesPage() {
     sheet.openSheet();
   }
 
-  async function handleSubmit(values) {
+  function handleSubmit(values) {
     if (editing) {
-      await updateCategory(editing.id, values);
+      updateCategory(editing.id, values);
       showToast({ message: 'Changes saved' });
     } else {
-      await createCategory(values);
+      createCategory(values);
       showToast({ message: 'Category added' });
     }
     sheet.closeSheet();
   }
 
-  async function handleDelete(category) {
-    const { movedCount, movedTo } = await deleteCategory(category.id);
+  function handleDelete(category) {
+    const { movedCount, movedTo } = deleteCategory(category.id);
     sheet.closeSheet();
     showToast({
       message:

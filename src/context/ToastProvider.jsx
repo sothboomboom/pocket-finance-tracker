@@ -1,51 +1,32 @@
-import { useCallback, useMemo, useRef, useState } from "react";
-import { ToastContext } from "./ToastContext.js";
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ToastContext } from './ToastContext.js';
 import { Toast } from '../components/Feedback.jsx';
-import { UNDO_WINDOW_MS } from "../constants/expenses.js";
+import { TOAST_DURATION_MS } from '../constants/expenses.js';
 
+// One toast at a time: a new one replaces the current one.
 export default function ToastProvider({ children }) {
-	const [toast, setToast] = useState(null);
-	const timerRef = useRef(null);
-	const nextId = useRef(1);
+  const [toast, setToast] = useState(null);
+  const timerRef = useRef(null);
+  const nextId = useRef(1);
 
-	const dismissToast = useCallback((id) => {
-		setToast((current) => {
-			if (current && (id === undefined || current.id === id)) {
-				clearTimeout(timerRef.current);
-				return null;
-			}
-			return current;
-		});
-	}, []);
+  const showToast = useCallback(({ message, tone = 'success' }) => {
+    clearTimeout(timerRef.current);
+    setToast({ id: nextId.current++, message, tone });
+    timerRef.current = setTimeout(() => setToast(null), TOAST_DURATION_MS);
+  }, []);
 
-	const showToast = useCallback(
-		({ message, tone = "success", action, duration = UNDO_WINDOW_MS }) => {
-			const id = nextId.current++;
-			clearTimeout(timerRef.current);
-			setToast({ id, message, tone, action });
-			timerRef.current = setTimeout(() => dismissToast(id), duration);
-			return id;
-		},
-		[dismissToast],
-	);
+  // Stop the timer if the app closes while a toast is showing.
+  useEffect(() => () => clearTimeout(timerRef.current), []);
 
-	const value = useMemo(
-		() => ({ showToast, dismissToast }),
-		[showToast, dismissToast],
-	);
+  const value = useMemo(() => ({ showToast }), [showToast]);
 
-	return (
-		<ToastContext.Provider value={value}>
-			{children}
-			<div role="status" aria-live="polite">
-				{toast && (
-					<Toast
-						key={toast.id}
-						{...toast}
-						onDismiss={() => dismissToast(toast.id)}
-					/>
-				)}
-			</div>
-		</ToastContext.Provider>
-	);
+  return (
+    <ToastContext.Provider value={value}>
+      {children}
+      {/* Always rendered: screen readers only announce changes inside an existing live region */}
+      <div role="status" aria-live="polite">
+        {toast && <Toast key={toast.id} message={toast.message} tone={toast.tone} />}
+      </div>
+    </ToastContext.Provider>
+  );
 }

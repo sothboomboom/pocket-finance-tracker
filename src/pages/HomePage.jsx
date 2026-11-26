@@ -28,8 +28,8 @@ export default function HomePage() {
   const sheet = useSheet();
   const { showToast } = useToast();
 
-  async function handleCreate(values) {
-    await createExpense(values);
+  function handleCreate(values) {
+    createExpense(values);
     showToast({ message: 'Expense added' });
     sheet.closeSheet();
   }

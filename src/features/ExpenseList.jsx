@@ -1,8 +1,7 @@
-import { ChevronLeft, ChevronRight, Search, ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { useId } from 'react';
 import { formatDayLabel, groupByDay } from '../utils/dates.js';
 import { formatMoney } from '../utils/money.js';
-import { useCountUp } from '../hooks/useCountUp.js';
 import { IconButton } from '../components/Button.jsx';
 import { SegmentedControl, ExpenseRow } from '../components/UI.jsx';
 import styles from './ExpenseList.module.css';
@@ -41,15 +40,10 @@ export function ExpenseList({ expenses }) {
 const LABELS = { day: 'Spent today', week: 'Spent this week', month: 'Spent this month' };
 
 export function HeroTotal({ period, total, count, rangeLabel }) {
-  const animatedTotal = useCountUp(total);
   return (
     <div className={styles.hero}>
       <p className="eyebrow">{LABELS[period]}</p>
-      <p className={`${styles.heroTotalAmount} tabular-nums`}>
-        {/* Screen readers hear the final number once, not every animation frame */}
-        <span aria-hidden="true">{formatMoney(animatedTotal)}</span>
-        <span className="visually-hidden">{formatMoney(total)}</span>
-      </p>
+      <p className={`${styles.heroTotalAmount} tabular-nums`}>{formatMoney(total)}</p>
       <p className="text-meta">
         {rangeLabel} · {count} {count === 1 ? 'expense' : 'expenses'}
       </p>
@@ -86,30 +80,11 @@ const METHOD_OPTIONS = [
 ];
 
 /** Stateless: the page keeps the values in the URL through useExpenseFilters. */
-export function ExpenseFilters({ filters, categories, onSearchChange, onCategoryChange, onMethodChange }) {
-  const searchId = useId();
+export function ExpenseFilters({ filters, categories, onCategoryChange, onMethodChange }) {
   const categoryId = useId();
 
   return (
     <div className={styles.filters} role="search">
-      <div className={styles.field}>
-        <label htmlFor={searchId} className="field-label">
-          Search
-        </label>
-        <div className={styles.control}>
-          <Search className={styles.icon} strokeWidth={2} aria-hidden="true" />
-          <input
-            id={searchId}
-            type="search"
-            className={`${styles.input} ${styles.withIcon}`}
-            placeholder="Notes or categories"
-            value={filters.q}
-            onChange={(e) => onSearchChange(e.target.value)}
-            autoComplete="off"
-          />
-        </div>
-      </div>
-
       <div className={styles.field}>
         <label htmlFor={categoryId} className="field-label">
           Category

@@ -7,7 +7,7 @@ import { resetSampleData as resetStore } from '../store/db.js';
  * Shares data across pages:
  * - categories, so a new category appears everywhere at once;
  * - version, bumped after any change. The data hooks depend on it, so every
- *   screen updates itself, even after an Undo clicked on another page.
+ *   screen updates itself.
  */
 export default function DataProvider({ children }) {
   const [version, setVersion] = useState(0);
