@@ -1,12 +1,10 @@
-// The data the app saves: categories and expenses, kept in localStorage.
-// The first visit starts with the categories and no expenses. Settings can load the sample data below.
 import { format, setHours, startOfToday, subDays } from 'date-fns';
 import { convertToUsd } from '../utils/money.js';
 import { RATES_TO_USD } from './rates.js';
 
 export const FALLBACK_CATEGORY_NAME = 'Other';
 
-// Bump the version if the saved shape changes, so old data isn't misread.
+// Bump the version if the saved shape changes, so old data isn't misread
 const STORAGE_KEY = 'pocket:data:v1';
 
 //////////////////////////////
@@ -63,7 +61,7 @@ const SAMPLE_EXPENSES = [
   [58, 16, 'Other', 10, 'USD', 'cash', 'Birthday gift'],
 ];
 
-// The categories only, no expenses: the first visit and "Delete all data".
+// The categories only
 function emptyData() {
   const categories = SAMPLE_CATEGORIES.map((c, i) => ({ id: i + 1, ...c }));
   return { categories, expenses: [], nextCategoryId: categories.length + 1, nextExpenseId: 1 };

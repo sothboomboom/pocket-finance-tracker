@@ -52,12 +52,11 @@ export function SegmentedControl({
   onChange,
   name,
   fullWidth = false,
-  compact = false,
 }) {
   const groupName = name ?? label.toLowerCase().replace(/ /g, '-'); // e.g. "paid-with"
 
   return (
-    <fieldset className={`${styles.control} ${fullWidth ? styles.fullWidth : ''} ${compact ? styles.compact : ''}`}>
+    <fieldset className={`${styles.control} ${fullWidth ? styles.fullWidth : ''}`}>
       <legend className={showLabel ? 'field-legend' : 'visually-hidden'}>{label}</legend>
       <div className={styles.track} style={{ '--count': options.length }}>
         {options.map((option) => {
@@ -69,7 +68,6 @@ export function SegmentedControl({
                 id={id}
                 name={groupName}
                 value={option.value}
-                aria-label={option.ariaLabel}
                 checked={option.value === value}
                 onChange={() => onChange(option.value)}
                 className={styles.input}
