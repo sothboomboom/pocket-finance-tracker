@@ -11,7 +11,7 @@ import { usePreferences } from '../context/PreferencesContext.js';
 import { cleanAmountInput } from '../utils/amountInput.js';
 import sheetStyles from '../components/Sheet.module.css';
 import { convertToUsd, formatMoney } from '../utils/money.js';
-import { Skeleton, FieldError } from '../components/Feedback.jsx';
+import { FieldError } from '../components/Feedback.jsx';
 import styles from './ExpenseForm.module.css';
 
 // The add / edit expense sheet and every field in its form.
@@ -51,7 +51,7 @@ export function ExpenseSheet({ open, session, expense, onClose, ...formProps }) 
 // The same sheet with no expense, plus the shared categories
 /** Used by Home and All expenses. Editing happens on the expense's own page. */
 export function AddExpenseSheet({ open, session, onClose, onCreate }) {
-  const { categories, status, reload } = useCategories();
+  const { categories } = useCategories();
   return (
     <ExpenseSheet
       open={open}
@@ -59,8 +59,6 @@ export function AddExpenseSheet({ open, session, onClose, onCreate }) {
       expense={null}
       onClose={onClose}
       categories={categories}
-      categoriesStatus={status}
-      onRetryCategories={reload}
       onSubmit={onCreate}
     />
   );
@@ -92,7 +90,7 @@ function initialValues(expense, lastCurrency) {
   };
 }
 
-// Instant feedback only; mock/validation.js checks again on save.
+// Instant feedback only; store/expenses.js checks again on save.
 function validateValues(values) {
   const errors = {};
   if (!values.amount || Number(values.amount) <= 0) errors.amount = 'Enter an amount greater than 0';
@@ -101,18 +99,8 @@ function validateValues(values) {
   return errors;
 }
 
-/** If onSubmit rejects with an ApiError, its field errors show under the matching fields. */
-function ExpenseForm({
-  expense,
-  categories,
-  categoriesStatus,
-  onRetryCategories,
-  onSubmit,
-  onDelete,
-  amountRef,
-  rates,
-  ratesStatus,
-}) {
+/** If saving fails with field errors, each one shows under its field. */
+function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef, rates, ratesStatus }) {
   const isEdit = Boolean(expense);
   const { lastCurrency, setLastCurrency } = usePreferences();
   const [values, setValues] = useState(() => initialValues(expense, lastCurrency));
@@ -210,8 +198,6 @@ function ExpenseForm({
 
         <CategoryPicker
           categories={categories}
-          status={categoriesStatus}
-          onRetry={onRetryCategories}
           value={values.categoryId}
           onChange={(id) => setField('categoryId', id)}
           error={errors.categoryId}
@@ -382,7 +368,7 @@ function CurrencyPicker({ value, onChange }) {
 
 // Native radio inputs, so arrow keys work.
 const CategoryPicker = forwardRef(function CategoryPicker(
-  { categories, status, onRetry, value, onChange, error },
+  { categories, value, onChange, error },
   firstInputRef,
 ) {
   const name = useId();
@@ -392,51 +378,32 @@ const CategoryPicker = forwardRef(function CategoryPicker(
     <fieldset className={styles.fieldset} aria-describedby={error ? errorId : undefined}>
       <legend className="field-legend">Category</legend>
 
-      {status === 'loading' && (
-        <div className={styles.grid} aria-busy="true">
-          {Array.from({ length: 6 }, (_, i) => (
-            <Skeleton key={i} className={styles.chipSkeleton} />
-          ))}
-        </div>
-      )}
+      <div className={styles.grid}>
+        {categories.map((category, index) => {
+          const id = `${name}-${category.id}`;
+          return (
+            <span key={category.id} className={styles.categoryPickerOption}>
+              <input
+                ref={index === 0 ? firstInputRef : undefined}
+                type="radio"
+                id={id}
+                name={name}
+                value={category.id}
+                checked={value === category.id}
+                onChange={() => onChange(category.id)}
+                className={styles.categoryPickerInput}
+                aria-invalid={error ? 'true' : undefined}
+              />
+              <label htmlFor={id} className={styles.chip}>
+                <CategoryIcon icon={category.icon} color={category.color} />
+                <span className={styles.name}>{category.name}</span>
+              </label>
+            </span>
+          );
+        })}
+      </div>
 
-      {status === 'error' && (
-        <div className={styles.loadError}>
-          <FieldError id={errorId}>Couldn't load categories.</FieldError>
-          <Button variant="secondary" onClick={onRetry}>
-            Try again
-          </Button>
-        </div>
-      )}
-
-      {status === 'success' && (
-        <div className={styles.grid}>
-          {categories.map((category, index) => {
-            const id = `${name}-${category.id}`;
-            return (
-              <span key={category.id} className={styles.categoryPickerOption}>
-                <input
-                  ref={index === 0 ? firstInputRef : undefined}
-                  type="radio"
-                  id={id}
-                  name={name}
-                  value={category.id}
-                  checked={value === category.id}
-                  onChange={() => onChange(category.id)}
-                  className={styles.categoryPickerInput}
-                  aria-invalid={error ? 'true' : undefined}
-                />
-                <label htmlFor={id} className={styles.chip}>
-                  <CategoryIcon icon={category.icon} color={category.color} />
-                  <span className={styles.name}>{category.name}</span>
-                </label>
-              </span>
-            );
-          })}
-        </div>
-      )}
-
-      {status !== 'error' && <FieldError id={errorId}>{error}</FieldError>}
+      <FieldError id={errorId}>{error}</FieldError>
     </fieldset>
   );
 });

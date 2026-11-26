@@ -4,8 +4,7 @@
   margin-inline: auto;
 }
 
-@media (min-width: 1025px) {
-  .page {
+@media (min-width: 1025px) {.page {
     max-width: var(--content-medium);
   }
 }
@@ -24,13 +23,7 @@
   transition: opacity var(--dur-fast) var(--ease-standard);
 }
 
-/* The previous period stays visible, faded, while the next one loads */
-.refreshing {
-  opacity: var(--opacity-refreshing);
-}
-
-@media (min-width: 640px) {
-  .headerAction {
+@media (min-width: 640px) {.headerAction {
     display: block;
   }
 

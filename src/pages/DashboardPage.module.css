@@ -5,10 +5,6 @@
   transition: opacity var(--dur-fast) var(--ease-standard);
 }
 
-.refreshing {
-  opacity: var(--opacity-refreshing);
-}
-
 /* Mobile: one column — stats, donut, bars, top categories */
 .grid {
   display: grid;
@@ -42,8 +38,7 @@
 }
 
 /* Tablet: 2-column card grid */
-@media (min-width: 640px) {
-  .grid {
+@media (min-width: 640px) {.grid {
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
       'bars bars'
@@ -52,8 +47,7 @@
 }
 
 /* Desktop: bars + top categories on the left, the taller donut card on the right */
-@media (min-width: 1025px) {
-  .grid {
+@media (min-width: 1025px) {.grid {
     grid-template-columns: 3fr 2fr;
     grid-template-areas:
       'bars donut'

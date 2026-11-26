@@ -7,7 +7,6 @@ import { BASE_CURRENCY } from '../constants/currencies.js';
 import { Card, Tag, CategoryIcon } from '../components/UI.jsx';
 import { formatISO } from '../utils/dates.js';
 import { ConfirmSheet } from '../components/Sheet.jsx';
-import { Skeleton } from '../components/Feedback.jsx';
 import styles from './ExpenseDetail.module.css';
 
 // The pieces of one expense's page.
@@ -112,27 +111,5 @@ export function DeleteExpenseSheet({ open, session, expense, onClose, onConfirm 
         will be removed. You can undo this for a few seconds.
       </p>
     </ConfirmSheet>
-  );
-}
-
-//////////////////////////////
-// ExpenseDetailSkeleton
-//////////////////////////////
-
-// Same shape as the real page, so nothing jumps when it loads.
-export function ExpenseDetailSkeleton() {
-  return (
-    <div className={styles.wrapper} aria-busy="true" aria-label="Loading expense">
-      <div className={styles.card}>
-        <Skeleton className={styles.circle} />
-        <Skeleton className={styles.expenseDetailSkeletonAmount} />
-        <Skeleton className={styles.button} />
-      </div>
-      <div className={styles.card}>
-        {Array.from({ length: 4 }, (_, i) => (
-          <Skeleton key={i} className={styles.line} />
-        ))}
-      </div>
-    </div>
   );
 }

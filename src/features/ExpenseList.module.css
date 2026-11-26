@@ -43,60 +43,6 @@
 }
 
 /* //////////////////////////////
-   Loading skeleton
-   ////////////////////////////// */
-
-.skeleton {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-8);
-}
-
-.skeletonDay {
-  width: var(--sp-96);
-  height: var(--fs-14);
-  margin-bottom: var(--sp-4);
-}
-
-.skeletonRow {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-12);
-  min-height: var(--row-min-height);
-  padding: var(--sp-12) var(--sp-16);
-  background-color: var(--color-surface);
-  border-radius: var(--radius-md);
-}
-
-.circle {
-  width: var(--icon-circle-sm);
-  height: var(--icon-circle-sm);
-  border-radius: var(--radius-circle);
-}
-
-.lines {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-8);
-}
-
-.line {
-  width: 60%;
-  height: var(--fs-16);
-}
-
-.lineShort {
-  width: 30%;
-  height: var(--fs-12);
-}
-
-.amount {
-  width: var(--sp-64);
-  height: var(--fs-16);
-}
-
-/* //////////////////////////////
    HeroTotal
    ////////////////////////////// */
 
@@ -112,11 +58,6 @@
   font-weight: var(--fw-extrabold);
   line-height: var(--lh-hero);
   color: var(--color-heading);
-}
-
-.amountSkeleton {
-  width: 50%;
-  height: calc(var(--text-hero) * var(--lh-hero));
 }
 
 /* //////////////////////////////
@@ -151,8 +92,7 @@
   border-radius: var(--radius-lg);
 }
 
-@media (min-width: 640px) {
-  .filters {
+@media (min-width: 640px) {.filters {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -162,8 +102,7 @@
   }
 }
 
-@media (min-width: 1025px) {
-  .filters {
+@media (min-width: 1025px) {.filters {
     grid-template-columns: 3fr 2fr 2fr;
   }
 

@@ -2,10 +2,9 @@ import { useMemo } from 'react';
 import { Plus, Receipt, SearchX } from 'lucide-react';
 import { PageHeader, Fab } from '../components/Layout.jsx';
 import { Button } from '../components/Button.jsx';
-import { EmptyState, ErrorState } from '../components/Feedback.jsx';
-import { ExpenseList, ExpenseListSkeleton, ExpenseFilters, MonthNavigator } from '../features/ExpenseList.jsx';
+import { EmptyState } from '../components/Feedback.jsx';
+import { ExpenseList, ExpenseFilters, MonthNavigator } from '../features/ExpenseList.jsx';
 import { AddExpenseSheet } from '../features/ExpenseForm.jsx';
-import AddExpenseSheet from '../features/expenses/AddExpenseSheet.jsx';
 import { useExpenseFilters } from '../hooks/useExpenseFilters.js';
 import { useCategories, useExpenses } from '../hooks/useData.js';
 import { useSheet } from '../hooks/useSheet.js';
@@ -24,7 +23,7 @@ export default function ExpensesPage() {
   const range = useMemo(() => getPeriodRange('month', new Date(`${firstDay}T00:00:00`)), [firstDay]);
   const monthLabel = formatISO(firstDay, 'MMMM yyyy');
 
-  const { expenses, status, error, reload, isRefreshing, createExpense } = useExpenses({
+  const { expenses, createExpense } = useExpenses({
     ...range,
     categoryId: filters.categoryId,
     paymentMethod: filters.paymentMethod,
@@ -71,12 +70,8 @@ export default function ExpensesPage() {
         />
       </div>
 
-      <section
-        aria-label="Expenses"
-        aria-busy={isRefreshing}
-        className={`${styles.results} ${isRefreshing ? styles.refreshing : ''}`}
-      >
-        {status === 'success' && count > 0 && (
+      <section aria-label="Expenses" className={styles.results}>
+        {count > 0 && (
           <p className={styles.summary} aria-live="polite">
             <span className={`${styles.total} tabular-nums`}>{formatMoney(sumUsd(expenses))}</span>
             <span>
@@ -86,9 +81,7 @@ export default function ExpensesPage() {
           </p>
         )}
 
-        {status === 'loading' && <ExpenseListSkeleton rows={5} />}
-        {status === 'error' && <ErrorState message={error?.message} onRetry={reload} />}
-        {status === 'success' && count === 0 && hasFilters && (
+        {count === 0 && hasFilters && (
           <EmptyState
             icon={SearchX}
             message={`No expenses in ${monthLabel} match these filters.`}
@@ -99,10 +92,10 @@ export default function ExpensesPage() {
             }
           />
         )}
-        {status === 'success' && count === 0 && !hasFilters && (
+        {count === 0 && !hasFilters && (
           <EmptyState icon={Receipt} message={`No expenses in ${monthLabel}.`} />
         )}
-        {status === 'success' && count > 0 && <ExpenseList expenses={expenses} />}
+        {count > 0 && <ExpenseList expenses={expenses} />}
       </section>
 
       <Fab label="Add expense" onClick={sheet.openSheet} />

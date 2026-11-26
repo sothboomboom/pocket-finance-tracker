@@ -2,53 +2,45 @@ import { Plus, ChevronRight, Trash2, Lock, Check } from 'lucide-react';
 import { useEffect, useRef, useState, useId } from 'react';
 import { Card, CategoryIcon } from '../components/UI.jsx';
 import { Button } from '../components/Button.jsx';
-import { ErrorState, Skeleton, FieldError } from '../components/Feedback.jsx';
+import { FieldError } from '../components/Feedback.jsx';
 import { Sheet } from '../components/Sheet.jsx';
 import { CATEGORY_NAME_MAX_LENGTH, CATEGORY_COLOR_OPTIONS, CATEGORY_ICON_OPTIONS } from '../constants/categories.js';
 import sheetStyles from '../components/Sheet.module.css';
 import styles from './Categories.module.css';
 
+// Everything on the Categories page: the list, the add/edit sheet with its form and pickers, and the delete confirmation.
+
 //////////////////////////////
 // CategoryList
 //////////////////////////////
 
-export function CategoryList({ categories, status, error, onRetry, onAdd, onSelect }) {
+export function CategoryList({ categories, onAdd, onSelect }) {
   return (
     <Card
       title="Your categories"
       subtitle="Tap a category to rename it or change its color and icon."
       action={
-        <Button variant="secondary" icon={Plus} onClick={onAdd} disabled={status !== 'success'}>
+        <Button variant="secondary" icon={Plus} onClick={onAdd}>
           Add
         </Button>
       }
     >
-      {status === 'loading' && (
-        <div className={styles.list} aria-busy="true">
-          {Array.from({ length: 4 }, (_, i) => (
-            <Skeleton key={i} className={styles.rowSkeleton} />
-          ))}
-        </div>
-      )}
-      {status === 'error' && <ErrorState message={error?.message} onRetry={onRetry} />}
-      {status === 'success' && (
-        <ul className={styles.list}>
-          {categories.map((category) => (
-            <li key={category.id}>
-              <button type="button" className={styles.row} onClick={() => onSelect(category)}>
-                <CategoryIcon icon={category.icon} color={category.color} />
-                <span className={styles.main}>
-                  <span className="text-name">{category.name}</span>
-                  <span className="text-meta">
-                    {category.expenseCount} {category.expenseCount === 1 ? 'expense' : 'expenses'}
-                  </span>
+      <ul className={styles.list}>
+        {categories.map((category) => (
+          <li key={category.id}>
+            <button type="button" className={styles.row} onClick={() => onSelect(category)}>
+              <CategoryIcon icon={category.icon} color={category.color} />
+              <span className={styles.main}>
+                <span className="text-name">{category.name}</span>
+                <span className="text-meta">
+                  {category.expenseCount} {category.expenseCount === 1 ? 'expense' : 'expenses'}
                 </span>
-                <ChevronRight className={styles.chevron} strokeWidth={2} aria-hidden="true" />
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
+              </span>
+              <ChevronRight className={styles.chevron} strokeWidth={2} aria-hidden="true" />
+            </button>
+          </li>
+        ))}
+      </ul>
     </Card>
   );
 }

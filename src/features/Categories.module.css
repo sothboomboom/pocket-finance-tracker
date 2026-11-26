@@ -7,7 +7,7 @@
   flex-direction: column;
   gap: var(--sp-4);
   list-style: none;
-  margin-inline: calc(var(--sp-12) * -1);
+  margin-inline: calc(var(--sp-12) * -1); /* rows' hover background reaches the card edge */
 }
 
 .row {
@@ -48,12 +48,6 @@
   width: var(--icon-md);
   height: var(--icon-md);
   color: var(--color-text-secondary);
-}
-
-.rowSkeleton {
-  height: var(--row-min-height);
-  margin-inline: var(--sp-12);
-  border-radius: var(--radius-md);
 }
 
 /* //////////////////////////////
@@ -151,6 +145,7 @@
   transform: scale(var(--scale-press));
 }
 
+/* Selected: check mark + ring */
 .input:checked + .swatch {
   box-shadow:
     0 0 0 var(--border-width-thick) var(--color-surface),
