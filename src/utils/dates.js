@@ -17,7 +17,7 @@ import {
 const WEEK_OPTIONS = { weekStartsOn: 1 }; // Monday
 
 /** Date -> 'YYYY-MM-DD' in the user's local timezone. */
-export function toISODate(date) {
+function toISODate(date) {
   return format(date, 'yyyy-MM-dd');
 }
 

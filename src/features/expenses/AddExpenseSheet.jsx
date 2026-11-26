@@ -1,5 +1,5 @@
 import ExpenseSheet from './ExpenseSheet.jsx';
-import { useCategories } from '../../hooks/useCategories.js';
+import { useCategories } from '../../hooks/useData.js';
 
 /** Used by Home and All expenses. Editing happens on the expense's own page. */
 export default function AddExpenseSheet({ open, session, onClose, onCreate }) {

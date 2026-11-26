@@ -10,7 +10,7 @@ import { Button } from '../../components/Button.jsx';
 import { CURRENCIES } from '../../constants/currencies.js';
 import { NOTE_MAX_LENGTH, PAYMENT_METHOD_OPTIONS } from '../../constants/expenses.js';
 import { todayISO } from '../../utils/dates.js';
-import { usePreferences } from '../../hooks/usePreferences.js';
+import { usePreferences } from '../../context/PreferencesContext.js';
 import { cleanAmountInput } from '../../utils/amountInput.js';
 import styles from '../../components/Sheet.module.css';
 

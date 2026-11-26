@@ -1,4 +1,9 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
-// Read with useAppData() or useCategories().
 export const DataContext = createContext(null);
+
+export function useAppData() {
+  const context = useContext(DataContext);
+  if (!context) throw new Error('useAppData must be used inside <DataProvider>');
+  return context;
+}
