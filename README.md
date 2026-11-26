@@ -12,3 +12,4 @@ npm run dev
 - Never push to `main`. Branch → push → pull request → 1 review → squash and merge.
 - Branch names: your name and the task, `<name>` or `<name>-<what-task>`.
 - Pull `main` every day.
+- Commit each feature you completed. Commit each changes or fixes.
