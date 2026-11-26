@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { format, parse, isValid } from 'date-fns';
 
@@ -25,27 +25,24 @@ export function useExpenseFilters() {
     };
   }, [searchParams]);
 
-  // An empty value removes the filter.
-  const setFilter = useCallback(
-    (key, value) => {
-      setSearchParams((prev) => {
-        const next = new URLSearchParams(prev);
-        if (value === null || value === undefined || value === '') next.delete(key);
-        else next.set(key, String(value));
-        return next;
-      });
-    },
-    [setSearchParams],
-  );
+  // An empty value removes the filter
+  function setFilter(key, value) {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (value === null || value === undefined || value === '') next.delete(key);
+      else next.set(key, String(value));
+      return next;
+    });
+  }
 
-  /** Clears category and method, but keeps the month. */
-  const clearFilters = useCallback(() => {
+  /** Clears category and method, but keeps the month */
+  function clearFilters() {
     setSearchParams((prev) => {
       const next = new URLSearchParams();
       if (prev.get('month')) next.set('month', prev.get('month'));
       return next;
     });
-  }, [setSearchParams]);
+  }
 
   const hasFilters = filters.categoryId !== null || filters.paymentMethod !== null;
 

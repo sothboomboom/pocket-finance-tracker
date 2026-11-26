@@ -1,21 +1,22 @@
-import { useId } from 'react';
 import { Link } from 'react-router-dom';
 import { CATEGORY_ICONS, FALLBACK_CATEGORY_ICON } from '../constants/categories.js';
 import { formatMoney } from '../utils/money.js';
 import { BASE_CURRENCY } from '../constants/currencies.js';
 import styles from './UI.module.css';
 
+// Small building blocks used on many pages.
+
 //////////////////////////////
 // Card
 //////////////////////////////
 
+// Flat on purpose: shadows are kept for things that float (sheets, toasts).
 export function Card({ title, subtitle, action, className = '', children }) {
-  const titleId = useId();
   return (
-    <section className={`${styles.card} ${className}`} aria-labelledby={titleId}>
+    <section className={`${styles.card} ${className}`} aria-label={title}>
       <header className={styles.header}>
         <div className={styles.titles}>
-          <h2 id={titleId} className={styles.title}>
+          <h2 className={styles.title}>
             {title}
           </h2>
           {subtitle && <div className="text-meta">{subtitle}</div>}
@@ -53,8 +54,7 @@ export function SegmentedControl({
   fullWidth = false,
   compact = false,
 }) {
-  const generatedName = useId();
-  const groupName = name ?? generatedName;
+  const groupName = name ?? label.toLowerCase().replace(/ /g, '-'); // e.g. "paid-with"
 
   return (
     <fieldset className={`${styles.control} ${fullWidth ? styles.fullWidth : ''} ${compact ? styles.compact : ''}`}>

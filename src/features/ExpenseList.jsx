@@ -1,5 +1,4 @@
 import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
-import { useId } from 'react';
 import { formatDayLabel, groupByDay } from '../utils/dates.js';
 import { formatMoney } from '../utils/money.js';
 import { IconButton } from '../components/Button.jsx';
@@ -81,7 +80,7 @@ const METHOD_OPTIONS = [
 
 /** Stateless: the page keeps the values in the URL through useExpenseFilters. */
 export function ExpenseFilters({ filters, categories, onCategoryChange, onMethodChange }) {
-  const categoryId = useId();
+  const categoryId = 'filter-category';
 
   return (
     <div className={styles.filters} role="search">
