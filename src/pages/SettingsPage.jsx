@@ -1,6 +1,5 @@
 import { PageHeader } from '../components/Layout.jsx';
-import RatesCard from '../features/settings/RatesCard.jsx';
-import SampleDataCard from '../features/settings/SampleDataCard.jsx';
+import { RatesCard, SampleDataCard } from '../features/Settings.jsx';
 import { useRates } from '../hooks/useData.js';
 import styles from './SettingsPage.module.css';
 

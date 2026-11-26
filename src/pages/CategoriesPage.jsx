@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { PageHeader } from '../components/Layout.jsx';
-import CategoryList from '../features/categories/CategoryList.jsx';
-import CategorySheet from '../features/categories/CategorySheet.jsx';
+import { CategoryList, CategorySheet } from '../features/Categories.jsx';
 import { useCategories } from '../hooks/useData.js';
 import { useSheet } from '../hooks/useSheet.js';
 import { useToast } from '../context/ToastContext.js';
