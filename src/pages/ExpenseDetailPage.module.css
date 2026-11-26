@@ -1,0 +1,17 @@
+/* One focused column at every size */
+.page {
+  max-width: var(--content-narrow);
+  margin-inline: auto;
+}
+
+.back {
+  margin-bottom: var(--sp-16);
+  /* The round button's edge lines up with the page text */
+  margin-left: calc(var(--sp-8) * -1);
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-group);
+}
