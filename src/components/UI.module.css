@@ -102,10 +102,6 @@
   cursor: pointer;
 }
 
-.compact .label {
-  padding: var(--sp-8) var(--sp-4);
-}
-
 .input:hover + .label {
   color: var(--color-heading);
 }
