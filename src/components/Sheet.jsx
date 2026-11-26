@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import { Button } from './Button.jsx';
 import { FieldError } from './Feedback.jsx';
@@ -14,7 +14,6 @@ import styles from './Sheet.module.css';
  */
 export function Sheet({ open, onClose, title, initialFocusRef, children }) {
   const dialogRef = useRef(null);
-  const titleId = useId();
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -41,13 +40,13 @@ export function Sheet({ open, onClose, title, initialFocusRef, children }) {
     <dialog
       ref={dialogRef}
       className={styles.sheet}
-      aria-labelledby={titleId}
+      aria-label={title}
       onCancel={handleCancel}
       onClick={handleClick}
     >
       <div className={styles.panel}>
         <header className={styles.header}>
-          <h2 id={titleId} className={styles.title}>
+          <h2 className={styles.title}>
             {title}
           </h2>
           <button type="button" className={styles.close} onClick={onClose} aria-label="Close">

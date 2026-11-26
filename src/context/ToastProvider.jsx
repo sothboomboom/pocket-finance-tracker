@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ToastContext } from './ToastContext.js';
 import { Toast } from '../components/Feedback.jsx';
 import { TOAST_DURATION_MS } from '../constants/expenses.js';
@@ -9,16 +9,16 @@ export default function ToastProvider({ children }) {
   const timerRef = useRef(null);
   const nextId = useRef(1);
 
-  const showToast = useCallback(({ message, tone = 'success' }) => {
+  function showToast({ message, tone = 'success' }) {
     clearTimeout(timerRef.current);
     setToast({ id: nextId.current++, message, tone });
     timerRef.current = setTimeout(() => setToast(null), TOAST_DURATION_MS);
-  }, []);
+  }
 
   // Stop the timer if the app closes while a toast is showing.
   useEffect(() => () => clearTimeout(timerRef.current), []);
 
-  const value = useMemo(() => ({ showToast }), [showToast]);
+  const value = { showToast };
 
   return (
     <ToastContext.Provider value={value}>

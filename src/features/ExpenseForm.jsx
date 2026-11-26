@@ -1,4 +1,4 @@
-import { useRef, useState, forwardRef, useId } from 'react';
+import { useRef, useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { Sheet } from '../components/Sheet.jsx';
 import { useCategories } from '../hooks/useData.js';
@@ -266,10 +266,7 @@ function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef }) {
 //////////////////////////////
 
 // Pass the id of `children` (the USD preview) as `describedBy`, so screen readers read it with the field.
-const AmountField = forwardRef(function AmountField(
-  { id, value, onChange, symbol, decimals = 2, error, describedBy, children },
-  ref,
-) {
+function AmountField({ id, value, onChange, symbol, decimals = 2, error, describedBy, children, ref }) {
   const errorId = `${id}-error`;
   const describedByIds = [describedBy, error ? errorId : null].filter(Boolean).join(' ') || undefined;
   return (
@@ -299,7 +296,7 @@ const AmountField = forwardRef(function AmountField(
       <FieldError id={errorId}>{error}</FieldError>
     </div>
   );
-});
+}
 
 //////////////////////////////
 // UsdPreview
@@ -344,11 +341,8 @@ function CurrencyPicker({ value, onChange }) {
 //////////////////////////////
 
 // Native radio inputs, so arrow keys work.
-const CategoryPicker = forwardRef(function CategoryPicker(
-  { categories, value, onChange, error },
-  firstInputRef,
-) {
-  const name = useId();
+function CategoryPicker({ categories, value, onChange, error, ref: firstInputRef }) {
+  const name = 'category';
   const errorId = `${name}-error`;
 
   return (
@@ -383,4 +377,4 @@ const CategoryPicker = forwardRef(function CategoryPicker(
       <FieldError id={errorId}>{error}</FieldError>
     </fieldset>
   );
-});
+}

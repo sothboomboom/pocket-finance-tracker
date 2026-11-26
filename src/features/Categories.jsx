@@ -1,5 +1,5 @@
 import { Plus, ChevronRight, Trash2, Lock } from 'lucide-react';
-import { useEffect, useRef, useState, useId } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card, CategoryIcon } from '../components/UI.jsx';
 import { Button } from '../components/Button.jsx';
 import { FieldError } from '../components/Feedback.jsx';
@@ -7,6 +7,8 @@ import { Sheet } from '../components/Sheet.jsx';
 import { CATEGORY_NAME_MAX_LENGTH, CATEGORY_ICON_OPTIONS } from '../constants/categories.js';
 import sheetStyles from '../components/Sheet.module.css';
 import styles from './Categories.module.css';
+
+// Everything on the Categories page: the list, the add/edit sheet with its form and pickers, and the delete confirmation.
 
 //////////////////////////////
 // CategoryList
@@ -200,7 +202,7 @@ function CategoryForm({ category, onSubmit, onDelete, nameRef }) {
 //////////////////////////////
 
 function IconPicker({ value, onChange, error, errorId }) {
-  const name = useId();
+  const name = 'icon';
   const selected = CATEGORY_ICON_OPTIONS.find((option) => option.name === value);
 
   return (

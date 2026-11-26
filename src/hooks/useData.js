@@ -1,9 +1,6 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import * as store from '../store/expenses.js';
 import { useAppData } from '../context/DataContext.js';
-
-// The data hooks every page uses. Categories are shared through DataContext;
-// expenses are read from the store again whenever `version` changes.
 
 //////////////////////////////
 // useCategories
@@ -16,7 +13,7 @@ export function useCategories() {
 //////////////////////////////
 // useExpenses
 //////////////////////////////
-/** Expenses in a date range, with optional filters. Deleting lives in useExpense. */
+/** Expenses in a date range, with optional filters. Deleting lives in useExpense */
 export function useExpenses({ from, to, categoryId = null, paymentMethod = null }) {
   // `version` changes after any edit anywhere, which reads the list again.
   const { version, notifyChange } = useAppData();
@@ -25,14 +22,11 @@ export function useExpenses({ from, to, categoryId = null, paymentMethod = null 
     [from, to, categoryId, paymentMethod, version],
   );
 
-  const createExpense = useCallback(
-    (values) => {
-      const expense = store.createExpense(values);
-      notifyChange();
-      return expense;
-    },
-    [notifyChange],
-  );
+  function createExpense(values) {
+    const expense = store.createExpense(values);
+    notifyChange();
+    return expense;
+  }
 
   return { expenses, createExpense };
 }
@@ -40,28 +34,22 @@ export function useExpenses({ from, to, categoryId = null, paymentMethod = null 
 //////////////////////////////
 // useExpense
 //////////////////////////////
-/** expense is null when the id doesn't exist (a bad link, or deleted already). */
+/** expense is null when the id doesn't exist (a bad link, or deleted already) */
 export function useExpense(id) {
   const { version, notifyChange } = useAppData();
   const expense = useMemo(() => store.getExpense(id), [id, version]);
 
-  const updateExpense = useCallback(
-    (values) => {
-      store.updateExpense(id, values);
-      notifyChange();
-    },
-    [id, notifyChange],
-  );
+  function updateExpense(values) {
+    store.updateExpense(id, values);
+    notifyChange();
+  }
 
   // `leavePage` runs before the update; otherwise this page would show "not found" for a moment.
-  const deleteExpense = useCallback(
-    (leavePage) => {
-      store.deleteExpense(id);
-      leavePage();
-      notifyChange();
-    },
-    [id, notifyChange],
-  );
+  function deleteExpense(leavePage) {
+    store.deleteExpense(id);
+    leavePage();
+    notifyChange();
+  }
 
   return { expense, updateExpense, deleteExpense };
 }
