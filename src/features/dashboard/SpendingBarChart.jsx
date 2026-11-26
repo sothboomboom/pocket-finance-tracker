@@ -1,16 +1,15 @@
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import Card from '../../components/Card.jsx';
+import { Card } from '../../components/UI.jsx';
 import ChartTooltip from '../../components/ChartTooltip.jsx';
 import ChartEmpty from './ChartEmpty.jsx';
 import { formatCompactUsd, formatMoney } from '../../utils/money.js';
 import { formatHourShort, formatHourRange, formatISO, todayISO, formatDayLabel } from '../../utils/dates.js';
 import { useReducedMotion } from '../../hooks/useReducedMotion.js';
-import { CHART } from '../../constants/chart.js';
+import { CHART } from '../../constants/ui.js';
 import styles from './SpendingBarChart.module.css';
 
 const TITLES = { day: 'Spending by hour', week: 'Spending by day', month: 'Spending by day' };
 
-// Fixed label rhythm, so Recharts doesn't drop labels unevenly.
 function axisTicks(period, data) {
   if (period === 'week') return undefined;
   if (period === 'day') return data.filter((row) => row.key % 3 === 0).map((row) => row.axisLabel);
@@ -18,7 +17,6 @@ function axisTicks(period, data) {
   return ['1', '5', '10', '15', '20', '25', last].filter((label, i, all) => all.indexOf(label) === i);
 }
 
-// Short labels for the axis, full ones for the tooltip.
 function toChartData(period, series, date) {
   const today = todayISO();
   const currentHour = new Date().getHours();
@@ -42,7 +40,6 @@ function toChartData(period, series, date) {
   });
 }
 
-/** One neutral color for all bars; only the current day or hour is blue, as the active one. */
 export default function SpendingBarChart({ period, series, date, total }) {
   const reducedMotion = useReducedMotion();
   const data = toChartData(period, series, date);

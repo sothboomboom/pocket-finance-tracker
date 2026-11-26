@@ -1,4 +1,4 @@
-import ExpenseRow from '../../components/ExpenseRow.jsx';
+import { ExpenseRow } from '../../components/UI.jsx';
 import { formatDayLabel, groupByDay } from '../../utils/dates.js';
 import styles from './ExpenseList.module.css';
 

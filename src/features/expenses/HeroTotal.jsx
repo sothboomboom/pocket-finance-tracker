@@ -1,4 +1,4 @@
-import Skeleton from '../../components/Skeleton.jsx';
+import { Skeleton } from '../../components/Feedback.jsx';
 import { formatMoney } from '../../utils/money.js';
 import { useCountUp } from '../../hooks/useCountUp.js';
 import styles from './HeroTotal.module.css';

@@ -1,6 +1,6 @@
 import { useId } from "react";
 import { Check } from "lucide-react";
-import { CATEGORY_COLOR_OPTIONS } from "../../constants/categoryColors.js";
+import { CATEGORY_COLOR_OPTIONS } from '../../constants/categories.js';
 import styles from "./ColorPicker.module.css";
 
 export default function ColorPicker({ value, onChange, error, errorId }) {

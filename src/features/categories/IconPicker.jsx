@@ -1,5 +1,5 @@
 import { useId } from "react";
-import { CATEGORY_ICON_OPTIONS } from "../../constants/categoryIcons.js";
+import { CATEGORY_ICON_OPTIONS } from '../../constants/categories.js';
 import styles from "./IconPicker.module.css";
 
 export default function IconPicker({ value, color, onChange, error, errorId }) {

@@ -1,10 +1,10 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import Card from '../../components/Card.jsx';
+import { Card } from '../../components/UI.jsx';
 import ChartTooltip from '../../components/ChartTooltip.jsx';
 import ChartEmpty from './ChartEmpty.jsx';
 import { formatMoney, formatShare } from '../../utils/money.js';
 import { useReducedMotion } from '../../hooks/useReducedMotion.js';
-import { CHART } from '../../constants/chart.js';
+import { CHART } from '../../constants/ui.js';
 import styles from './CategoryDonut.module.css';
 
 const chartColor = (color) => `var(--cat-${color}-chart, var(--cat-gray-chart))`;

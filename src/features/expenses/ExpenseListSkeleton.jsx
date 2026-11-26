@@ -1,4 +1,4 @@
-import Skeleton from '../../components/Skeleton.jsx';
+import { Skeleton } from '../../components/Feedback.jsx';
 import styles from './ExpenseListSkeleton.module.css';
 
 export default function ExpenseListSkeleton({ rows = 3 }) {

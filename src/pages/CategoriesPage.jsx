@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PageHeader from "../components/PageHeader.jsx";
+import { PageHeader } from '../components/Layout.jsx';
 import CategoryList from "../features/categories/CategoryList.jsx";
 import CategorySheet from "../features/categories/CategorySheet.jsx";
 import { useCategories } from "../hooks/useCategories.js";

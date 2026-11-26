@@ -1,0 +1,257 @@
+/* //////////////////////////////
+   EmptyState
+   ////////////////////////////// */
+
+.empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--sp-24);
+	padding: var(--sp-48) var(--sp-24);
+	text-align: center; /* fine for one short line */
+}
+
+.emptyCircle {
+	display: grid;
+	place-items: center;
+	width: var(--icon-circle-lg);
+	height: var(--icon-circle-lg);
+	border-radius: var(--radius-circle);
+	background-color: var(--color-primary-tint);
+	color: var(--color-primary);
+}
+
+/* Icon stays at its designed size; the circle provides the scale */
+.emptyCircle svg {
+	width: var(--icon-lg);
+	height: var(--icon-lg);
+}
+
+.emptyMessage {
+	font-size: var(--text-body);
+	font-weight: var(--fw-semibold);
+	color: var(--color-text-secondary);
+}
+
+/* //////////////////////////////
+   ErrorState
+   ////////////////////////////// */
+
+.errorState {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--sp-24);
+	padding: var(--sp-48) var(--sp-24);
+	text-align: center;
+}
+
+.errorCircle {
+	display: grid;
+	place-items: center;
+	width: var(--icon-circle-lg);
+	height: var(--icon-circle-lg);
+	border-radius: var(--radius-circle);
+	background-color: var(--color-error-bg);
+	color: var(--color-error);
+}
+
+.errorCircle svg {
+	width: var(--icon-lg);
+	height: var(--icon-lg);
+}
+
+.errorMessage {
+	font-size: var(--text-body);
+	font-weight: var(--fw-semibold);
+	color: var(--color-text);
+}
+
+/* //////////////////////////////
+   Placeholder
+   ////////////////////////////// */
+
+.placeholder {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-16);
+	padding: var(--sp-24);
+	background-color: var(--color-surface);
+	border-radius: var(--radius-lg);
+}
+
+.placeholderCircle {
+	flex-shrink: 0;
+	display: grid;
+	place-items: center;
+	width: var(--icon-circle-md);
+	height: var(--icon-circle-md);
+	border-radius: var(--radius-circle);
+	background-color: var(--color-hover-bg);
+	color: var(--color-text);
+}
+
+.placeholderCircle svg {
+	width: var(--icon-lg);
+	height: var(--icon-lg);
+}
+
+/* //////////////////////////////
+   Skeleton
+   ////////////////////////////// */
+
+.skeleton {
+	display: block;
+	background-color: var(--color-skeleton);
+	border-radius: var(--radius-sm);
+	animation: pulse calc(var(--dur-slow) * 3) var(--ease-standard) infinite
+		alternate;
+}
+
+@keyframes pulse {
+	to {
+		opacity: var(--opacity-pulse);
+	}
+}
+
+/* //////////////////////////////
+   DashboardSkeleton
+   ////////////////////////////// */
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sp-16);
+}
+
+.stats {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: var(--sp-12);
+}
+
+.stat {
+	height: var(--sp-96);
+	border-radius: var(--radius-lg);
+}
+
+.chart {
+	height: calc(var(--chart-height) + var(--sp-96));
+	border-radius: var(--radius-lg);
+}
+
+@media (min-width: 1025px) {
+	.stats {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+/* //////////////////////////////
+   FieldError
+   ////////////////////////////// */
+
+.fieldError {
+	display: flex;
+	align-items: flex-start;
+	gap: var(--sp-8);
+	font-size: var(--fs-14);
+	font-weight: var(--fw-semibold);
+	line-height: var(--lh-body);
+	color: var(--color-error);
+}
+
+.icon {
+	flex-shrink: 0;
+	width: var(--icon-sm);
+	height: var(--icon-sm);
+	/* Optically center the icon on the first line of text */
+	margin-top: calc((var(--fs-14) * var(--lh-body) - var(--icon-sm)) / 2);
+}
+
+/* //////////////////////////////
+   Toast
+   ////////////////////////////// */
+
+.toast {
+	position: fixed;
+	z-index: var(--z-toast);
+	left: var(--tabbar-offset);
+	right: var(--tabbar-offset);
+	/* Above the tab bar and the FAB on mobile */
+	bottom: calc(var(--tabbar-clearance) + var(--fab-size) + var(--sp-32));
+	max-width: var(--toast-width);
+	margin-inline: auto;
+	display: flex;
+	align-items: center;
+	gap: var(--sp-12);
+	min-height: var(--control-height);
+	padding: var(--sp-8) var(--sp-8) var(--sp-8) var(--sp-16);
+	border-radius: var(--radius-md);
+	background-color: var(--color-toast-bg);
+	color: var(--color-toast-text);
+	box-shadow: var(--shadow-lg);
+	font-size: var(--fs-16);
+	font-weight: var(--fw-semibold);
+	animation: toast-in var(--dur-base) var(--ease-overshoot);
+}
+
+.toastIcon {
+	flex-shrink: 0;
+	width: var(--icon-md);
+	height: var(--icon-md);
+}
+
+/* On the dark toast, use light tints so icons stay visible */
+.success .toastIcon {
+	color: var(--color-toast-success-icon);
+}
+
+.error .toastIcon {
+	color: var(--color-toast-error-icon);
+}
+
+.message {
+	flex: 1;
+	padding-block: var(--sp-4);
+}
+
+.action {
+	flex-shrink: 0;
+	min-height: var(--touch-target);
+	min-width: var(--touch-target);
+	padding: var(--sp-8) var(--sp-16);
+	border-radius: var(--radius-pill);
+	color: var(--color-toast-action);
+	font-weight: var(--fw-extrabold);
+	transition:
+		background-color var(--dur-fast) var(--ease-standard),
+		transform var(--dur-fast) var(--ease-standard);
+}
+
+.action:hover {
+	background-color: var(--color-toast-action-hover);
+}
+
+.action:active {
+	transform: scale(var(--scale-press));
+}
+
+@media (min-width: 640px) {
+	.toast {
+		bottom: calc(var(--tabbar-clearance) + var(--sp-16));
+	}
+}
+
+@media (min-width: 1025px) {
+	.toast {
+		left: var(--sidebar-width);
+		bottom: var(--sp-32);
+	}
+}
+
+@keyframes toast-in {
+	from {
+		opacity: 0;
+		transform: translateY(var(--slide-distance));
+	}
+}

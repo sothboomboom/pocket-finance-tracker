@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Trash2, Lock } from "lucide-react";
-import CategoryIcon from "../../components/CategoryIcon.jsx";
-import FieldError from "../../components/FieldError.jsx";
-import Button from "../../components/Button.jsx";
+import { CategoryIcon } from '../../components/UI.jsx';
+import { FieldError } from '../../components/Feedback.jsx';
+import { Button } from '../../components/Button.jsx';
 import ColorPicker from "./ColorPicker.jsx";
 import IconPicker from "./IconPicker.jsx";
-import { CATEGORY_NAME_MAX_LENGTH } from "../../constants/categoryColors.js";
-import formStyles from "../../components/SheetForm.module.css";
+import { CATEGORY_NAME_MAX_LENGTH } from '../../constants/categories.js';
+import formStyles from '../../components/Sheet.module.css';
 import styles from "./CategoryForm.module.css";
 
 const NEW_CATEGORY = { name: "", color: "teal", icon: "Sparkles" };

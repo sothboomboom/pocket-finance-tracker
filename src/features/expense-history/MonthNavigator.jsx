@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import IconButton from '../../components/IconButton.jsx';
+import { IconButton } from '../../components/Button.jsx';
 import styles from './MonthNavigator.module.css';
 
 // Next is disabled on the current month: there are no future expenses.

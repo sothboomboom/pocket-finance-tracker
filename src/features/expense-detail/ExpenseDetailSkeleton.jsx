@@ -1,4 +1,4 @@
-import Skeleton from '../../components/Skeleton.jsx';
+import { Skeleton } from '../../components/Feedback.jsx';
 import styles from './ExpenseDetailSkeleton.module.css';
 
 // Same shape as the real page, so nothing jumps when it loads.

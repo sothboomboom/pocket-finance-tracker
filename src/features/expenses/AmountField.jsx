@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import FieldError from '../../components/FieldError.jsx';
+import { FieldError } from '../../components/Feedback.jsx';
 import { cleanAmountInput } from '../../utils/amountInput.js';
 import styles from './AmountField.module.css';
 

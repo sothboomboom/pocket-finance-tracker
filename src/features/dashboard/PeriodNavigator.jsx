@@ -1,6 +1,6 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import SegmentedControl from "../../components/SegmentedControl.jsx";
-import IconButton from "../../components/IconButton.jsx";
+import { SegmentedControl } from "../../components/UI.jsx";
+import { IconButton } from "../../components/Button.jsx";
 import { DASHBOARD_PERIOD_OPTIONS } from "../../constants/expenses.js";
 import styles from "./PeriodNavigator.module.css";
 

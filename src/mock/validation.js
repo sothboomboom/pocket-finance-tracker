@@ -1,8 +1,6 @@
-// Input checks. Errors come back as { fieldErrors: { field: message } } so forms
-// can show each message under its field.
+// Input checks. Errors come back as { fieldErrors: { field: message } } so forms can show each message under its field.
 import { ApiError } from '../api/client.js';
-import { CATEGORY_COLOR_OPTIONS, CATEGORY_NAME_MAX_LENGTH } from '../constants/categoryColors.js';
-import { CATEGORY_ICON_OPTIONS } from '../constants/categoryIcons.js';
+import { CATEGORY_COLOR_OPTIONS, CATEGORY_NAME_MAX_LENGTH, CATEGORY_ICON_OPTIONS } from '../constants/categories.js';
 import { NOTE_MAX_LENGTH } from '../constants/expenses.js';
 import { CURRENCIES } from '../constants/currencies.js';
 
@@ -16,7 +14,6 @@ function throwIfErrors(errors) {
   }
 }
 
-/** True for a real calendar date written as 'YYYY-MM-DD' (rejects 2026-02-30). */
 export function isISODate(value) {
   if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const [y, m, d] = value.split('-').map(Number);
@@ -24,13 +21,11 @@ export function isISODate(value) {
   return date.getUTCFullYear() === y && date.getUTCMonth() === m - 1 && date.getUTCDate() === d;
 }
 
-/** 12 or '12' -> 12; anything else -> null. */
 function toPositiveInt(value) {
   const n = Number(value);
   return Number.isInteger(n) && n > 0 ? n : null;
 }
 
-/** Accepts at most `decimals` decimals (0 for KRW, JPY, KHR); otherwise null. */
 function toMoney(value, decimals) {
   if (typeof value !== 'number' && typeof value !== 'string') return null;
   const text = String(value).trim();
@@ -44,7 +39,6 @@ export function validateId(id) {
   return value;
 }
 
-/** Returns trimmed, typed values, or throws an ApiError with field errors. */
 export function validateExpense(body) {
   const errors = {};
 

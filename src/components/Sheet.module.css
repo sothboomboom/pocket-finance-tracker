@@ -1,6 +1,9 @@
-/* ---------- Mobile: bottom sheet ---------- */
+/* //////////////////////////////
+   Sheet
+   ////////////////////////////// */
+
+/* Mobile: bottom sheet */
 .sheet {
-  /* Reset the browser's default dialog box */
   border: none;
   padding: 0;
   color: inherit;
@@ -9,7 +12,7 @@
   width: 100%;
   max-width: 100%;
   max-height: var(--dialog-max-height);
-  margin: auto 0 0; /* stick to the bottom */
+  margin: auto 0 0;
   overflow: visible;
 }
 
@@ -109,7 +112,7 @@
   }
 }
 
-/* ---------- Tablet & desktop: centered modal ---------- */
+/* Tablet & desktop: centered modal */
 @media (min-width: 640px) {
   .sheet {
     width: calc(100% - var(--sp-48));
@@ -146,4 +149,110 @@
     opacity: 0;
     transform: scale(var(--scale-modal-start));
   }
+}
+
+/* //////////////////////////////
+   Sheet forms (shared by every form and confirmation)
+   ////////////////////////////// */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* lets the fields area scroll inside the sheet */
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-field);
+  padding: var(--sp-16) var(--sp-24) var(--sp-24);
+  overflow-y: auto;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-label-field);
+}
+
+.input {
+  width: 100%;
+  min-height: var(--control-height);
+  padding: var(--sp-12) var(--sp-16);
+  background-color: var(--color-bg);
+  border: var(--border-width-thick) solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-semibold);
+  transition:
+    border-color var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) var(--ease-standard);
+}
+
+.input::placeholder {
+  color: var(--color-placeholder);
+}
+
+.input:hover {
+  border-color: var(--color-border);
+}
+
+.input:focus-visible {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-glow);
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--color-error);
+}
+
+.hint {
+  align-self: flex-end;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-secondary);
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-12);
+  padding: var(--sp-16) var(--sp-24) var(--sp-24);
+  background-color: var(--color-surface);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+}
+
+.save {
+  flex: 1;
+}
+
+@media (min-width: 640px) {
+  .fields,
+  .footer {
+    padding-inline: var(--sp-32);
+  }
+
+  .save {
+    flex: 0 0 auto;
+    margin-left: auto;
+  }
+}
+
+/* //////////////////////////////
+   ConfirmSheet
+   ////////////////////////////// */
+
+.confirmBody {
+  gap: var(--sp-16);
+}
+
+.confirmActions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
 }

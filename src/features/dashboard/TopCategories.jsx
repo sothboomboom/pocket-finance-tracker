@@ -1,5 +1,4 @@
-import Card from '../../components/Card.jsx';
-import CategoryIcon from '../../components/CategoryIcon.jsx';
+import { Card, CategoryIcon } from '../../components/UI.jsx';
 import ChartEmpty from './ChartEmpty.jsx';
 import { formatMoney, formatShare } from '../../utils/money.js';
 import styles from './TopCategories.module.css';

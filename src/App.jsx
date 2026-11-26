@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import AppLayout from "./components/AppLayout.jsx";
+import { AppLayout } from './components/Layout.jsx';
 import PreferencesProvider from "./context/PreferencesProvider.jsx";
 import DataProvider from "./context/DataProvider.jsx";
 import ToastProvider from "./context/ToastProvider.jsx";

@@ -1,12 +1,10 @@
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Receipt } from 'lucide-react';
-import PageHeader from '../components/PageHeader.jsx';
-import SegmentedControl from '../components/SegmentedControl.jsx';
-import Button from '../components/Button.jsx';
-import Fab from '../components/Fab.jsx';
-import EmptyState from '../components/EmptyState.jsx';
-import ErrorState from '../components/ErrorState.jsx';
+import { PageHeader, Fab } from '../components/Layout.jsx';
+import { SegmentedControl } from '../components/UI.jsx';
+import { Button } from '../components/Button.jsx';
+import { EmptyState, ErrorState } from '../components/Feedback.jsx';
 import HeroTotal from '../features/expenses/HeroTotal.jsx';
 import ExpenseList from '../features/expenses/ExpenseList.jsx';
 import ExpenseListSkeleton from '../features/expenses/ExpenseListSkeleton.jsx';
