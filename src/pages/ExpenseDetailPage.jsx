@@ -3,7 +3,7 @@ import { SearchX } from 'lucide-react';
 import PageHeader from '../components/PageHeader.jsx';
 import BackButton from '../components/BackButton.jsx';
 import ErrorState from '../components/ErrorState.jsx';
-import Placeholder from '../components/Placeholder.jsx';
+import Placeholder from '../components/PlaceHolder.jsx';
 import ExpenseSheet from '../features/expenses/ExpenseSheet.jsx';
 import ExpenseHero from '../features/expense-detail/ExpenseHero.jsx';
 import ExpenseFacts from '../features/expense-detail/ExpenseFacts.jsx';
