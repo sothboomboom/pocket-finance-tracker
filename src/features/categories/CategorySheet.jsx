@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import Sheet from "../../components/Sheet.jsx";
+import { Sheet } from '../../components/Sheet.jsx';
 import CategoryForm from "./CategoryForm.jsx";
 import DeleteCategoryConfirm from "./DeleteCategoryConfirm.jsx";
 
-/** Delete swaps this dialog's content for a confirmation, instead of stacking a second dialog. */
 export default function CategorySheet({
 	open,
 	session,

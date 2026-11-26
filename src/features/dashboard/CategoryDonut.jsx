@@ -1,5 +1,5 @@
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-import Card from '../../components/Card.jsx';
+import { Card } from '../../components/UI.jsx';
 import ChartTooltip from '../../components/ChartTooltip.jsx';
 import ChartEmpty from './ChartEmpty.jsx';
 import { formatMoney, formatShare } from '../../utils/money.js';

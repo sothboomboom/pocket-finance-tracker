@@ -1,6 +1,6 @@
 import { useId } from 'react';
 import { Search, ChevronDown } from 'lucide-react';
-import SegmentedControl from '../../components/SegmentedControl.jsx';
+import { SegmentedControl } from '../../components/UI.jsx';
 import styles from './ExpenseFilters.module.css';
 
 const METHOD_OPTIONS = [

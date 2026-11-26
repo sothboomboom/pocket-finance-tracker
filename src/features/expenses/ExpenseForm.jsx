@@ -4,7 +4,7 @@ import AmountField from './AmountField.jsx';
 import CategoryPicker from './CategoryPicker.jsx';
 import CurrencyPicker from './CurrencyPicker.jsx';
 import UsdPreview from './UsdPreview.jsx';
-import SegmentedControl from '../../components/SegmentedControl.jsx';
+import { SegmentedControl } from '../../components/UI.jsx';
 import { FieldError } from '../../components/Feedback.jsx';
 import { Button } from '../../components/Button.jsx';
 import { CURRENCIES } from '../../constants/currencies.js';
@@ -12,7 +12,7 @@ import { NOTE_MAX_LENGTH, PAYMENT_METHOD_OPTIONS } from '../../constants/expense
 import { todayISO } from '../../utils/dates.js';
 import { usePreferences } from '../../hooks/usePreferences.js';
 import { cleanAmountInput } from '../../utils/amountInput.js';
-import styles from '../../components/SheetForm.module.css';
+import styles from '../../components/Sheet.module.css';
 
 function initialValues(expense, lastCurrency) {
   if (!expense) {

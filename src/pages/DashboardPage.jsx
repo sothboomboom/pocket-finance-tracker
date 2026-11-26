@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import PageHeader from '../components/PageHeader.jsx';
+import { PageHeader } from '../components/Layout.jsx';
 import { ErrorState, DashboardSkeleton } from '../components/Feedback.jsx';
 import PeriodNavigator from '../features/dashboard/PeriodNavigator.jsx';
 import StatsRow from '../features/dashboard/StatsRow.jsx';

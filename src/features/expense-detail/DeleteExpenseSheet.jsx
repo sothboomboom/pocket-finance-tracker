@@ -1,5 +1,5 @@
 import { Trash2 } from 'lucide-react';
-import ConfirmSheet from '../../components/ConfirmSheet.jsx';
+import { ConfirmSheet } from '../../components/Sheet.jsx';
 import { formatMoney } from '../../utils/money.js';
 import styles from './DeleteExpenseSheet.module.css';
 

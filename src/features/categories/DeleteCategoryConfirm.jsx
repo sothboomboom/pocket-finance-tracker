@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
-import CategoryIcon from "../../components/CategoryIcon.jsx";
+import { CategoryIcon } from '../../components/UI.jsx';
 import { Button } from '../../components/Button.jsx';
 import { FieldError } from '../../components/Feedback.jsx';
-import formStyles from "../../components/SheetForm.module.css";
+import formStyles from '../../components/Sheet.module.css';
 import styles from "./DeleteCategoryConfirm.module.css";
 
 export default function DeleteCategoryConfirm({

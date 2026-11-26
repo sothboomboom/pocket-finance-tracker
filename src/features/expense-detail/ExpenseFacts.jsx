@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import Card from '../../components/Card.jsx';
+import { Card } from '../../components/UI.jsx';
 import { formatMoney } from '../../utils/money.js';
 import { formatISO } from '../../utils/dates.js';
 import { BASE_CURRENCY } from '../../constants/currencies.js';

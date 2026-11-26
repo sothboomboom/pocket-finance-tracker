@@ -1,7 +1,7 @@
 import { RotateCcw } from "lucide-react";
-import Card from "../../components/Card.jsx";
+import { Card } from '../../components/UI.jsx';
 import { Button } from '../../components/Button.jsx';
-import ConfirmSheet from "../../components/ConfirmSheet.jsx";
+import { ConfirmSheet } from '../../components/Sheet.jsx';
 import { useAppData } from "../../hooks/useAppData.js";
 import { useSheet } from "../../hooks/useSheet.js";
 import { useToast } from "../../hooks/useToast.js";

@@ -1,6 +1,5 @@
 import { CircleAlert } from "lucide-react";
-import Card from "../../components/Card.jsx";
-import Tag from "../../components/Tag.jsx";
+import { Card, Tag } from '../../components/UI.jsx';
 import { ErrorState, Skeleton } from '../../components/Feedback.jsx';
 import { CURRENCIES } from "../../constants/currencies.js";
 import { formatMoney } from "../../utils/money.js";

@@ -1,6 +1,6 @@
 import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import { SearchX } from 'lucide-react';
-import PageHeader from '../components/PageHeader.jsx';
+import { PageHeader } from '../components/Layout.jsx';
 import { BackButton } from '../components/Button.jsx';
 import { ErrorState, Placeholder } from '../components/Feedback.jsx';
 import ExpenseSheet from '../features/expenses/ExpenseSheet.jsx';

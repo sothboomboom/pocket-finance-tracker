@@ -1,7 +1,6 @@
 import { Plus, ChevronRight } from "lucide-react";
-import Card from "../../components/Card.jsx";
+import { Card, CategoryIcon } from '../../components/UI.jsx';
 import { Button } from '../../components/Button.jsx';
-import CategoryIcon from "../../components/CategoryIcon.jsx";
 import { ErrorState, Skeleton } from '../../components/Feedback.jsx';
 import styles from "./CategoryList.module.css";
 

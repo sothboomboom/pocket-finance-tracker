@@ -1,4 +1,4 @@
-import SegmentedControl from '../../components/SegmentedControl.jsx';
+import { SegmentedControl } from '../../components/UI.jsx';
 import { CURRENCIES, CURRENCY_CODES } from '../../constants/currencies.js';
 import styles from './CurrencyPicker.module.css';
 

@@ -1,5 +1,5 @@
 import { forwardRef, useId } from 'react';
-import CategoryIcon from '../../components/CategoryIcon.jsx';
+import { CategoryIcon } from '../../components/UI.jsx';
 import { Skeleton, FieldError } from '../../components/Feedback.jsx';
 import { Button } from '../../components/Button.jsx';
 import styles from './CategoryPicker.module.css';

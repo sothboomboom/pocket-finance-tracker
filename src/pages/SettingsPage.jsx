@@ -1,4 +1,4 @@
-import PageHeader from "../components/PageHeader.jsx";
+import { PageHeader } from '../components/Layout.jsx';
 import RatesCard from "../features/settings/RatesCard.jsx";
 import SampleDataCard from "../features/settings/SampleDataCard.jsx";
 import { useRates } from "../hooks/useRates.js";

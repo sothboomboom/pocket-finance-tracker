@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import Sheet from '../../components/Sheet.jsx';
+import { Sheet } from '../../components/Sheet.jsx';
 import ExpenseForm from './ExpenseForm.jsx';
 import { useRates } from '../../hooks/useRates.js';
 
