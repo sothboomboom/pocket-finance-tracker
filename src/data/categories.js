@@ -5,12 +5,11 @@ import {
   BookOpen, Gamepad2, Clapperboard, Gift, PawPrint, Repeat, Sparkles,
 } from 'lucide-react';
 
+// Text limits
 export const CATEGORY_NAME_MAX_LENGTH = 40;
+export const NOTE_MAX_LENGTH = 200;
 
-//////////////////////////////
 // Icons
-//////////////////////////////
-
 export const CATEGORY_ICON_OPTIONS = [
   { name: 'UtensilsCrossed', label: 'Food', Icon: UtensilsCrossed },
   { name: 'Coffee', label: 'Coffee', Icon: Coffee },

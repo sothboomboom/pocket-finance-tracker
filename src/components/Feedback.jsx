@@ -1,11 +1,7 @@
-import { CircleAlert, CircleCheck } from 'lucide-react';
+import { CircleAlert } from 'lucide-react';
 import styles from './Feedback.module.css';
 
-// What the user sees when something happens: empty states, field errors and the toast.
-
-//////////////////////////////
-// EmptyState
-//////////////////////////////
+// What the user sees when something happens: empty states and field errors.
 
 // Nothing to show yet
 export function EmptyState({ icon: Icon, message, action }) {
@@ -20,10 +16,6 @@ export function EmptyState({ icon: Icon, message, action }) {
   );
 }
 
-//////////////////////////////
-// Placeholder
-//////////////////////////////
-
 // Icon + message card, e.g. when an expense no longer exists
 export function Placeholder({ icon: Icon, children }) {
   return (
@@ -36,10 +28,6 @@ export function Placeholder({ icon: Icon, children }) {
   );
 }
 
-//////////////////////////////
-// FieldError
-//////////////////////////////
-
 // Icon + text, so the error isn't shown by color alone.
 // Link it to its input with aria-describedby={id}.
 export function FieldError({ id, children }) {
@@ -49,20 +37,5 @@ export function FieldError({ id, children }) {
       <CircleAlert className={styles.icon} strokeWidth={2} aria-hidden="true" />
       <span>{children}</span>
     </p>
-  );
-}
-
-//////////////////////////////
-// Toast
-//////////////////////////////
-
-// Rendered by ToastProvider; show one with useToast().
-export function Toast({ message, tone }) {
-  const Icon = tone === 'error' ? CircleAlert : CircleCheck;
-  return (
-    <div className={`${styles.toast} ${styles[tone]}`}>
-      <Icon className={styles.toastIcon} strokeWidth={2} aria-hidden="true" />
-      <span className={styles.message}>{message}</span>
-    </div>
   );
 }

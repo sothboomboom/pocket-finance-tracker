@@ -1,4 +1,4 @@
-import { CURRENCIES, BASE_CURRENCY } from '../constants/currencies.js';
+import { CURRENCIES, BASE_CURRENCY } from '../data/currencies.js';
 
 const numberFormatters = new Map();
 

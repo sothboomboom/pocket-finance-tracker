@@ -1,15 +1,11 @@
 import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { formatDayLabel, groupByDay } from '../utils/dates.js';
 import { formatMoney } from '../utils/money.js';
-import { IconButton } from '../components/Button.jsx';
-import { SegmentedControl, ExpenseRow } from '../components/UI.jsx';
+import { IconButton } from './Button.jsx';
+import { SegmentedControl, ExpenseRow } from './UI.jsx';
 import styles from './ExpenseList.module.css';
 
 // Lists of expenses: the day-grouped list, the big total, and the month / filter controls of All expenses.
-
-//////////////////////////////
-// ExpenseList
-//////////////////////////////
 
 export function ExpenseList({ expenses }) {
   return (
@@ -32,10 +28,6 @@ export function ExpenseList({ expenses }) {
   );
 }
 
-//////////////////////////////
-// HeroTotal
-//////////////////////////////
-
 const LABELS = { day: 'Spent today', week: 'Spent this week', month: 'Spent this month' };
 
 export function HeroTotal({ period, total, count, rangeLabel }) {
@@ -49,10 +41,6 @@ export function HeroTotal({ period, total, count, rangeLabel }) {
     </div>
   );
 }
-
-//////////////////////////////
-// MonthNavigator
-//////////////////////////////
 
 // Next is disabled on the current month: there are no future expenses.
 export function MonthNavigator({ label, onPrevious, onNext, canGoNext }) {
@@ -68,17 +56,13 @@ export function MonthNavigator({ label, onPrevious, onNext, canGoNext }) {
   );
 }
 
-//////////////////////////////
-// ExpenseFilters
-//////////////////////////////
-
 const METHOD_OPTIONS = [
   { value: 'all', label: 'All' },
   { value: 'cash', label: 'Cash' },
   { value: 'bank', label: 'Bank' },
 ];
 
-/** Stateless: the page keeps the values in the URL through useExpenseFilters. */
+/** Stateless: the All expenses page keeps the values in the URL. */
 export function ExpenseFilters({ filters, categories, onCategoryChange, onMethodChange }) {
   const categoryId = 'filter-category';
 

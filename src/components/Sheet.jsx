@@ -4,13 +4,10 @@ import { Button } from './Button.jsx';
 import { FieldError } from './Feedback.jsx';
 import styles from './Sheet.module.css';
 
-//////////////////////////////
-// Sheet
-//////////////////////////////
-
 /**
  * Bottom sheet on phones, centered dialog on wider screens.
  * The native <dialog> gives focus trapping, an inert background and Escape for free.
+ * The content only exists while it's open, so a form starts fresh every time.
  */
 export function Sheet({ open, onClose, title, initialFocusRef, children }) {
   const dialogRef = useRef(null);
@@ -53,25 +50,18 @@ export function Sheet({ open, onClose, title, initialFocusRef, children }) {
             <X strokeWidth={2} aria-hidden="true" />
           </button>
         </header>
-        {children}
+        {open && children}
       </div>
     </dialog>
   );
 }
 
-//////////////////////////////
-// ConfirmSheet
-//////////////////////////////
-
-/**
- * For destructive actions. Focus starts on Cancel, the safe choice.
- * `session` remounts the body, so an old error never reappears.
- */
-export function ConfirmSheet({ open, session, title, onClose, children, ...bodyProps }) {
+/** For destructive actions. Focus starts on Cancel, the safe choice. */
+export function ConfirmSheet({ open, title, onClose, children, ...bodyProps }) {
   const cancelRef = useRef(null);
   return (
     <Sheet open={open} onClose={onClose} title={title} initialFocusRef={cancelRef}>
-      <ConfirmBody key={session} cancelRef={cancelRef} onCancel={onClose} {...bodyProps}>
+      <ConfirmBody cancelRef={cancelRef} onCancel={onClose} {...bodyProps}>
         {children}
       </ConfirmBody>
     </Sheet>

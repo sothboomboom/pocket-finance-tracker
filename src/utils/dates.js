@@ -79,6 +79,6 @@ export function shiftPeriod(period, isoDate, direction) {
   return toISODate(addMonths(date, direction));
 }
 
-export function formatISO(isoDate, pattern) {
+export function formatDate(isoDate, pattern) {
   return format(parseISO(isoDate), pattern);
 }

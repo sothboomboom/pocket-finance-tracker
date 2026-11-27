@@ -1,54 +1,42 @@
 import { useRef, useState } from 'react';
 import { Trash2 } from 'lucide-react';
-import { Sheet } from '../components/Sheet.jsx';
-import { useCategories } from '../hooks/useData.js';
-import { RATES_TO_USD } from '../store/rates.js';
-import { SegmentedControl, CategoryIcon } from '../components/UI.jsx';
-import { Button } from '../components/Button.jsx';
-import { FieldError } from '../components/Feedback.jsx';
-import { CURRENCIES, BASE_CURRENCY, CURRENCY_CODES } from '../constants/currencies.js';
-import { NOTE_MAX_LENGTH, PAYMENT_METHOD_OPTIONS } from '../constants/expenses.js';
+import { Sheet } from './Sheet.jsx';
+import { SegmentedControl, CategoryIcon } from './UI.jsx';
+import { Button } from './Button.jsx';
+import { FieldError } from './Feedback.jsx';
+import { useFinance } from '../context/useFinance.js';
+import { CURRENCIES, BASE_CURRENCY, CURRENCY_CODES, RATES_TO_USD } from '../data/currencies.js';
+import { NOTE_MAX_LENGTH } from '../data/categories.js';
 import { todayISO } from '../utils/dates.js';
-import { cleanAmountInput } from '../utils/amountInput.js';
 import { convertToUsd, formatMoney } from '../utils/money.js';
-import { getLastCurrency, setLastCurrency } from '../utils/storage.js';
-import sheetStyles from '../components/Sheet.module.css';
+import sheetStyles from './Sheet.module.css';
 import styles from './ExpenseForm.module.css';
 
-// The add / edit expense sheet and its form.
+// The add / edit expense sheet and every field in its form.
+
+const PAYMENT_METHOD_OPTIONS = [
+  { value: 'cash', label: 'Cash' },
+  { value: 'bank', label: 'Bank' },
+];
 
 const CURRENCY_NAMES = { USD: 'US dollar', KRW: 'Korean won', JPY: 'Japanese yen', CNY: 'Chinese yuan', KHR: 'Cambodian riel' };
 
-// `session` changes every time the sheet opens. Using it as the form's key gives a fresh, empty form.
-export function ExpenseSheet({ open, session, expense, onClose, ...formProps }) {
+/** Pass an `expense` to edit it; leave it out to add a new one. */
+export function ExpenseSheet({ open, expense = null, onClose, onSubmit, onDelete }) {
   const amountRef = useRef(null);
   return (
     <Sheet open={open} onClose={onClose} title={expense ? 'Edit expense' : 'Add expense'} initialFocusRef={amountRef}>
-      <ExpenseForm key={session} expense={expense} amountRef={amountRef} {...formProps} />
+      <ExpenseForm expense={expense} amountRef={amountRef} onSubmit={onSubmit} onDelete={onDelete} />
     </Sheet>
   );
 }
 
-// Used by Home and All expenses to add a new expense. Editing happens on the expense's own page.
-export function AddExpenseSheet({ open, session, onClose, onCreate }) {
-  const { categories } = useCategories();
-  return (
-    <ExpenseSheet
-      open={open}
-      session={session}
-      expense={null}
-      onClose={onClose}
-      categories={categories}
-      onSubmit={onCreate}
-    />
-  );
-}
-
-function initialValues(expense) {
+// ExpenseForm
+function initialValues(expense, lastCurrency) {
   if (!expense) {
     return {
       amount: '',
-      currency: getLastCurrency(), // the currency used for the last saved expense
+      currency: lastCurrency,
       categoryId: null,
       paymentMethod: 'cash',
       spentAt: todayISO(),
@@ -56,7 +44,8 @@ function initialValues(expense) {
     };
   }
   return {
-    amount: expense.amount.toFixed(CURRENCIES[expense.currency]?.decimals ?? 2), // 4.5 -> '4.50'
+    // 4.5 -> '4.50'
+    amount: expense.amount.toFixed(CURRENCIES[expense.currency]?.decimals ?? 2),
     currency: expense.currency,
     categoryId: expense.category.id,
     paymentMethod: expense.paymentMethod,
@@ -65,44 +54,36 @@ function initialValues(expense) {
   };
 }
 
-// Quick checks while filling in the form. The store checks everything again when saving.
-function validateValues(values) {
-  const errors = {};
-  if (!values.amount || Number(values.amount) <= 0) errors.amount = 'Enter an amount greater than 0';
-  if (!values.categoryId) errors.categoryId = 'Choose a category';
-  if (!values.spentAt) errors.spentAt = 'Choose a date';
-  return errors;
-}
-
-function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef }) {
+/** If saving fails with field errors, each one shows under its field. */
+function ExpenseForm({ expense, onSubmit, onDelete, amountRef }) {
   const isEdit = Boolean(expense);
-  const [values, setValues] = useState(() => initialValues(expense));
+  const { categories, lastCurrency, setLastCurrency } = useFinance();
+  const [values, setValues] = useState(() => initialValues(expense, lastCurrency));
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState(null);
   const formRef = useRef(null);
 
   const currency = CURRENCIES[values.currency];
-  const showUsdPreview = values.currency !== BASE_CURRENCY;
 
-  // When editing and the currency is unchanged, the saved rate is kept, so the preview uses it too.
+  // Same rule as saving: an unchanged currency keeps its saved rate, so the preview matches.
   const previewRate =
     isEdit && values.currency === expense.currency ? expense.rateToUsd : RATES_TO_USD[values.currency];
+
+  function handleCurrencyChange(code) {
+    setValues((prev) => ({
+      ...prev,
+      currency: code,
+      // '12.50' becomes '12' for a currency without decimals
+      amount: cleanAmountInput(prev.amount, CURRENCIES[code].decimals),
+    }));
+    setErrors((prev) => ({ ...prev, amount: undefined, currency: undefined }));
+  }
 
   function setField(field, value) {
     setValues((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }));
   }
 
-  function handleCurrencyChange(code) {
-    setValues((prev) => ({
-      ...prev,
-      currency: code,
-      amount: cleanAmountInput(prev.amount, CURRENCIES[code].decimals), // '12.50' -> '12' for KRW
-    }));
-    setErrors((prev) => ({ ...prev, amount: undefined, currency: undefined }));
-  }
-
-  // Wait one frame so the error styles exist, then focus the first invalid field.
   function focusFirstError() {
     requestAnimationFrame(() => {
       formRef.current?.querySelector('[aria-invalid="true"]')?.focus();
@@ -111,67 +92,48 @@ function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-
-    const clientErrors = validateValues(values);
-    setErrors(clientErrors);
+    setErrors({});
     setFormError(null);
-    if (Object.keys(clientErrors).length > 0) {
-      focusFirstError();
-      return;
-    }
 
     try {
-      onSubmit({ ...values, note: values.note.trim() || null });
+      onSubmit({
+        amount: values.amount,
+        currency: values.currency,
+        categoryId: values.categoryId,
+        paymentMethod: values.paymentMethod,
+        spentAt: values.spentAt,
+        note: values.note.trim() || null,
+      });
       setLastCurrency(values.currency);
     } catch (err) {
-      // The store can still reject something, e.g. "5." passes the check above but not the store's.
-      if (err.fieldErrors) {
-        setErrors(err.fieldErrors);
-        focusFirstError();
-      } else {
-        setFormError(err.message);
-      }
+      const fieldErrors = err.fieldErrors ?? {};
+      setErrors(fieldErrors);
+      // Errors without a field show above the buttons
+      if (Object.keys(fieldErrors).length === 0) setFormError(err.message);
+      else focusFirstError();
     }
   }
-
-  const amountDescribedBy =
-    [showUsdPreview ? 'expense-usd-preview' : null, errors.amount ? 'expense-amount-error' : null]
-      .filter(Boolean)
-      .join(' ') || undefined;
 
   return (
     <form ref={formRef} className={sheetStyles.form} onSubmit={handleSubmit} noValidate>
       <div className={sheetStyles.fields}>
-        {/* Amount, with the currency symbol in front and a USD preview below */}
-        <div className={styles.field}>
-          <label htmlFor="expense-amount" className="field-label">
-            Amount
-          </label>
-          <div className={`${styles.inputWrap} ${errors.amount ? styles.invalid : ''}`}>
-            <span className={styles.symbol} aria-hidden="true">
-              {currency.symbol}
-            </span>
-            <input
-              ref={amountRef}
-              id="expense-amount"
-              type="text"
-              inputMode={currency.decimals > 0 ? 'decimal' : 'numeric'}
-              autoComplete="off"
-              placeholder={currency.decimals > 0 ? `0.${'0'.repeat(currency.decimals)}` : '0'}
-              className={`${styles.input} tabular-nums`}
-              value={values.amount}
-              onChange={(event) => setField('amount', cleanAmountInput(event.target.value, currency.decimals))}
-              aria-invalid={errors.amount ? 'true' : undefined}
-              aria-describedby={amountDescribedBy}
-            />
-          </div>
-          {showUsdPreview && (
-            <p id="expense-usd-preview" className={`${styles.preview} tabular-nums`}>
-              ≈ {formatMoney(convertToUsd(values.amount || 0, previewRate))} USD
-            </p>
-          )}
-          <FieldError id="expense-amount-error">{errors.amount}</FieldError>
-        </div>
+        <AmountField
+          ref={amountRef}
+          id="expense-amount"
+          value={values.amount}
+          onChange={(value) => setField('amount', value)}
+          symbol={currency.symbol}
+          decimals={currency.decimals}
+          error={errors.amount}
+          describedBy="expense-usd-preview"
+        >
+          <UsdPreview
+            id="expense-usd-preview"
+            amount={values.amount}
+            currency={values.currency}
+            rate={previewRate}
+          />
+        </AmountField>
 
         <div className={sheetStyles.field}>
           <label htmlFor="expense-currency" className="field-label">
@@ -272,21 +234,78 @@ function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef }) {
   );
 }
 
-// Category chips. They're real radio buttons underneath, so arrow keys work.
-function CategoryPicker({ categories, value, onChange, error }) {
+/** Keeps only digits and one decimal point, with at most `decimals` decimals. */
+function cleanAmountInput(raw, decimals = 2) {
+  let text = raw.replace(',', '.').replace(/[^\d.]/g, '');
+  const [whole, ...rest] = text.split('.');
+  const fraction = rest.join('');
+  if (decimals === 0) return whole.slice(0, 12);
+  text = rest.length > 0 ? `${whole.slice(0, 12)}.${fraction.slice(0, decimals)}` : whole.slice(0, 12);
+  return text;
+}
+
+// Pass the id of `children` (the USD preview) as `describedBy`, so screen readers read it with the field.
+function AmountField({ id, value, onChange, symbol, decimals = 2, error, describedBy, children, ref }) {
+  const errorId = `${id}-error`;
+  const describedByIds = [describedBy, error ? errorId : null].filter(Boolean).join(' ') || undefined;
   return (
-    <fieldset className={styles.fieldset} aria-describedby={error ? 'category-error' : undefined}>
+    <div className={styles.field}>
+      <label htmlFor={id} className="field-label">
+        Amount
+      </label>
+      <div className={`${styles.inputWrap} ${error ? styles.invalid : ''}`}>
+        <span className={styles.symbol} aria-hidden="true">
+          {symbol}
+        </span>
+        <input
+          ref={ref}
+          id={id}
+          type="text"
+          inputMode={decimals > 0 ? 'decimal' : 'numeric'}
+          autoComplete="off"
+          placeholder={decimals > 0 ? `0.${'0'.repeat(decimals)}` : '0'}
+          className={`${styles.input} tabular-nums`}
+          value={value}
+          onChange={(event) => onChange(cleanAmountInput(event.target.value, decimals))}
+          aria-invalid={error ? 'true' : undefined}
+          aria-describedby={describedByIds}
+        />
+      </div>
+      {children}
+      <FieldError id={errorId}>{error}</FieldError>
+    </div>
+  );
+}
+
+/** Only a preview: the saved amount is converted when the expense is saved. Hidden for USD. */
+function UsdPreview({ id, amount, currency, rate }) {
+  if (currency === BASE_CURRENCY) return null;
+  return (
+    <p id={id} className={`${styles.preview} tabular-nums`}>
+      ≈ {formatMoney(convertToUsd(amount || 0, rate))} USD
+    </p>
+  );
+}
+
+// Native radio inputs, so arrow keys work.
+function CategoryPicker({ categories, value, onChange, error, ref: firstInputRef }) {
+  const name = 'category';
+  const errorId = `${name}-error`;
+
+  return (
+    <fieldset className={styles.fieldset} aria-describedby={error ? errorId : undefined}>
       <legend className="field-legend">Category</legend>
 
       <div className={styles.grid}>
-        {categories.map((category) => {
-          const id = `category-${category.id}`;
+        {categories.map((category, index) => {
+          const id = `${name}-${category.id}`;
           return (
             <span key={category.id} className={styles.categoryPickerOption}>
               <input
+                ref={index === 0 ? firstInputRef : undefined}
                 type="radio"
                 id={id}
-                name="category"
+                name={name}
                 value={category.id}
                 checked={value === category.id}
                 onChange={() => onChange(category.id)}
@@ -302,7 +321,7 @@ function CategoryPicker({ categories, value, onChange, error }) {
         })}
       </div>
 
-      <FieldError id="category-error">{error}</FieldError>
+      <FieldError id={errorId}>{error}</FieldError>
     </fieldset>
   );
 }
