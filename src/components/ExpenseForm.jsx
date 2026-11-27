@@ -19,6 +19,8 @@ const PAYMENT_METHOD_OPTIONS = [
   { value: 'bank', label: 'Bank' },
 ];
 
+const CURRENCY_NAMES = { USD: 'US dollar', KRW: 'Korean won', JPY: 'Japanese yen', CNY: 'Chinese yuan', KHR: 'Cambodian riel' };
+
 /** Pass an `expense` to edit it; leave it out to add a new one. */
 export function ExpenseSheet({ open, expense = null, onClose, onSubmit, onDelete }) {
   const amountRef = useRef(null);
@@ -134,7 +136,23 @@ function ExpenseForm({ expense, onSubmit, onDelete, amountRef }) {
         </AmountField>
 
         <div className={sheetStyles.field}>
-          <CurrencyPicker value={values.currency} onChange={handleCurrencyChange} />
+          <label htmlFor="expense-currency" className="field-label">
+            Currency
+          </label>
+          <select
+            id="expense-currency"
+            className={sheetStyles.input}
+            value={values.currency}
+            onChange={(event) => handleCurrencyChange(event.target.value)}
+            aria-invalid={errors.currency ? 'true' : undefined}
+            aria-describedby={errors.currency ? 'expense-currency-error' : undefined}
+          >
+            {CURRENCY_CODES.map((code) => (
+              <option key={code} value={code}>
+                {CURRENCIES[code].symbol} {code} – {CURRENCY_NAMES[code]}
+              </option>
+            ))}
+          </select>
           <FieldError id="expense-currency-error">{errors.currency}</FieldError>
         </div>
 
@@ -266,27 +284,6 @@ function UsdPreview({ id, amount, currency, rate }) {
     <p id={id} className={`${styles.preview} tabular-nums`}>
       ≈ {formatMoney(convertToUsd(amount || 0, rate))} USD
     </p>
-  );
-}
-
-// CurrencyPicker
-const NAMES = { USD: 'US dollar', KRW: 'Korean won', JPY: 'Japanese yen', CNY: 'Chinese yuan', KHR: 'Cambodian riel' };
-
-// Symbol stacked over the code so all five fit on a phone.
-const OPTIONS = CURRENCY_CODES.map((code) => ({
-  value: code,
-  ariaLabel: `${code}, ${NAMES[code]}`,
-  label: (
-    <span className={styles.option} aria-hidden="true">
-      <span className={styles.currencyPickerSymbol}>{CURRENCIES[code].symbol}</span>
-      <span className={styles.code}>{code}</span>
-    </span>
-  ),
-}));
-
-function CurrencyPicker({ value, onChange }) {
-  return (
-    <SegmentedControl label="Currency" showLabel options={OPTIONS} value={value} onChange={onChange} fullWidth compact />
   );
 }
 

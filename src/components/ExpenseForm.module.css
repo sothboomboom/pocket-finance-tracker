@@ -1,5 +1,5 @@
 /* //////////////////////////////
-   AmountField
+   Amount field
    ////////////////////////////// */
 
 .field {
@@ -59,7 +59,7 @@
 }
 
 /* //////////////////////////////
-   UsdPreview
+   USD preview
    ////////////////////////////// */
 
 .preview {
@@ -67,30 +67,6 @@
   font-size: var(--text-secondary);
   font-weight: var(--fw-semibold);
   color: var(--color-text-secondary);
-}
-
-/* //////////////////////////////
-   CurrencyPicker
-   ////////////////////////////// */
-
-.option {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-}
-
-.currencyPickerSymbol {
-  font-size: var(--fs-18);
-  font-weight: var(--fw-extrabold);
-  line-height: var(--lh-heading);
-}
-
-.code {
-  font-size: var(--fs-12);
-  font-weight: var(--fw-bold);
-  line-height: var(--lh-heading);
-  letter-spacing: var(--ls-eyebrow);
 }
 
 /* //////////////////////////////
