@@ -2,6 +2,8 @@
 
 A personal expense tracker built with React and Vite. Your data is saved in the browser, so there is no account or server to set up.
 
+The site is live on https://finance-tracker-pocket.netlify.app
+
 ## Features
 
 - **Add, edit and delete expenses** (deleting asks you first)
@@ -12,6 +14,31 @@ A personal expense tracker built with React and Vite. Your data is saved in the 
 - **Categories**: add, rename and choose an icon; deleting one moves its expenses to "Other"
 - **Settings**: the exchange rates, and buttons to load the sample data or delete all data
 - Works on phones, tablets and desktop
+
+## Tech stack
+
+- [React 19](https://react.dev)
+- [Vite](https://vite.dev)
+- Browser `localStorage` to save your data
+
+## Project structure
+
+```text
+├── public/               # Favicons and other static files
+├── src/
+│   ├── components/       # Reusable UI: Layout, Button, Sheet, ExpenseForm, ExpenseList, ...
+│   ├── context/          # FinanceContext (all app data) and the useFinance hook
+│   ├── data/             # Categories, currencies and exchange rates, sample data
+│   ├── pages/            # One page per route: Home, Expenses, Dashboard, Categories, Settings
+│   ├── utils/            # Helpers for formatting money and dates
+│   ├── App.jsx           # The routes
+│   ├── main.jsx          # Entry point: router and FinanceProvider
+│   └── index.css         # Global styles and design tokens
+├── index.html
+├── package.json
+├── vite.config.js
+└── REPORT.md             # Project report
+```
 
 ## Getting started
 
