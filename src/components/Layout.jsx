@@ -10,10 +10,6 @@ import {
 } from "lucide-react";
 import styles from "./Layout.module.css";
 
-//////////////////////////////
-// AppLayout
-//////////////////////////////
-
 const NAV_ITEMS = [
 	{ to: "/", label: "Home", icon: House, end: true },
 	{ to: "/expenses", label: "Expenses", icon: ReceiptText },
@@ -93,10 +89,6 @@ function BottomTabBar() {
 	);
 }
 
-//////////////////////////////
-// PageHeader
-//////////////////////////////
-
 // Renders the page's only <h1>.
 export function PageHeader({ title, eyebrow, actions }) {
 	return (
@@ -109,10 +101,6 @@ export function PageHeader({ title, eyebrow, actions }) {
 		</header>
 	);
 }
-
-//////////////////////////////
-// Fab
-//////////////////////////////
 
 export function Fab({ label, onClick }) {
 	return (

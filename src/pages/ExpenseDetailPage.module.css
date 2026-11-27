@@ -15,3 +15,96 @@
   flex-direction: column;
   gap: var(--space-group);
 }
+
+/* //////////////////////////////
+   ExpenseHero
+   ////////////////////////////// */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-24);
+  padding: var(--sp-24);
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-16);
+}
+
+.amounts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+}
+
+.amount {
+  font-size: var(--text-hero);
+  font-weight: var(--fw-extrabold);
+  line-height: var(--lh-hero);
+  color: var(--color-heading);
+}
+
+.original {
+  font-size: var(--text-body);
+  font-weight: var(--fw-semibold);
+  color: var(--color-text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-12);
+}
+
+/* //////////////////////////////
+   ExpenseFacts
+   ////////////////////////////// */
+
+/* Whitespace, not divider lines, separates the rows */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-16);
+}
+
+/* On mobile the label sits right above its value */
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.value {
+  font-size: var(--text-body);
+  font-weight: var(--fw-semibold);
+  color: var(--color-heading);
+  overflow-wrap: anywhere; /* long notes wrap instead of overflowing */
+}
+
+.empty {
+  font-weight: var(--fw-regular);
+  color: var(--color-text-secondary);
+}
+
+/* Side by side once there's room: labels in a fixed column */
+@media (min-width: 640px) {.row {
+    display: grid;
+    grid-template-columns: calc(var(--sp-96) + var(--sp-48)) 1fr;
+    align-items: baseline;
+    gap: var(--sp-16);
+  }
+}
+
+/* //////////////////////////////
+   DeleteExpenseSheet
+   ////////////////////////////// */
+
+.what {
+  font-weight: var(--fw-bold);
+  color: var(--color-heading);
+}

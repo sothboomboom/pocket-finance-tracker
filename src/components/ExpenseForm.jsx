@@ -1,65 +1,35 @@
 import { useRef, useState } from 'react';
 import { Trash2 } from 'lucide-react';
-import { Sheet } from '../components/Sheet.jsx';
-import { useCategories } from '../hooks/useData.js';
-import { RATES_TO_USD } from '../store/rates.js';
-import { SegmentedControl, CategoryIcon } from '../components/UI.jsx';
-import { Button } from '../components/Button.jsx';
-import { CURRENCIES, BASE_CURRENCY, CURRENCY_CODES } from '../constants/currencies.js';
-import { NOTE_MAX_LENGTH, PAYMENT_METHOD_OPTIONS } from '../constants/expenses.js';
+import { Sheet } from './Sheet.jsx';
+import { SegmentedControl, CategoryIcon } from './UI.jsx';
+import { Button } from './Button.jsx';
+import { FieldError } from './Feedback.jsx';
+import { useFinance } from '../context/useFinance.js';
+import { CURRENCIES, BASE_CURRENCY, CURRENCY_CODES, RATES_TO_USD } from '../data/currencies.js';
+import { NOTE_MAX_LENGTH } from '../data/categories.js';
 import { todayISO } from '../utils/dates.js';
-import { usePreferences } from '../context/PreferencesContext.js';
-import { cleanAmountInput } from '../utils/amountInput.js';
-import sheetStyles from '../components/Sheet.module.css';
 import { convertToUsd, formatMoney } from '../utils/money.js';
-import { FieldError } from '../components/Feedback.jsx';
+import sheetStyles from './Sheet.module.css';
 import styles from './ExpenseForm.module.css';
 
 // The add / edit expense sheet and every field in its form.
 
-//////////////////////////////
-// ExpenseSheet
-//////////////////////////////
+const PAYMENT_METHOD_OPTIONS = [
+  { value: 'cash', label: 'Cash' },
+  { value: 'bank', label: 'Bank' },
+];
 
-/** `session` changes on every open, which remounts the form so it starts fresh. */
-export function ExpenseSheet({ open, session, expense, onClose, ...formProps }) {
+/** Pass an `expense` to edit it; leave it out to add a new one. */
+export function ExpenseSheet({ open, expense = null, onClose, onSubmit, onDelete }) {
   const amountRef = useRef(null);
   return (
     <Sheet open={open} onClose={onClose} title={expense ? 'Edit expense' : 'Add expense'} initialFocusRef={amountRef}>
-      <ExpenseForm
-        key={session}
-        expense={expense}
-        amountRef={amountRef}
-        {...formProps}
-      />
+      <ExpenseForm expense={expense} amountRef={amountRef} onSubmit={onSubmit} onDelete={onDelete} />
     </Sheet>
   );
 }
 
-//////////////////////////////
-// AddExpenseSheet
-//////////////////////////////
-
-// The same sheet with no expense, plus the shared categories
-/** Used by Home and All expenses. Editing happens on the expense's own page. */
-export function AddExpenseSheet({ open, session, onClose, onCreate }) {
-  const { categories } = useCategories();
-  return (
-    <ExpenseSheet
-      open={open}
-      session={session}
-      expense={null}
-      onClose={onClose}
-      categories={categories}
-      onSubmit={onCreate}
-    />
-  );
-}
-
-//////////////////////////////
 // ExpenseForm
-//////////////////////////////
-
 function initialValues(expense, lastCurrency) {
   if (!expense) {
     return {
@@ -82,19 +52,10 @@ function initialValues(expense, lastCurrency) {
   };
 }
 
-// Instant feedback only; store/expenses.js checks again on save.
-function validateValues(values) {
-  const errors = {};
-  if (!values.amount || Number(values.amount) <= 0) errors.amount = 'Enter an amount greater than 0';
-  if (!values.categoryId) errors.categoryId = 'Choose a category';
-  if (!values.spentAt) errors.spentAt = 'Choose a date';
-  return errors;
-}
-
 /** If saving fails with field errors, each one shows under its field. */
-function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef }) {
+function ExpenseForm({ expense, onSubmit, onDelete, amountRef }) {
   const isEdit = Boolean(expense);
-  const { lastCurrency, setLastCurrency } = usePreferences();
+  const { categories, lastCurrency, setLastCurrency } = useFinance();
   const [values, setValues] = useState(() => initialValues(expense, lastCurrency));
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState(null);
@@ -129,14 +90,8 @@ function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-
-    const clientErrors = validateValues(values);
-    setErrors(clientErrors);
+    setErrors({});
     setFormError(null);
-    if (Object.keys(clientErrors).length > 0) {
-      focusFirstError();
-      return;
-    }
 
     try {
       onSubmit({
@@ -261,9 +216,15 @@ function ExpenseForm({ expense, categories, onSubmit, onDelete, amountRef }) {
   );
 }
 
-//////////////////////////////
-// AmountField
-//////////////////////////////
+/** Keeps only digits and one decimal point, with at most `decimals` decimals. */
+function cleanAmountInput(raw, decimals = 2) {
+  let text = raw.replace(',', '.').replace(/[^\d.]/g, '');
+  const [whole, ...rest] = text.split('.');
+  const fraction = rest.join('');
+  if (decimals === 0) return whole.slice(0, 12);
+  text = rest.length > 0 ? `${whole.slice(0, 12)}.${fraction.slice(0, decimals)}` : whole.slice(0, 12);
+  return text;
+}
 
 // Pass the id of `children` (the USD preview) as `describedBy`, so screen readers read it with the field.
 function AmountField({ id, value, onChange, symbol, decimals = 2, error, describedBy, children, ref }) {
@@ -298,10 +259,6 @@ function AmountField({ id, value, onChange, symbol, decimals = 2, error, describ
   );
 }
 
-//////////////////////////////
-// UsdPreview
-//////////////////////////////
-
 /** Only a preview: the saved amount is converted when the expense is saved. Hidden for USD. */
 function UsdPreview({ id, amount, currency, rate }) {
   if (currency === BASE_CURRENCY) return null;
@@ -312,10 +269,7 @@ function UsdPreview({ id, amount, currency, rate }) {
   );
 }
 
-//////////////////////////////
 // CurrencyPicker
-//////////////////////////////
-
 const NAMES = { USD: 'US dollar', KRW: 'Korean won', JPY: 'Japanese yen', CNY: 'Chinese yuan', KHR: 'Cambodian riel' };
 
 // Symbol stacked over the code so all five fit on a phone.
@@ -335,10 +289,6 @@ function CurrencyPicker({ value, onChange }) {
     <SegmentedControl label="Currency" showLabel options={OPTIONS} value={value} onChange={onChange} fullWidth compact />
   );
 }
-
-//////////////////////////////
-// CategoryPicker
-//////////////////////////////
 
 // Native radio inputs, so arrow keys work.
 function CategoryPicker({ categories, value, onChange, error, ref: firstInputRef }) {

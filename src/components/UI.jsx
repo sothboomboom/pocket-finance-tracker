@@ -1,16 +1,12 @@
 import { Link } from 'react-router-dom';
-import { CATEGORY_ICONS, FALLBACK_CATEGORY_ICON } from '../constants/categories.js';
+import { CATEGORY_ICONS, FALLBACK_CATEGORY_ICON } from '../data/categories.js';
 import { formatMoney } from '../utils/money.js';
-import { BASE_CURRENCY } from '../constants/currencies.js';
+import { BASE_CURRENCY } from '../data/currencies.js';
 import styles from './UI.module.css';
 
 // Small building blocks used on many pages.
 
-//////////////////////////////
-// Card
-//////////////////////////////
-
-// Flat on purpose: shadows are kept for things that float (sheets, toasts).
+// Flat on purpose: shadows are kept for things that float (sheets).
 export function Card({ title, subtitle, action, className = '', children }) {
   return (
     <section className={`${styles.card} ${className}`} aria-label={title}>
@@ -28,17 +24,9 @@ export function Card({ title, subtitle, action, className = '', children }) {
   );
 }
 
-//////////////////////////////
-// Tag
-//////////////////////////////
-
 export function Tag({ children }) {
   return <span className={styles.tag}>{children}</span>;
 }
-
-//////////////////////////////
-// SegmentedControl
-//////////////////////////////
 
 /**
  * Built on native radio inputs, so arrow keys and screen readers work for free.
@@ -85,10 +73,6 @@ export function SegmentedControl({
   );
 }
 
-//////////////////////////////
-// CategoryIcon
-//////////////////////////////
-
 /** Grey circle with the category's icon. size: 'sm' (40px) | 'md' (48px). */
 export function CategoryIcon({ icon, size = 'sm' }) {
   const Icon = CATEGORY_ICONS[icon] ?? FALLBACK_CATEGORY_ICON;
@@ -98,10 +82,6 @@ export function CategoryIcon({ icon, size = 'sm' }) {
     </span>
   );
 }
-
-//////////////////////////////
-// ExpenseRow
-//////////////////////////////
 
 // A link, not a button: it navigates, so open-in-new-tab works.
 export function ExpenseRow({ expense }) {

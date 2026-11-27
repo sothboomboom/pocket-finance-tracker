@@ -19,8 +19,6 @@
   /* Status colors */
   --oc-red-0: #fff5f5;    --oc-red-8: #e03131;    --oc-red-9: #c92a2a;
 
-  /* Light tints for the icons on the dark toast */
-  --oc-red-3: #ffa8a8;    --oc-green-3: #8ce99a;
 
   /* Categories: every category is grey */
   --category-bg: var(--oc-gray-1);
@@ -57,10 +55,6 @@
   --color-selected-border: var(--oc-blue-8); /* selected chip outline */
   --color-placeholder: var(--oc-gray-6);     /* hints only, never the label */
   --color-backdrop: rgb(33 37 41 / 0.4);     /* gray-9 at 40% behind dialogs */
-  --color-toast-bg: var(--oc-gray-9);
-  --color-toast-text: var(--oc-gray-0);
-  --color-toast-success-icon: var(--oc-green-3);
-  --color-toast-error-icon: var(--oc-red-3);
 
   /* Charts */
   --chart-bar: var(--oc-gray-6);
@@ -187,11 +181,9 @@
   --tabbar-clearance: calc(var(--tabbar-height) + var(--tabbar-offset) + env(safe-area-inset-bottom));
   --dialog-width: 56rem;      /* centered modal on tablet/desktop */
   --dialog-max-height: 90vh;
-  --toast-width: 48rem;
 
   /* Stacking order (dialogs use the browser's top layer, above all of these) */
   --z-fab: 20;
-  --z-toast: 30;
 }
 
 /* Tablet and up: step sizes and spacing up the scale */
@@ -212,4 +204,172 @@
     --space-section: var(--sp-96);
     --space-page-x: var(--sp-48);
   }
+}
+
+/* //////////////////////////////
+   Reset
+   ////////////////////////////// */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%; /* 1rem = 10px */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-body);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--color-heading);
+  line-height: var(--lh-heading);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* Only links are blue and underlined, so anything that looks like a link is one */
+a {
+  color: var(--color-link);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+p {
+  max-width: var(--measure);
+}
+
+/* //////////////////////////////
+   Focus
+   ////////////////////////////// */
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  box-shadow: var(--shadow-glow);
+  /* Transparent outline still shows up in Windows high-contrast mode */
+  outline: var(--border-width-thick) solid transparent;
+}
+
+/* //////////////////////////////
+   Utilities
+   ////////////////////////////// */
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow {
+  font-size: var(--text-eyebrow);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-body);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-eyebrow);
+  color: var(--color-text-secondary);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* //////////////////////////////
+   Text helpers (shared by many components)
+   ////////////////////////////// */
+
+/* Small grey secondary text (counts, dates, notes) */
+.text-meta {
+  color: var(--color-text-secondary);
+  font-size: var(--text-secondary);
+  font-weight: var(--fw-semibold);
+}
+
+/* Grey text at the normal size */
+.text-muted {
+  color: var(--color-text-secondary);
+  font-weight: var(--fw-semibold);
+}
+
+/* Dark bold text at body size (amounts, codes) */
+.text-strong {
+  color: var(--color-heading);
+  font-size: var(--text-body);
+  font-weight: var(--fw-bold);
+}
+
+/* Normal paragraph text */
+.text-body {
+  color: var(--color-text);
+  font-size: var(--text-body);
+}
+
+/* Dark name on one line, cut with "…" when too long */
+.text-name {
+  color: var(--color-heading);
+  font-size: var(--text-body);
+  font-weight: var(--fw-semibold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Form field label */
+.field-label {
+  color: var(--color-heading);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-bold);
+}
+
+/* Form group title (fieldset legend) */
+.field-legend {
+  color: var(--color-heading);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--space-label-field);
 }

@@ -1,17 +1,11 @@
-// The data the app saves: categories and expenses, kept in localStorage.
-// The first visit starts with the categories and no expenses. Settings can load the sample data below.
+// The data the app starts with. The first visit gets the categories and no expenses;
+// Settings can load the sample expenses too.
 import { format, setHours, startOfToday, subDays } from 'date-fns';
 import { convertToUsd } from '../utils/money.js';
-import { RATES_TO_USD } from './rates.js';
+import { RATES_TO_USD } from './currencies.js';
 
+// Required: deleting a category moves its expenses here.
 export const FALLBACK_CATEGORY_NAME = 'Other';
-
-// Bump the version if the saved shape changes, so old data isn't misread.
-const STORAGE_KEY = 'pocket:data:v1';
-
-//////////////////////////////
-// Sample data
-//////////////////////////////
 
 const SAMPLE_CATEGORIES = [
   { name: 'Food', icon: 'UtensilsCrossed' },
@@ -64,12 +58,12 @@ const SAMPLE_EXPENSES = [
 ];
 
 // The categories only, no expenses: the first visit and "Delete all data".
-function emptyData() {
+export function emptyData() {
   const categories = SAMPLE_CATEGORIES.map((c, i) => ({ id: i + 1, ...c }));
   return { categories, expenses: [], nextCategoryId: categories.length + 1, nextExpenseId: 1 };
 }
 
-function sampleData() {
+export function sampleData() {
   const categories = SAMPLE_CATEGORIES.map((c, i) => ({ id: i + 1, ...c }));
   const expenses = SAMPLE_EXPENSES.map(([daysAgo, hour, categoryName, amount, currency, paymentMethod, note], i) => {
     const day = subDays(startOfToday(), daysAgo);
@@ -91,54 +85,4 @@ function sampleData() {
   });
   // Ids are never reused, so a link to a deleted expense can't open another one.
   return { categories, expenses, nextCategoryId: categories.length + 1, nextExpenseId: expenses.length + 1 };
-}
-
-//////////////////////////////
-// Load and save
-//////////////////////////////
-
-function load() {
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (Array.isArray(saved?.categories) && Array.isArray(saved?.expenses)) return saved;
-  } catch {
-    // Blocked storage or broken JSON: start empty.
-  }
-  return emptyData();
-}
-
-/** { categories, expenses, nextCategoryId, nextExpenseId }. Change it, then call save(). */
-export const db = load();
-
-export function save() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-  } catch {
-    // Storage full or blocked: keep working, just without remembering.
-  }
-}
-
-export function resetSampleData() {
-  Object.assign(db, sampleData());
-  save();
-}
-
-export function clearAllData() {
-  Object.assign(db, emptyData());
-  save();
-}
-
-//////////////////////////////
-// Helpers
-//////////////////////////////
-
-export function findCategory(id) {
-  return db.categories.find((c) => c.id === Number(id));
-}
-
-/** An error that carries one message per form field, e.g. { name: 'Enter a name' }. */
-export function formError(fieldErrors) {
-  const error = new Error('Please fix the highlighted fields');
-  error.fieldErrors = fieldErrors;
-  return error;
 }
